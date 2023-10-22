@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FindMy</string>
+    <string name="app_name_stylized">Find A *</string>
 </resources>
