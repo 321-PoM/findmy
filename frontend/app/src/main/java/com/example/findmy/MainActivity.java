@@ -86,9 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
+            // goto main page
             Log.d(TAG, "Logged in!");
+
+            Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(homeIntent);
         }
-        // goto main page
     }
 
     private void signIn() {
