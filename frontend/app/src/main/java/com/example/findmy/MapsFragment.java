@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,7 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MapsFragment extends Fragment implements LocationListener {
+public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener {
 
     private final String TAG = "Map";
     private LocationManager locationManager;
@@ -66,6 +69,8 @@ public class MapsFragment extends Fragment implements LocationListener {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -77,11 +82,34 @@ public class MapsFragment extends Fragment implements LocationListener {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        // setup spinner
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner_filter);
+        // TODO: Change spinner layout here
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.POI_filter_choices,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setSelection(0);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         Log.d(TAG, "Lat: " + location.getLatitude() + " | Long: " + location.getLongitude());
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        updateMapPins((String) parent.getItemAtPosition(position));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        updateMapPins("All");
     }
     private boolean checkLocationPermissions() {
         Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
@@ -92,24 +120,43 @@ public class MapsFragment extends Fragment implements LocationListener {
     @SuppressLint("MissingPermission")
     private void getLocationPermissions() {
         FragmentActivity parentActivity = requireActivity();
-        if (parentActivity != null) {
-            locationManager = (LocationManager) parentActivity.getSystemService(Context.LOCATION_SERVICE);
-            if (!checkLocationPermissions()) {
-                // get permissions
-                String[] permissionsRequested = {
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                };
-                ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
-            } else {
-                // TODO: need to call this somewhere again, if permissions had to be requested
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-            }
+        locationManager = (LocationManager) parentActivity.getSystemService(Context.LOCATION_SERVICE);
+        if (!checkLocationPermissions()) {
+            // get permissions
+            String[] permissionsRequested = {
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+            ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
+        } else {
+            // TODO: need to call this somewhere again, if permissions had to be requested
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
         }
     }
 
     @SuppressLint("MissingPermission")
     private void updateMapToLocation() {
         // TODO, should use getCurrentLocation or https://stackoverflow.com/questions/64853673/how-to-use-locationmanagergetcurrentlocation-in-android
+    }
+
+    private void clearMapPins() {
+        // TODO
+    }
+
+    private void updateMapPins(String type) {
+        // TODO: Complete with backend
+        clearMapPins();
+        switch (type) {
+            case "Washroom":
+                break;
+            case "Study Space":
+                break;
+            case "Microwave":
+                break;
+            case "myPOIs":
+                break;
+            default: // All
+                break;
+        }
     }
 }

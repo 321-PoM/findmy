@@ -8,4 +8,12 @@
     <string name="title_map">Map</string>
     <string name="title_marketplace">Marketplace</string>
     <string name="profile_sign_out_button_label">Sign Out</string>
+
+    <string-array name="POI_filter_choices">
+        <item>All</item>
+        <item>Study Space</item>
+        <item>Microwave</item>
+        <item>Washroom</item>
+        <item>myPOIs</item>
+    </string-array>
 </resources>
