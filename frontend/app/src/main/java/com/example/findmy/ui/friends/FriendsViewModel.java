@@ -1,16 +1,16 @@
-package com.example.findmy.ui.notifications;
+package com.example.findmy.ui.friends;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class FriendsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public FriendsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is a friends fragment");
     }
 
     public LiveData<String> getText() {
