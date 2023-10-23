@@ -2,9 +2,7 @@ package com.example.findmy;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -12,14 +10,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.findmy.databinding.ActivityHomeBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HomeActivity extends BaseActivity implements OnMapReadyCallback {
+public class HomeActivity extends BaseActivity {
+
+    private static final String TAG = "HomeActivity";
 
     private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
@@ -49,14 +44,5 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        Fragment mapFragment = ((NavHostFragment) navHostFragment).getChildFragmentManager().getPrimaryNavigationFragment();
-        manager.beginTransaction().add(R.id.nav_host_fragment_activity_home, mapFragment).commit();
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
     }
 }
