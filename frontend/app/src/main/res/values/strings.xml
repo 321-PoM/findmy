@@ -17,7 +17,9 @@
         <item>Washroom</item>
         <item>myPOIs</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_add_poi">Add POI</string>
+    <string name="rating">Rating</string>
+    <string name="poi_name_text">POI Name</string>
+    <string name="poi_submit_button">Submit</string>
 </resources>
