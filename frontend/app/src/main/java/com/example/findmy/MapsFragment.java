@@ -28,11 +28,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener {
 
     private final String TAG = "Map";
     private LocationManager locationManager;
+
+    private FloatingActionButton newPOIButton;
+
+    GoogleMap mMap = null;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -45,22 +50,10 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        @SuppressLint("MissingPermission")
         @Override
-        public void onMapReady(GoogleMap googleMap) {
-            getLocationPermissions();
-            if (checkLocationPermissions()) {
-                googleMap.setMyLocationEnabled(true);
-            }
-            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastLocation != null) {
-                LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                googleMap.moveCamera(CameraUpdateFactory.zoomTo((float)25.0));
-            }
-
-            // update to currentLocation if possible
-            updateMapToLocation();
+        public void onMapReady(@NonNull GoogleMap googleMap) {
+            mMap = googleMap;
+            updateMapToUser(googleMap);
         }
     };
 
@@ -70,7 +63,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
+        getLocationPermissions();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -83,8 +76,19 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             mapFragment.getMapAsync(callback);
         }
 
+        // setup button
+        newPOIButton = view.findViewById(R.id.newPOIButton);
+        newPOIButton.setOnClickListener( new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     HomeActivity homeActivity = (HomeActivity) requireActivity();
+                     homeActivity.navController.navigate(R.id.action_navigation_map_to_navigation_add_poi);
+                 }
+             }
+        );
+
         // setup spinner
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner_filter);
+        Spinner spinner = view.findViewById(R.id.spinner_filter);
         // TODO: Change spinner layout here
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -114,7 +118,23 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     private boolean checkLocationPermissions() {
         Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
         Boolean isCoarseLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        return isFineLocationGranted && isCoarseLocationGranted;
+        // TODO: Implement coarse
+        return isFineLocationGranted;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void updateMapToUser(GoogleMap googleMap) {
+        if (checkLocationPermissions()) {
+            googleMap.setMyLocationEnabled(true);
+            Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastLocation != null) {
+                LatLng currentLocation= new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                googleMap.moveCamera(CameraUpdateFactory.zoomTo((float)25.0));
+            }
+            // update to currentLocation if possible
+            updateMapToCurrentLocation();
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -124,7 +144,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         if (!checkLocationPermissions()) {
             // get permissions
             String[] permissionsRequested = {
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
             ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
@@ -135,7 +155,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     }
 
     @SuppressLint("MissingPermission")
-    private void updateMapToLocation() {
+    private void updateMapToCurrentLocation() {
         // TODO, should use getCurrentLocation or https://stackoverflow.com/questions/64853673/how-to-use-locationmanagergetcurrentlocation-in-android
     }
 
