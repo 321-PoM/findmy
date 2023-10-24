@@ -7,9 +7,18 @@ const app = express();
 app.use(express.json());
 
 // User
-app.get("/username", getUser());
-app.post("/username", makeUser());
-app.put("/username", updateUser());
+app.get(   "/user", async(req, res) => {getUser(req, res)});
+app.post(  "/user", async(req, res) => {makeUser(req, res)});
+app.put(   "/user", async(req, res) => {updateUser(req, res)});
+app.delete("/user", async(req, res) => {removeUser(req, res)});
+
+app.get(   "/user/Rscore", async(req, res) => {getUserReliabilityScore(req, res)});
+
+app.get(   "/user/friend", async(req, res) => {getFriendList(req, res)});
+app.put(   "/user/friend", async(req, res) => {addFriend(req, res)});
+app.delete("/user/friend", async(req, res) => {removeFriend(req, res)});
+
+
 
 // POI
 
