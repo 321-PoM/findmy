@@ -27,6 +27,11 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <fragment
+        android:id="@id/navigation_marketplace"
+        android:name="com.example.findmy.ui.MarketplaceFragment"
+        android:label="@string/title_marketplace"
+        tools:layout="@layout/fragment_marketplace" />
 
     <fragment
         android:id="@+id/navigation_friends"
