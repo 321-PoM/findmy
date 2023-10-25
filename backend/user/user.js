@@ -1,13 +1,6 @@
-import express from ("express");
-import { OAuth2Client } from ('google-auth-library');
+import { OAuth2Client } from 'google-auth-library';
 
 const oauthClient = new OAuth2Client();
-export const user = {
-    get: getUser,
-    // post: makeUser,
-    // put: updateUser,
-    // delete: removeUser
-}
 
 const getUser = async (req, res) => {
     try{
@@ -42,3 +35,7 @@ const getUser = async (req, res) => {
 // const removeUser = async (req, res) => {
 
 // }
+
+export const user = {
+	get: getUser,
+}

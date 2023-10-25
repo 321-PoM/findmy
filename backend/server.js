@@ -1,8 +1,7 @@
-import express from ("express");
-import { OAuth2Client } from ('google-auth-library');
-import { user } from("./user/user.js")
+import express from 'express';
+import { OAuth2Client } from 'google-auth-library';
+import { user } from './user/user.js';
 
-require("dotenv").config();
 const app = express();
 app.use(express.json());
 
