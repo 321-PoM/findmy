@@ -40,6 +40,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.navigation:navigation-fragment:2.7.2")
     implementation("androidx.navigation:navigation-ui:2.7.2")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     val fragmentVersion = "1.6.1"
 
     implementation("androidx.fragment:fragment:$fragmentVersion")

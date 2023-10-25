@@ -1,4 +1,4 @@
-package com.example.findmy;
+package com.example.findmy.ui;
 
 import androidx.annotation.Nullable;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.findmy.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;

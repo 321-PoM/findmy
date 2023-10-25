@@ -1,4 +1,4 @@
-package com.example.findmy;
+package com.example.findmy.ui;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.findmy.R;
 import com.example.findmy.databinding.ActivityHomeBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

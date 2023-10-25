@@ -1,4 +1,4 @@
-package com.example.findmy;
+package com.example.findmy.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.findmy.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
