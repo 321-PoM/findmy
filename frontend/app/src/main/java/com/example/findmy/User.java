@@ -6,7 +6,11 @@ import java.util.List;
 public class User {
     private int id;
 
-    private String name;
+    private String surname;
+
+    private String preferredName;
+
+    private String username;
 
     private String email;
     private double reliabilityScore;
@@ -17,9 +21,11 @@ public class User {
 
     private boolean hasPremium;
 
-    public User(int id, String name, String email, double reliabilityScore, String avatarURI, boolean hasPremium) {
+    public User(int id, String surname, String preferredName, String username, String email, double reliabilityScore, String avatarURI, boolean hasPremium) {
         this.id = id;
-        this.name = name;
+        this.surname = surname;
+        this.preferredName = preferredName;
+        this.username = username;
         this.reliabilityScore = reliabilityScore;
         this.email = email;
         friends = new ArrayList<User>();
@@ -29,7 +35,9 @@ public class User {
 
     public int getId() { return this.id; }
 
-    public String getName() { return this.name; }
+    public String getUsername() { return this.username; }
+
+    public String getFullName() { return this.preferredName + " " + this.surname; }
 
     public double getReliabilityScore() { return this.reliabilityScore; }
 

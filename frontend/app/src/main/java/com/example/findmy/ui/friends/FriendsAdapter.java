@@ -50,7 +50,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         User friend = friends.get(position);
 
         TextView textView = holder.nameText;
-        textView.setText(friend.getName());
+        textView.setText(friend.getFullName());
 
         // TODO: set button functionality
         Button button = holder.viewDetailsButton;
