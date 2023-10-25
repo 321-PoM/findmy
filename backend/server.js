@@ -1,15 +1,15 @@
-const express          = require("express");
-const { OAuth2Client } = require('google-auth-library');
-const os               = require("os");
-
-import { user } from "user/user.js"
+import express from ("express");
+import { OAuth2Client } from ('google-auth-library');
+import { user } from("./user/user.js")
 
 require("dotenv").config();
 const app = express();
 app.use(express.json());
 
 // User
-app.get(   "/user", async(req, res) => {user.get});
+app.get(   "/user", async(req, res) => {
+    console.log(user);
+});
 // app.post(  "/user", async(req, res) => {makeUser(req, res)});
 // app.put(   "/user", async(req, res) => {updateUser(req, res)});
 // app.delete("/user", async(req, res) => {removeUser(req, res)});
@@ -30,7 +30,7 @@ app.get(   "/user", async(req, res) => {user.get});
 
 const run = async () => {
     try{
-        let server = app.listen(8081, (req, res) => {
+        let server = app.listen(80, (req, res) => {
             let host = server.address().address;
             let port = server.address().port;
 
