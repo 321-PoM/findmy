@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findmy.User;
+import com.example.findmy.user.User;
 import com.example.findmy.databinding.FragmentFriendsBinding;
 
 import java.util.ArrayList;

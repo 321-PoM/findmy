@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class POI implements Rateable {
@@ -12,10 +13,31 @@ public class POI implements Rateable {
 
     private Date lastTimeRetrievedUpdate;
 
-    POI (Collection<RatingType> supportedRatingTypes) {
+    double longitude;
+    double latitude;
+
+    String name;
+
+    public POI (RatingType[] supportedRatingTypes, double longitude, double latitude, String name) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.name = name;
+
+        this.lastTimeRetrievedUpdate = new Date(0);
+
+        this.ratings = new HashMap<>();
         for (RatingType type : supportedRatingTypes) {
             ratings.put(type, -1.0);
         }
+    }
+
+    public POI(POI other) {
+        this.ratings = new HashMap<>(other.ratings);
+
+        this.longitude = other.longitude;
+        this.latitude = other.latitude;
+
+        this.name = other.name;
     }
 
     @Override
@@ -43,5 +65,9 @@ public class POI implements Rateable {
 
         // TODO: update backend and retrieve new rating
         return 0.0;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

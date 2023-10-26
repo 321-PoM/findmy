@@ -3,12 +3,22 @@ package com.example.findmy.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.findmy.POI.POI;
+import com.example.findmy.POI.RatingType;
 import com.example.findmy.R;
+import com.example.findmy.databinding.FragmentMarketplaceBinding;
+import com.example.findmy.databinding.MarketplaceListRowBinding;
+import com.example.findmy.ui.friends.FriendsAdapter;
+import com.example.findmy.user.User;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +35,8 @@ public class MarketplaceFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FragmentMarketplaceBinding binding;
 
     public MarketplaceFragment() {
         // Required empty public constructor
@@ -61,6 +73,22 @@ public class MarketplaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_marketplace, container, false);
+
+
+        binding = FragmentMarketplaceBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        ArrayList<MarketplaceListing> listingArray = new ArrayList<>();
+
+        POI testPOI = new POI(new RatingType[]{RatingType.cleanliness}, 0.0, 0.0, "bathroom");
+        MarketplaceListing testListing = new MarketplaceListing(18, testPOI);
+        listingArray.add(testListing);
+
+        RecyclerView friendsRecycler = binding.listingsRecylcer;
+        MarketplaceListingAdapter adapter = new MarketplaceListingAdapter(listingArray);
+
+        friendsRecycler.setAdapter(adapter);
+        friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        return root;
     }
 }
