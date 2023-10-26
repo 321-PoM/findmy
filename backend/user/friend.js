@@ -46,8 +46,7 @@ const respondFriendRequest = async (req, res) => {
                 res.status(200).send({"message": "POST success: respondFriendRequest(reject)"});
                 break;
             default:
-                res.status(400).send({"message": "error: missing or invalid parameter for 'response'"});
-                break;
+                throw new Error("error: missing or invalid parameter for 'response'");
         }
         return;
     }catch(err){

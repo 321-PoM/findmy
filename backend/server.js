@@ -1,6 +1,7 @@
-import express from 'express';
-import { user } from './user/user.js';
-import { friend } from './user/friend.js';
+import express      from 'express';
+import { user }     from './user/user.js';
+import { friend }   from './user/friend.js';
+import { poi }      from './poi/poi.js'
 
 const app = express();
 app.use(express.json());
@@ -20,9 +21,14 @@ app.post(  "/user/friend", async(req, res) => {await friend['post'](req, res)});
 app.put(   "/user/friend", async(req, res) => {await friend['put'](req, res)});
 app.delete("/user/friend", async(req, res) => {await friend['delete'](req, res)});
 
-
-
 // POI
+app.get(   "/poi", async(req, res) => {await poi['get'](req, res)});
+app.post(  "/poi", async(req, res) => {await poi['post'](req, res)});
+app.put(   "/poi", async(req, res) => {await poi['put'](req, res)});
+app.delete("/poi", async(req, res) => {await poi['delete'](req, res)});
+
+// Updating POI
+
 
 // Market
 
