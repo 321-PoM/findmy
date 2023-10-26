@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.R;
-import com.example.findmy.User;
+import com.example.findmy.user.User;
 
 import java.util.List;
 

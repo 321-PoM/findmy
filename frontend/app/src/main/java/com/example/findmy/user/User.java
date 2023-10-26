@@ -1,4 +1,4 @@
-package com.example.findmy;
+package com.example.findmy.user;
 
 import java.util.ArrayList;
 import java.util.List;
