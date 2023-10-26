@@ -24,4 +24,8 @@
     <string name="poi_submit_button">Submit</string>
     <string name="find_friend_field">Search Friends</string>
     <string name="friends_list_text_button">View</string>
+    <string name="mapBux">mapBux</string>
+    <string name="get_mapbux">Get MapBux</string>
+    <string name="marketplaceDetails">Details</string>
+    <string name="placeholder">Placeholder</string>
 </resources>
