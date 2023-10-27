@@ -33,6 +33,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -58,4 +62,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.1.0")
+
+    testImplementation("org.json:json:20180813")
 }
