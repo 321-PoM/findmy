@@ -35,6 +35,7 @@ const addFriend = async (req, res) => {
 
 const respondFriendRequest = async (req, res) => {
     try{
+        console.log(req.query);
         const response = req.query['response'];
         switch(response){
             case "accept":
