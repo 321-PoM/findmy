@@ -1,0 +1,3 @@
+[submodule "findmy.wiki"]
+	path = findmy.wiki
+	url = https://github.com/321-PoM/findmy.wiki.git
