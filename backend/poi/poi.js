@@ -4,10 +4,7 @@ const getPOI = async (req, res) => {
     try{
         console.log(req.body);
         
-        // query db for friend list? 
-        // OR should friend information come already with getUser
-        // friend is a premium feature so i think having a friend object is good 
-        // in order to keep functionality separated
+        
 
         res.status(200).send({"message": "GET success: getPOI"});
         return;
@@ -22,9 +19,7 @@ const addPOI = async (req, res) => {
     try{
         console.log(req.body);
         
-        // add a new userid into list of users (friendlist)
-        // mark a status as request sent
-        // when other user accpets update this status automatically
+        
 
         res.status(200).send({"message": "POST success: addPOI"});
         return;
@@ -61,9 +56,7 @@ const updatePOI = async (req, res) => {
 const removePOI = async (req, res) => {
     try{
         console.log(req.body);
-        // check db for user
-
-        // remove
+        
 
         res.status(200).send({"message": "DELETE success: removePOI"});
         return;

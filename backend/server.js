@@ -2,6 +2,8 @@ import express      from 'express';
 import { user }     from './user/user.js';
 import { friend }   from './user/friend.js';
 import { poi }      from './poi/poi.js'
+import { rscore }   from './user/rscore.js'
+import { market }   from './market/market.js'
 
 const app = express();
 app.use(express.json());
@@ -13,7 +15,7 @@ app.put(   "/user", async(req, res) => {await user['put'](req, res)});
 app.delete("/user", async(req, res) => {await user['delete'](req, res)});
 
 // Reliability Score
-// app.get(   "/user/Rscore", async(req, res) => {getUserReliabilityScore(req, res)});
+app.get(   "/user/rscore", async(req, res) => {await rscore(req, res)});
 
 // Friendlist
 app.get(   "/user/friend", async(req, res) => {await friend['get'](req, res)});
@@ -27,10 +29,11 @@ app.post(  "/poi", async(req, res) => {await poi['post'](req, res)});
 app.put(   "/poi", async(req, res) => {await poi['put'](req, res)});
 app.delete("/poi", async(req, res) => {await poi['delete'](req, res)});
 
-// Updating POI
-
-
 // Market
+app.get(   "/market", async(req, res) => {await market['get'](req, res)});
+app.post(  "/market", async(req, res) => {await market['post'](req, res)});
+app.put(   "/market", async(req, res) => {await market['put'](req, res)});
+app.delete("/market", async(req, res) => {await market['delete'](req, res)});
 
 // Payment
 
