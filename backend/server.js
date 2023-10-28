@@ -1,9 +1,9 @@
 import express      from 'express';
-import { user }     from './user/user.js';
-import { friend }   from './user/friend.js';
-import { poi }      from './poi/poi.js'
-import { rscore }   from './user/rscore.js'
-import { market }   from './market/market.js'
+import { user }     from './components/user/user.js';
+import { friend }   from './components/user/friend.js';
+import { poi }      from './components/poi/poi.js'
+import { rscore }   from './components/user/rscore.js'
+import { market }   from './components/market/market.js'
 
 const app = express();
 app.use(express.json());
