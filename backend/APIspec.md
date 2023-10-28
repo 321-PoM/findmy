@@ -1,100 +1,207 @@
-## Module: User
-Member variables
-- User ID
-    - Use userid to query stored friends list and user media?
-- Google Account
-- Reliability Score
-- Friends
-- Premium/Free user
-- Wallet ID
-
-### getUserByID
-param: int - user id
-static method
-returns: User class
-
-### getGoogleAccount
-param: User class
-returns: user’s associatedGoogleAccount
-
-### getReliabilityScore
-param: User class
-returns: user’s reliability score
-
-### updateReliabilityScore
-param: user
-returns: void
-
-### updateInfo 
-param: user id, user variable (this method can be overloaded to accept different variable inputs)
-return true/false based on if successful
-
-### getFriends
-param: user id
-list of users (friends)
-
-### respondToFriendRequest
-param: user id, bool(accept/deny)
-return: true/false based on if success
-
-### requestNewFriend
-param: user id
-return: void
-
-### removeFriend
-param: user id
-return: true/false based on if user was removed
+# Module: User
+### User Object
 ```
-Module - POI Management
-Handles functionalities regarding POIs, such as create, rate, and remove
+{
+    userid: string,
+    reliabilityScore: int,
+    premiumStatus: bool,
+    metadata: {
+        biography: string,
+        avatar: string,     // link to image?
+        ...
+    }
+}
+```
+- Use userid to query for a user's wallet and friends list
+- Storage url of the user's profile picture can be in metadata or in its own field? (pls decide)
+- Use userid in quering for POI, which can be:
+    - made by (userid)
+    - owned by (userid)
 
-POI
-Member variables
-Type: (Study Area, Microwave, etc.)
-Score
-Verified/Unlisted
-Location
-Photo
-Description/Metadata
+### User Methods
+`GET /user`
+```
+param: {
+    authToken: 'string'
+}
+returns: {
+    body: {userObject}      // as listed above
+}
+```
+- assumes user already exists
+- authenticate user with their corresponding google token
+- returns the user object that represents user
 
-createPOI
-param: location, bool (private/public,personalized), enum(type)
-return: created POI/null
+`POST /user` 
+- **N/A**
+- In the front end, do we just want to force users to sign in with their google account
+    - Then we can just call `createUser` in the backend if we notice a google account is new
 
-ratePOI
-param: int(score)
-return: POI
+`PUT /user`
+```
+param: {
+    userid: 'string',
+    field: 'string',        // must correspond to one of the fields in userobject
+    input: 'string'         // conver this to whatever type that is demanded by the field
+                            // for metadata, enter a json string(?) 
+}
+returns: {
+    success: true           // or err
+}
+```
+- Update user object fields with new info
 
-updatePOI
-param: POI
+`DELETE /user`
+```
+param: {
+    userid: 'string'
+}
+return: {
+    success: true           // or err
+}
+```
+- Delete a user lol
+- Should there be some logic to handle the authToken? don't know how that'll work
 
-changeOwner
-param: user id
-return: POI
+### Reliability Score Methods
+`GET /user/rscore`
+```
+param: {
+    userid: 'string'
+}
+```
+- calculated based on POIs user created and POIs user has reviewed?
 
-Map display
-POI
+### Friend List Methods
+`GET /user/friend`
+```
+param: {
+    userid: 'string' 
+}
+returns: {
+    friend1: 'userid',
+    friend2: 'userid',
+    ...
+}
+```
+- allow `GET /user/friend?limit=MAX`, where `MAX` is the max number of userid (friends) to return
+- if not specified, `MAX=20`, this can be set arbitrarily
 
-Module - Marketplace
-Handles functionalities regarding the POI Marketplace feature, this requires users to sell/purchase personalized POIs that involve ownership.
+`POST /user/friend`
+- **NOTE**: not sure whether adding a friend should be POST or PUT
+    - since we are *updating* the friend list
+    - but we are *creating* a friend request
+```
+param: {
+    userid: 'string'        // friend to send request to
+}
+returns: {
+    success: true           // or err? 
+}
+```
+- Need to decided how to handle if user is already a friend
 
-Transaction 
-ID
-Wallet (seller)
-Wallet (buyer)
+`PUT /user/friend`
+```
+param: {
+    userid: 'string'        // userid of person who sent request
+    accept: bool            // true of false
+}
+returns: {
+    success: true           // true or err
+}
+```
 
-Wallet
-ID
-MapBux (In-app currency)
+`DELETE /user/friend`
+```
+param: {
+    userid: 'string'
+}
+returns: {
+    success: true           // true or err
+}
+```
+- removes friend from friend list
 
-Module - Payment
-Handles functionalities regarding the external payment method (wrapper for external APIs to authenticate and service purchases)
+### POI Object
+```
+{
+    poiid: string,
+    latlng: {long, long},
+    rating: int,            // 1 to 100
+    category: string        // toilet, microwave, etc
+    status: string          // unlisted, verfied, private
+    ownerid: string        // userid or owned by devs
+    metadata: {
+        description: string
+        images: string      // link to storage of images?
+        ...
+    }
+}
+```
+- Not sure how the data lake works but I'm assuming kinda like S3 bucket style (where you can use a link to grab the stored item?)
 
-CreditCard
-Member variables
-CVV
-Card Number
-Card Expiry Date
+### POI Methods
+`GET /poi`
+```
+param: {
+    filter: {
+        ownerid:
+        latlng:
+        category:
+        status:
+        rating: 
+    }
+}
+returns: {
 
-Wallet
-Defined under marketplace
+}
+```
+- I'm not sure how the filtering will be done right now
+
+`POST /poi`
+```
+param: {
+    latlng: {long, long},   // required
+    category: string,       // required
+    ownerid: string,        // required
+    metadata: {             // optional
+        description:    
+        image:          
+    }
+}
+returns: {
+    poiid: string
+}
+```
+- rating, status, poiid, will be generated
+
+`PUT /poi`
+```
+param: {
+    poiid: 'string',
+    input: {
+        latlng:             // all optional
+        rating:
+        category:
+        status:
+        ownerid:
+        metadata:
+    }
+}
+returns: {
+    success: true           // or err
+}
+```
+- I think we will need a module for rating
+
+`DELETE /poi`
+```
+param: {
+    poiid: string
+}
+returns: {
+    success: true           // or err
+}
+```
+- delete a poi
