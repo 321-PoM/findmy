@@ -1,6 +1,12 @@
 import { OAuth2Client } from 'google-auth-library';
+import { PrismaClient } from '@prisma/client';
 
 const oauthClient = new OAuth2Client();
+const prismaClient = new PrismaClient({
+    datasources: {
+        db: {url: 'url to user db'} 
+    }
+});
 
 const getUser = async (req, res) => {
     try{
@@ -12,6 +18,17 @@ const getUser = async (req, res) => {
         // });
         
         // check database for user
+        const findUserResp = await prismaClient.user.findMany({
+            select: '',     // all fields are optional
+            include: '',    
+            where: '',      
+            orderBy: '',    
+            cursor: '',     
+            take: '',       
+            skip: '',       
+            distinct: ''    
+        })
+        console.log(findUserResp);
         // return to client userinfo for user page
         res.status(200).send({"message": "GET success: getUser"});
         return;
@@ -31,7 +48,17 @@ const makeUser = async (req, res) => {
         //     audience: process.env.CLIENT_ID
         // });
 
-        // put new user info into db
+        const createUserResp = await prismaClient.user.create({
+            data: {                             // required field
+                userid: '',     
+                name: 'testuser',
+                email: 'muhan@prisma.io',
+                rscore: '',
+                friends: '',
+                status: '',
+            },
+        });
+        console.log(createUserResp);
 
         res.status(200).send({"message": "POST success: makeUser"});
         return;
@@ -52,6 +79,22 @@ const updateUser = async (req, res) => {
         // });
 
         // update db
+        const updateUserResp = await prismaClient.user.update({
+            data: {                             // required field
+                userid: '',                     
+                name: '',
+                email: '',
+                rscore: '',
+                friends: '',
+                status: '',
+            },
+            where: {                            // required field
+
+            },
+            select: '',                         // optional field
+            include: ''                         // optional field
+        });
+        console.log(updateUserResp);
 
         res.status(200).send({"message": "PUT success: updateUser"});
         return;
@@ -68,6 +111,14 @@ const removeUser = async (req, res) => {
         // check db for user
 
         // remove
+        const deleteUserResp = await prismaClient.user.delete({
+            where: {                            // required field
+
+            },
+            select: '',                         // optional field
+            include: ''                         // optional field
+        });
+        console.log(deleteUserResp);
 
         res.status(200).send({"message": "DELETE success: removeUser"});
         return;

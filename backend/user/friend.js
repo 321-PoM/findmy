@@ -1,8 +1,27 @@
+import { PrismaClient } from '@prisma/client';
+
+const prismaClient = new PrismaClient({
+    datasources: {
+        db: {url: 'url to user db'} 
+    }
+});
+
 const getFriendlist = async (req, res) => {
     try{
         console.log(req.body);
         
         // query db for friend list? 
+        const friendListResp = await prismaClient.friend.findMany({
+            select: '',     // all fields are optional
+            include: '',    
+            where: '',      
+            orderBy: '',    
+            cursor: '',     
+            take: '',       
+            skip: '',       
+            distinct: ''  
+        });
+        console.log(friendListResp);
         // OR should friend information come already with getUser
         // friend is a premium feature so i think having a friend object is good 
         // in order to keep functionality separated
@@ -20,6 +39,10 @@ const addFriend = async (req, res) => {
     try{
         console.log(req.body);
         
+        // DOES THIS COUNT AS A POST OR PUT
+        // SINCE WE ARE CREATING A NEW FRIEND (POST)
+        // BUT WE ARE UPDATING OUR CURRENT FRIEND LIST (PUT)
+
         // add a new userid into list of users (friendlist)
         // mark a status as request sent
         // when other user accpets update this status automatically
@@ -74,10 +97,22 @@ const removeFriend = async (req, res) => {
 }
 
 const acceptRequest = async () => {
+    try{
+
+    }catch(err){
+
+    }
+
     return;
 }
 
 const rejectRequest = async () => {
+    try{
+
+    }catch(err){
+
+    }
+    
     return;
 }
 

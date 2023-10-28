@@ -1,9 +1,26 @@
-import { updatepoi } from './updatepoi.js'
+import { PrismaClient } from '@prisma/client';
+
+const prismaClient = new PrismaClient({
+    datasources: {
+        db: {url: ''}
+    }
+})
 
 const getPOI = async (req, res) => {
     try{
         console.log(req.body);
         
+        const findPOIResp = await prismaClient.poi.findMany({
+            select: '',     // all fields are optional
+            include: '',    
+            where: '',      
+            orderBy: '',    
+            cursor: '',     
+            take: '',       
+            skip: '',       
+            distinct: ''    
+        });
+        console.log(findPOIResp);
         
 
         res.status(200).send({"message": "GET success: getPOI"});
@@ -18,8 +35,12 @@ const getPOI = async (req, res) => {
 const addPOI = async (req, res) => {
     try{
         console.log(req.body);
-        
-        
+        const createPOIResp = await prismaClient.poi.create({
+            data: {                             // required field
+                
+            },
+        });
+        console.log(createPOIResp);
 
         res.status(200).send({"message": "POST success: addPOI"});
         return;
@@ -33,16 +54,19 @@ const addPOI = async (req, res) => {
 const updatePOI = async (req, res) => {
     try{
         console.log(req.body);
-        const poiID = req.query['id'];
-        const field = req.query['type'];
-        let success;
+        let updatedData = {};
+        // create new updated data based on input
 
         //handling different updates -> check updatepoi.js
-        if(!updatepoi.hasOwnProperty(field)){
-            throw new Error("error: missing or invalid parameter for 'type'");
-        } 
-        success = await updatepoi[field](poiID);
-        if(!success) throw new Error("Failed to update POI");
+        const updateUserResp = await prismaClient.user.update({
+            data: updatedData,                  // required field
+            where: {                            // required field
+
+            },
+            select: '',                         // optional field
+            include: ''                         // optional field
+        });
+        console.log(updateUserResp);
 
         res.status(200).send({"message": "PUT success: updatePOI"});
         return;
@@ -56,7 +80,14 @@ const updatePOI = async (req, res) => {
 const removePOI = async (req, res) => {
     try{
         console.log(req.body);
-        
+        const deletePOIResp = await prismaClient.poi.delete({
+            where: {                            // required field
+
+            },
+            select: '',                         // optional field
+            include: ''                         // optional field
+        });
+        console.log(deletePOIResp);
 
         res.status(200).send({"message": "DELETE success: removePOI"});
         return;
