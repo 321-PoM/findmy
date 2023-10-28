@@ -4,6 +4,9 @@ import { friend }   from './components/user/friend.js';
 import { poi }      from './components/poi/poi.js'
 import { rscore }   from './components/user/rscore.js'
 import { market }   from './components/market/market.js'
+import http         from 'http';
+import https        from 'https';
+import fs           from 'fs';
 
 const app = express();
 app.use(express.json());
@@ -37,19 +40,21 @@ app.delete("/market", async(req, res) => {await market['delete'](req, res)});
 
 // Payment
 
-const run = async () => {
-    try{
-        let server = app.listen(8081, (req, res) => {
-            let host = server.address().address;
-            let port = server.address().port;
+// read env variable for ssl key and cert
+var key_cert_path = process.env.KEY_CERT_PATH
 
-            console.log(`Server running at: https://${host}:${port}`);
-        })
-    }
-    catch(err){
-        console.error(err);
-    }
+var server_opt = {
+    key: fs.readFileSync(key_cert_path + '/privkey.pem'),
+    cert: fs.readFileSync(key_cert_path + '/fullchain.pem')
+};
+
+var ports = {
+    http:  80,
+    https: 443,
 }
 
-run();
+http.createServer(app).listen(ports.http);
+https.createServer(server_opt, app).listen(ports.https);
+
+console.log(`Server running at http port:${ports.http}; https port:${ports.https}`);
 
