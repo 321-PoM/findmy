@@ -1,2 +1,4 @@
 /node_modules
 process.env
+
+.env  # Already added in repo root .gitignore, but just in case.

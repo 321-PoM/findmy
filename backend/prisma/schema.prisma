@@ -1,0 +1,52 @@
+//| DB connection |//
+//-----------------//
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//| Models |//
+//----------//
+model User {
+  id               Int      @id @default(autoincrement())
+  avatar           String   @db.VarChar(255)
+  biography        String   @db.VarChar(255)
+  reliabilityScore Int
+  premiumStatus    Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isActive         Boolean  @default(true)
+  isDeleted        Boolean  @default(false)
+  poi              poi[]
+}
+
+model Image {
+  id    Int    @id @default(autoincrement())
+  url   String
+  poi   poi    @relation(fields: [poiId], references: [id])
+  poiId Int
+}
+
+enum PoiStatus {
+  unlisted
+  verfied
+  private
+}
+
+model poi {
+  id          Int       @id @default(autoincrement())
+  latitude    String    @db.VarChar(31)
+  longitudes  String    @db.VarChar(31)
+  category    String    @db.VarChar(255)
+  status      PoiStatus
+  description String    @db.VarChar(255)
+  image       Image[]
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  rating      Int
+  isDeleted   Boolean   @default(false)
+}
