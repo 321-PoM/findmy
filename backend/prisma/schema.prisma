@@ -22,6 +22,7 @@ model User {
   isActive         Boolean  @default(true)
   isDeleted        Boolean  @default(false)
   poi              poi[]
+  Market           Market[]
 }
 
 model Image {
@@ -49,4 +50,16 @@ model poi {
   ownerId     Int
   rating      Int
   isDeleted   Boolean   @default(false)
+}
+
+model Market {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  price     Float
+  seller    User     @relation(fields: [sellerId], references: [id])
+  sellerId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive  Boolean  @default(true)
+  isDeleted Boolean  @default(false)
 }
