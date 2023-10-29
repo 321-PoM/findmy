@@ -59,22 +59,25 @@ export const getUserReliabilityScore = async (userId) => {
                 status: 'verfied'
             }
         });
-        if(verifiedPoisReported == 0) throw new Error("User has not reported any POIs");
 
         // return stdev and avg rating of verified POIs
-        let avgRating;
-        let stDev;
+        let rating_mean;
+        let rating_stdev;
+        let poi_count;
 
-        const sumRating = poiRatings.reduce((sum, poi) => sum += poi['rating'], 0);
-        avgRating = sumRating / verifiedPoisReported;
+        if(verifiedPoisReported == 0) throw new Error("User has not reported any POIs");
+        else poi_count = verifiedPoisReported;
+
+        const rating_sum = poiRatings.reduce((sum, poi) => sum += poi['rating'], 0);
+        rating_mean = rating_sum / poi_count;
         
-        let sumDeviation = poiRatings
-            .map((poi) => Math.pow((poi['rating'] - avgRating), 2))
-            .reduce((sum, distance) => sum += distance, 0);
+        let dev_sum = poiRatings
+            .map((poi) => Math.pow((poi['rating'] - rating_mean), 2))
+            .reduce((sum, dist) => sum += dist, 0);
 
-        stDev = Math.pow((sumDeviation / verifiedPoisReported), 0.5);
+        rating_stdev = Math.pow((dev_sum / poi_count), 0.5);
 
-        return {avgPOIRating: avgRating, stdev: stDev};
+        return {mean: rating_mean, stdev: rating_stdev};
     } catch (err) {
         throw err; 
     }
