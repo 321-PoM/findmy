@@ -63,3 +63,10 @@ model Market {
   isActive  Boolean  @default(true)
   isDeleted Boolean  @default(false)
 }
+
+model rating {
+  id          Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
+  rating      Int
+  createdAt   DateTime  @default(now())
+}
