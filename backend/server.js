@@ -12,7 +12,7 @@ app.use(express.json());
 // API Routers
 app.use(userRoutes);
 app.use(poiRoutes);
-app.use( marketRoutes);
+app.use(marketRoutes);
 
 // // Friendlist
 // app.get(   "/user/friend", async(req, res) => {await friend['get'](req, res)});
