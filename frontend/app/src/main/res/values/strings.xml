@@ -28,4 +28,7 @@
     <string name="get_mapbux">Get MapBux</string>
     <string name="marketplaceDetails">Details</string>
     <string name="placeholder">Placeholder</string>
+    <string name="edit_rating">Edit Rating</string>
+    <string name="submit">Submit</string>
+    <string name="current_rating">Current Rating</string>
 </resources>
