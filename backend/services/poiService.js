@@ -45,3 +45,29 @@ export const listPois = async () => {
         },
     });
 };
+
+export const calcPoiRating = async (poiId) => {
+    try{
+        const allRatings = await prisma.review.findMany({
+            where: {
+                poiId: poiId,
+            },
+            include: {
+                userId: true,
+                rating: true,
+            }
+        });
+        
+        // Calculate new weighted rating
+        let sumWeight = await getUserReliabilityScore(userId)
+        let weightedSumRating = rating * sumWeight;
+        for(const rating of allRatings){
+            let weight = await getUserReliabilityScore(rating['userId']);
+            sumWeight += weight;
+            weightedSumRating += rating['rating'] * weight;
+        }
+        return weightedSumRating / sumWeight;
+    } catch (err) {
+        throw err;
+    }
+}
