@@ -44,3 +44,12 @@ export const listPois = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const listFilteredPois = async (req, res) => {
+  try {
+    const pois = await poiService.listFilteredPois(req.params.longitude, req.params.latitude, req.params.poiType, req.params.distance);
+    res.status(200).json(pois);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};

@@ -38,15 +38,17 @@ CREATE TABLE `poi` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE `review` (
-    `userId` INTEGER NOT NULL AUTO_INCREMENT,
-    `poiId` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL
+    `poiId` INTEGER NOT NULL
     `rating` INTEGER NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `reliabilityScore` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
     `isDeleted` BOOLEAN NOT NULL DEFAULT false,
 
-    PRIMARY KEY (`poiId`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE `friendship` (

@@ -25,6 +25,7 @@ model User {
   Market           Market[]
   friends          friendship[] @relation("user")
   friendsOf        friendship[] @relation("friend")
+  Reviews          Review[]
 }
 
 model Image {
@@ -49,6 +50,7 @@ model poi {
   description String    @db.VarChar(255)
   image       Image[]
   owner       User      @relation(fields: [ownerId], references: [id])
+  Reviews     Review[]
   ownerId     Int
   rating      Int
   isDeleted   Boolean   @default(false)
@@ -66,14 +68,18 @@ model Market {
   isDeleted Boolean  @default(false)
 }
 
-model review {
-  userId           Int       @id
-  poiId            Int       
+model Review {
+  reviewId         Int      @id
+  userId           Int       
+  poiId            Int        
+  reviewer         User     @relation(fields: [userId], references: [id])
+  poi              poi      @relation(fields: [poiId], references: [id])
   rating           Int
-  description      String    @db.VarChar(255)
+  description      String   @db.VarChar(255)
   reliabilityScore Int
-  createdAt        DateTime  @default(now())
-  isDeleted        Boolean   @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean  @default(false)
 }
 
 enum FriendshipStatus {

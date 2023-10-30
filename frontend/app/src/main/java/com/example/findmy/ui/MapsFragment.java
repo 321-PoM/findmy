@@ -11,6 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -23,15 +24,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.findmy.POI.POI;
 import com.example.findmy.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener {
+import java.util.ArrayList;
+
+public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
     private LocationManager locationManager;
@@ -39,6 +46,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     private FloatingActionButton newPOIButton;
 
     GoogleMap mMap = null;
+
+    Spinner filterSpinner;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -53,8 +62,22 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
          */
         @Override
         public void onMapReady(@NonNull GoogleMap googleMap) {
+            try {
+                // customize map
+                boolean success = googleMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                                MapsFragment.this.requireContext(), R.raw.gmap_style
+                        )
+                );
+            } catch (Resources.NotFoundException e) {
+                Log.e(TAG, "Google Map style parsing failed");
+            }
             mMap = googleMap;
+            mMap.setOnMarkerClickListener(MapsFragment.this);
             updateMapToUser(googleMap);
+
+            String spinnerSelection = filterSpinner.getSelectedItem().toString();
+            updateMapPins(spinnerSelection);
         }
     };
 
@@ -89,7 +112,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         );
 
         // setup spinner
-        Spinner spinner = view.findViewById(R.id.spinner_filter);
+        filterSpinner= view.findViewById(R.id.spinner_filter);
         // TODO: Change spinner layout here
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -97,9 +120,9 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                 android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setSelection(0);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        filterSpinner.setSelection(0);
+        filterSpinner.setAdapter(adapter);
+        filterSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -130,8 +153,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastLocation != null) {
                 LatLng currentLocation= new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                googleMap.moveCamera(CameraUpdateFactory.zoomTo((float)15.0));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                googleMap.moveCamera(CameraUpdateFactory.zoomTo((float)25.0));
             }
             // update to currentLocation if possible
             updateMapToCurrentLocation();
@@ -161,23 +184,59 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     }
 
     private void clearMapPins() {
-        // TODO
+        mMap.clear();
     }
 
     private void updateMapPins(String type) {
         // TODO: Complete with backend
+        if (mMap == null) { return; }
         clearMapPins();
+        ArrayList<POI> filteredPOIs;
+        POI.POIType filter;
         switch (type) {
             case "Washroom":
+                filter = POI.POIType.washroom;
                 break;
             case "Study Space":
+                filter = POI.POIType.studySpace;
                 break;
             case "Microwave":
+                filter = POI.POIType.microwave;
                 break;
             case "myPOIs":
+                filter = POI.POIType.myPOI;
                 break;
             default: // All
+                filter = null;
                 break;
         }
+        if (filter != null) {
+            filteredPOIs = (ArrayList<POI>) POI.retrievePOIsWithType(filter);
+        } else {
+            filteredPOIs = (ArrayList<POI>) POI.retrievePOIs();
+        }
+
+        for (POI poi : filteredPOIs) {
+            placePOI(mMap, poi);
+        }
+    }
+
+    private void placePOI(GoogleMap gMap, POI poi) {
+        LatLng loc = new LatLng(poi.getLatitude(), poi.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(loc)
+                .title(poi.getName());
+        Marker marker = gMap.addMarker(markerOptions);
+        // may need to clear tag upon clearing pin
+        marker.setTag(poi);
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        // TODO: testPOI
+        POIBottomSheet poiBottomSheet = new POIBottomSheet(POI.testPOI);
+
+        poiBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
+        return true;
     }
 }
