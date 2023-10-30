@@ -69,4 +69,5 @@ model rating {
   id          Int       @id @default(autoincrement())
   rating      Int
   createdAt   DateTime  @default(now())
+  isDeleted   Boolean   @default(false)
 }
