@@ -65,8 +65,8 @@ model Market {
 }
 
 model rating {
-  id          Int       @id @default(autoincrement())
-  id          Int       @id @default(autoincrement())
+  userId      Int       @id @default(autoincrement())
+  poiId       Int       @id @default(autoincrement())
   rating      Int
   createdAt   DateTime  @default(now())
   isDeleted   Boolean   @default(false)
