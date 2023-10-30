@@ -41,44 +41,53 @@ export const listUsers = async () => {
 
 export const getUserReliabilityScore = async (userId) => {
     try {
-        // Query ratings from public POIs created by user
-        const poiRatings = await prisma.poi.findMany({
+        // Query for Pois reviewed by the user
+        const reviewsByUser = await prisma.rating.findMany({
             where: {
-                ownerId: userId,
-                status: 'verfied' // assuming 'verified' is the correct enum value
+                userId: userId,
+                isDeleted: false,
             },
             select: {
+                poiId: true,
                 rating: true
             }
         });
-        
-        // Query number of verified POIs reported by user
-        const verifiedPoisReported = await prisma.poi.count({
-            where: {
-                ownerId: userId,
-                status: 'verfied'
-            }
-        });
 
-        // return stdev and avg rating of verified POIs
-        let rating_mean;
-        let rating_stdev;
-        let poi_count;
-
-        if(verifiedPoisReported == 0) throw new Error("User has not reported any POIs");
-        else poi_count = verifiedPoisReported;
-
-        const rating_sum = poiRatings.reduce((sum, poi) => sum += poi['rating'], 0);
-        rating_mean = rating_sum / poi_count;
-        
-        let dev_sum = poiRatings
-            .map((poi) => Math.pow((poi['rating'] - rating_mean), 2))
-            .reduce((sum, dist) => sum += dist, 0);
-
-        rating_stdev = Math.pow((dev_sum / poi_count), 0.5);
-
-        return {mean: rating_mean, stdev: rating_stdev};
+        // iterate through every single poi reviewed by user
+        let totalReviews = reviewsByUser.length;
+        let totalNonOutliers = reviewsByUser.filter(review => !isOutlier(review));
+        return totalNonOutliers / totalReviews;
     } catch (err) {
         throw err; 
     }
 };
+
+const isOutlier = async (review) => {
+    let poiId = review['poiId'];
+    let rating = review['rating'];
+
+    const poiReviews = await prisma.rating.findMany({
+        where: {
+            poiId: poiId,
+            isDeleted: false,
+        },
+        select: {
+            rating: true
+        }
+    });
+    const poiRatings = poiReviews.map(review => review['rating']);
+
+    // find mean
+    let sumRating = poiRatings.reduce((sum, rating) => sum += rating, 0);
+    let numRatings = poiRatings.length;
+    let mean = sumRating / numRatings;
+
+    // find stdev
+    let sumDist = poiRatings.reducce((sum, rating) => {sum += Math.pow((rating - mean), 2)}, 0);
+    let stdev = Math.pow((sumDist / numRatings), 0.5);
+
+    let max = mean + 1.5 * stdev;
+    let min = mean - 1.5 * stdev;
+
+    return rating > max || rating < min;
+}
