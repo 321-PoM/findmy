@@ -51,15 +51,15 @@ CREATE TABLE `review` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE TABLE `friendship` (
-    `friendshipId` INTEGER NOT NULL AUTO_INCREMENT,
-    `userId1` INTEGER NOT NULL,
-    `userId2` INTEGER NOT NULL,
+CREATE TABLE `request` (
+    `requestId` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` ENUM('friend', 'purhcase', 'share', 'verify'),
+    `fromId` INTEGER NOT NULL,
+    `toId` INTEGER NOT NULL,
     `status` ENUM('requested', 'accepted', 'rejected') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`friendshipId`)
+    PRIMARY KEY (`requestId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

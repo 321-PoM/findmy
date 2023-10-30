@@ -23,8 +23,8 @@ model User {
   isDeleted        Boolean  @default(false)
   poi              poi[]
   Market           Market[]
-  friends          friendship[] @relation("user")
-  friendsOf        friendship[] @relation("friend")
+  RequestsReceived Request[] @relation("received")
+  RequestsSent     Request[] @relation("sent")   
   Reviews          Review[]
 }
 
@@ -82,19 +82,26 @@ model Review {
   isDeleted        Boolean  @default(false)
 }
 
-enum FriendshipStatus {
+enum requestType {
+  friend
+  purchase
+  share
+  verify
+}
+
+enum requestStatus {
   requested
   accepted
   rejected
 }
 
-model friendship {
-  friendshipId Int              @id
-  userId       Int
-  friendId     Int
-  user         User             @relation("user", fields: [userId], references: [id]) 
-  friend       User             @relation("friend", fields: [friendId], references: [id])
-  status       FriendshipStatus
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+model Request {
+  requestId Int           @id
+  type      requestType   
+  sender    User          @relation("received", fields: [requestId], references: [id])
+  fromId    Int   
+  toId      Int
+  recipient User          @relation("sent", fields: [toId], references: [id])
+  status    requestStatus
+  createdAt DateTime      @default(now())
 }
