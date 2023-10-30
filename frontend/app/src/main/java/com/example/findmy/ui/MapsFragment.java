@@ -11,6 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,6 +62,16 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
          */
         @Override
         public void onMapReady(@NonNull GoogleMap googleMap) {
+            try {
+                // customize map
+                boolean success = googleMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                                MapsFragment.this.requireContext(), R.raw.gmap_style
+                        )
+                );
+            } catch (Resources.NotFoundException e) {
+                Log.e(TAG, "Google Map style parsing failed");
+            }
             mMap = googleMap;
             mMap.setOnMarkerClickListener(MapsFragment.this);
             updateMapToUser(googleMap);
