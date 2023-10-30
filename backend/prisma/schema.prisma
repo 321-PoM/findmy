@@ -65,8 +65,8 @@ model Market {
 }
 
 model review {
-  userId           Int       @id @default(autoincrement())
-  poiId            Int       @id @default(autoincrement())
+  userId           Int       @id
+  poiId            Int       
   rating           Int
   description      String    @db.VarChar(255)
   reliabilityScore Int
@@ -81,8 +81,9 @@ enum FriendshipStatus {
 }
 
 model friendship {
-  userId1   Int
-  userId2   Int
-  status    FriendshipStatus
-  createdAt DateTime         @default(now())
+  friendshipId Int              @id
+  userId1      Int              
+  userId2      Int
+  status       FriendshipStatus
+  createdAt    DateTime         @default(now())
 }
