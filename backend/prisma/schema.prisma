@@ -67,14 +67,15 @@ model Market {
 }
 
 model Review {
-  reviewId         Int       @id
+  reviewId         Int      @id
   userId           Int       
   poiId            Int        
-  reviewer         User      @relation(fields: [userId], references: [id])
-  poi              poi       @relation(fields: [poiId], references: [id])
+  reviewer         User     @relation(fields: [userId], references: [id])
+  poi              poi      @relation(fields: [poiId], references: [id])
   rating           Int
-  description      String    @db.VarChar(255)
+  description      String   @db.VarChar(255)
   reliabilityScore Int
-  createdAt        DateTime  @default(now())
-  isDeleted        Boolean   @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean  @default(false)
 }
