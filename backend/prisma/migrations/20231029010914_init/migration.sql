@@ -53,8 +53,8 @@ CREATE TABLE `review` (
 
 CREATE TABLE `Friendship` (
     `friendshipId` INTEGER NOT NULL AUTO_INCREMENT,
-    `userFromId` INTEGER NOT NULL,
-    `userToId` INTEGER NOT NULL,
+    `userIdFrom` INTEGER NOT NULL,
+    `userIdTo` INTEGER NOT NULL,
     `status` ENUM('requested', 'accepted', 'rejected') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
