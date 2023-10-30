@@ -26,7 +26,7 @@ export const deleteMarket = async (marketId) => {
     });
 };
 
-export const listPois = async () => {
+export const listMarkets = async () => {
     return await prisma.market.findMany({
         where: {
             isDeleted: false
