@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
+import { getUserReliabilityScore } from './userService';
 
 const prisma = new PrismaClient();
 
@@ -17,6 +17,8 @@ export const listReviews = async (searchBy, id) => {
                 rating: true,
                 poiId: (searchBy != 'poi'),
                 userId: (searchBy != 'user'),
+                description: true,
+                reliabilityScore: true,
             },
         });
     } catch (err) {
@@ -32,18 +34,27 @@ export const getReview = async (poiId, userId) => {
         },
         include: {
             rating: true,
+            description: true,
+            reliabilityScore: true,
         },
     })
 }
 
-export const createReview = async (poiId, userId, rating) => {
-    return await prisma.review.create({
-        data: {
-            poiId: poiId,
-            userId: userId,
-            rating: rating,
-        }
-    });
+export const createReview = async (data) => {
+    try{
+        let rScore = getUserReliabilityScore(data.userId);
+        return await prisma.review.create({
+            data: {
+                poiId: data.poiId,
+                userId: data.userId,
+                rating: data.rating,
+                description: data.desc,
+                reliabilityScore: rScore,
+            }
+        });
+    } catch (err) {
+        throw err;
+    }
 };
 
 export const updateReview = async (poiId, userId, updateData) => {
