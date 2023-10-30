@@ -30,7 +30,7 @@ public class FriendsFragment extends Fragment {
 
         ArrayList<User> friendsArray = new ArrayList<>();
 
-        User testUser = new User(0, "John", "Doe", "jdoe123", "jdoe@gmail.com", 1.0, "smth.com/avatar", true);
+        User testUser = User.testUser;
         friendsArray.add(testUser);
 
         RecyclerView friendsRecycler = binding.friendsRecycler;

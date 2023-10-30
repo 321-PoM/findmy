@@ -1,6 +1,7 @@
 package com.example.findmy.ui;
 
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findmy.POI.POI;
 import com.example.findmy.R;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -23,15 +27,22 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameText = (TextView) itemView.findViewById(R.id.marketplaceListName);
-            distanceText = (TextView) itemView.findViewById(R.id.marketplaceListDistance);
+            nameText = (TextView) itemView.findViewById(R.id.myPOINameText);
+            distanceText = (TextView) itemView.findViewById(R.id.myPOIDistance);
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewDetailsButton);
         }
     }
 
+    LatLng userLocation;
     private List<MarketplaceListing> listings;
-    public MarketplaceListingAdapter(List<MarketplaceListing> listings) {
+
+    private FragmentActivity parentActivity;
+    private static final float maxDistanceToDisplay = (float) 2000.0;
+
+    public MarketplaceListingAdapter(FragmentActivity parentActivity, List<MarketplaceListing> listings, LatLng userLocation) {
         this.listings = listings;
+        this.userLocation = userLocation;
+        this.parentActivity = parentActivity;
     }
 
     @NonNull
@@ -40,7 +51,7 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View marketplaceView = layoutInflater.inflate(R.layout.marketplace_list_row, parent, false);
+        View marketplaceView = layoutInflater.inflate(R.layout.mypoi_list_row, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(marketplaceView);
         return viewHolder;
@@ -49,20 +60,39 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
     @Override
     public void onBindViewHolder(@NonNull MarketplaceListingAdapter.ViewHolder holder, int position) {
         MarketplaceListing listing = listings.get(position);
+        POI listingPOI = listing.getPOI();
 
         TextView nameText = holder.nameText;
         nameText.setText(listing.getListingName());
 
         TextView distanceText = holder.distanceText;
-        // TODO: get distance
-        distanceText.setText("100m");
+        distanceText.setText(getDistanceFromUserToPOI(listingPOI, this.userLocation));
 
-        // TODO: set button functionality
         Button button = holder.viewDetailsButton;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MarketplaceListingBottomSheet bottomSheet = new MarketplaceListingBottomSheet(listing);
+                bottomSheet.show(parentActivity.getSupportFragmentManager(), "TEST_TAG");
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return listings.size();
+    }
+
+    private String getDistanceFromUserToPOI(POI poi, LatLng userLocation) {
+        float[] results = new float[1];
+        Location.distanceBetween(userLocation.latitude, userLocation.longitude, poi.getLatitude(), poi.getLongitude(), results);
+        float distanceToPOI = results[0];
+        String distanceDisplayText;
+        if (distanceToPOI >= maxDistanceToDisplay) {
+            distanceDisplayText = "Very Far";
+        } else {
+            distanceDisplayText = String.valueOf((distanceToPOI));
+        }
+        return distanceDisplayText;
     }
 }

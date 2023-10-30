@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+
+    public static final User testUser = new User(0, "John", "Doe", "jdoe123", "jdoe@gmail.com", 1.0, "smth.com/avatar", true);
     private int id;
 
     private String surname;
