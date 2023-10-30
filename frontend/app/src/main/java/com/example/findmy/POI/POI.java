@@ -1,6 +1,8 @@
 package com.example.findmy.POI;
 
 
+import com.example.findmy.user.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +22,8 @@ public class POI implements Rateable {
 
     String name;
 
+    User owner;
+
     public enum POIType {
       washroom,
       studySpace,
@@ -27,9 +31,10 @@ public class POI implements Rateable {
       myPOI
     }
 
-    public static POI testPOI = new POI(POI.POIType.washroom, new RatingType[]{RatingType.cleanliness}, -123.128, 49.1785, "Da Bathroom");
+    public static POI testPOI = new POI(User.testUser, POI.POIType.washroom, new RatingType[]{RatingType.cleanliness}, -123.128, 49.1785, "Da Bathroom");
 
-    public POI (POIType poiType, RatingType[] supportedRatingTypes, double longitude, double latitude, String name) {
+    public POI (User owner, POIType poiType, RatingType[] supportedRatingTypes, double longitude, double latitude, String name) {
+        this.owner = owner;
         this.poiType = poiType;
 
         this.longitude = longitude;
@@ -45,14 +50,16 @@ public class POI implements Rateable {
     }
 
     public POI(POI other) {
+        this.owner = other.owner;
         this.poiType = other.poiType;
-        this.ratings = new HashMap<>(other.ratings);
+
+        this.lastTimeRetrievedUpdate = other.lastTimeRetrievedUpdate;
 
         this.longitude = other.longitude;
         this.latitude = other.latitude;
-
         this.name = other.name;
-        this.lastTimeRetrievedUpdate = other.lastTimeRetrievedUpdate;
+
+        this.ratings = new HashMap<>(other.ratings);
     }
 
     public static List<POI> retrievePOIs() {
@@ -106,4 +113,6 @@ public class POI implements Rateable {
     public String getName() {
         return this.name;
     }
+
+    public User getOwner() { return this.owner; }
 }
