@@ -64,10 +64,11 @@ model Market {
   isDeleted Boolean  @default(false)
 }
 
-model rating {
+model review {
   userId      Int       @id @default(autoincrement())
   poiId       Int       @id @default(autoincrement())
   rating      Int
+  description String    @db.VarChar(255)
   createdAt   DateTime  @default(now())
   isDeleted   Boolean   @default(false)
 }
