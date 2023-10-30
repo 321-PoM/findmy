@@ -73,3 +73,16 @@ model review {
   createdAt        DateTime  @default(now())
   isDeleted        Boolean   @default(false)
 }
+
+enum FriendshipStatus {
+  requested
+  accepted
+  rejected
+}
+
+model friendship {
+  userIdFrom Int
+  userIdTo   Int
+  status     FriendshipStatus
+  createdAt  DateTime         @default(now())
+}
