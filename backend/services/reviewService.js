@@ -3,6 +3,8 @@ import { getUserReliabilityScore } from './userService';
 
 const prisma = new PrismaClient();
 
+// I think I would prefer to list reviews of user or reviews on a poi through the user/poi module
+// BUt will keep this function here for now
 export const listReviews = async (searchBy, id) => {
     try{
         if(searchBy != 'user' || searchBy != 'poi') throw new Error("Invalid or missing input parameter")
@@ -14,6 +16,7 @@ export const listReviews = async (searchBy, id) => {
         return await prisma.review.findMany({
             where: inputParams,
             include: {
+                id: true,
                 rating: true,
                 poiId: (searchBy != 'poi'),
                 userId: (searchBy != 'user'),
@@ -26,13 +29,14 @@ export const listReviews = async (searchBy, id) => {
     }
 };
 
-export const getReview = async (poiId, userId) => {
+export const getReview = async (id) => {
     return await prisma.review.findUnique({
         where: {
-            poiId: poiId,
-            userId: userId,
+            id: id
         },
         include: {
+            userId: true,
+            poiId: true,
             rating: true,
             description: true,
             reliabilityScore: true,
@@ -40,7 +44,7 @@ export const getReview = async (poiId, userId) => {
     })
 }
 
-export const createReview = async (data) => {
+export const createReview = async (poiId, data) => {
     try{
         let rScore = getUserReliabilityScore(data.userId);
         return await prisma.review.create({
@@ -57,23 +61,20 @@ export const createReview = async (data) => {
     }
 };
 
-export const updateReview = async (poiId, userId, updateData) => {
+export const updateReview = async (id, updateData) => {
     return await prisma.review.update({
         where: { 
-            poiId: poiId,
-            userId: userId,
+            id: id,
         },
         data: updateData,
     });
 }
 
-export const deleteReview = async (poiId, userId) => {
+export const deleteReview = async (id) => {
     return await prisma.review.update({
-        where: {
-            poiId: poiId,
-            userId: userId,
-        },
-        data: {isDeleted: true},
+        where: { id: id },
+        data: { isDeleted: true },
+        select: { poiId: true },
     })
 }
 

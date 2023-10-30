@@ -4,9 +4,10 @@ import * as reviewController from '../controllers/reviewController.js';
 const router = express.Router();
 
 router.get('/reviews/:searchBy/:id', reviewController.listReviews);       // searchBy = "user" OR "poi"
-router.get('/review/:poiId/:userId', reviewController.getReview);
-router.post('/review/:poiId', reviewController.createReview);
-router.put('/review/:poiId/:userId', reviewController.updateReview);
-router.delete('/review/:poiId/:userId', reviewController.deleteReview);
+router.get('/review/:id', reviewController.getReview);
+router.post('/review', reviewController.createReview);
+router.put('/review/:id', reviewController.updateReview);
+router.put('/review/:id/rating', reviewController.updateRating);
+router.delete('/review/:id', reviewController.deleteReview);
 
 export default router;
