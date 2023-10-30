@@ -50,8 +50,8 @@ CREATE TABLE `review` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE `friendship` (
-    `userIdFrom` INTEGER NOT NULL,
-    `userIdTo` INTEGER NOT NULL,
+    `userId1` INTEGER NOT NULL,
+    `userId2` INTEGER NOT NULL,
     `status` ENUM('requested', 'accepted', 'rejected'),
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -69,5 +69,5 @@ ALTER TABLE `rating` ADD CONSTRAINT `review_userId_fkey` FOREIGN KEY (`userId`) 
 ALTER TABLE `rating` ADD CONSTRAINT `review_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `friendship` ADD CONSTRAINT `friendship_userIdFrom_fkey` FOREIGN KEY (`userIdFrom`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE `friendship` ADD CONSTRAINT `review_userIdFrom_fkey` FOREIGN KEY (`userIdTo`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `friendship` ADD CONSTRAINT `friendship_userId1_fkey` FOREIGN KEY (`userId1`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `friendship` ADD CONSTRAINT `review_userId2_fkey` FOREIGN KEY (`userId2`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

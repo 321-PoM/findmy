@@ -81,8 +81,8 @@ enum FriendshipStatus {
 }
 
 model friendship {
-  userIdFrom Int
-  userIdTo   Int
-  status     FriendshipStatus
-  createdAt  DateTime         @default(now())
+  userId1   Int
+  userId2   Int
+  status    FriendshipStatus
+  createdAt DateTime         @default(now())
 }
