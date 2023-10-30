@@ -1,10 +1,12 @@
 package com.example.findmy.POI;
 
-import androidx.annotation.NonNull;
 
-import java.util.Collection;
+import com.example.findmy.user.User;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class POI implements Rateable {
@@ -13,12 +15,28 @@ public class POI implements Rateable {
 
     private Date lastTimeRetrievedUpdate;
 
-    double longitude;
-    double latitude;
+    POIType poiType;
+
+    private double longitude;
+    private double latitude;
 
     String name;
 
-    public POI (RatingType[] supportedRatingTypes, double longitude, double latitude, String name) {
+    User owner;
+
+    public enum POIType {
+      washroom,
+      studySpace,
+      microwave,
+      myPOI
+    }
+
+    public static POI testPOI = new POI(User.testUser, POI.POIType.washroom, new RatingType[]{RatingType.cleanliness}, -123.128, 49.1785, "Da Bathroom");
+
+    public POI (User owner, POIType poiType, RatingType[] supportedRatingTypes, double longitude, double latitude, String name) {
+        this.owner = owner;
+        this.poiType = poiType;
+
         this.longitude = longitude;
         this.latitude = latitude;
         this.name = name;
@@ -32,12 +50,29 @@ public class POI implements Rateable {
     }
 
     public POI(POI other) {
-        this.ratings = new HashMap<>(other.ratings);
+        this.owner = other.owner;
+        this.poiType = other.poiType;
+
+        this.lastTimeRetrievedUpdate = other.lastTimeRetrievedUpdate;
 
         this.longitude = other.longitude;
         this.latitude = other.latitude;
-
         this.name = other.name;
+
+        this.ratings = new HashMap<>(other.ratings);
+    }
+
+    public static List<POI> retrievePOIs() {
+        ArrayList<POI> list = new ArrayList<>();
+
+        // TODO: change to call to backend api
+        list.add(POI.testPOI);
+        return list;
+    }
+
+    public static List<POI> retrievePOIsWithType(POIType type) {
+
+        return new ArrayList<>();
     }
 
     @Override
@@ -67,7 +102,17 @@ public class POI implements Rateable {
         return 0.0;
     }
 
+    public double getLatitude() { return this.latitude; }
+
+    public double getLongitude() { return this.longitude; }
+
+    public boolean submitNewToBackend() {
+        return false;
+    }
+
     public String getName() {
         return this.name;
     }
+
+    public User getOwner() { return this.owner; }
 }

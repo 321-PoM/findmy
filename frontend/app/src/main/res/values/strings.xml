@@ -28,4 +28,11 @@
     <string name="get_mapbux">Get MapBux</string>
     <string name="marketplaceDetails">Details</string>
     <string name="placeholder">Placeholder</string>
+    <string name="edit_rating">Edit Rating</string>
+    <string name="submit">Submit</string>
+    <string name="current_rating">Current Rating</string>
+    <string name="your_mypoi">Your myPOIs</string>
+    <string name="listing_price">Listing Price</string>
+    <string name="purchase">Purchase</string>
+    <string name="owner_name">Owner</string>
 </resources>

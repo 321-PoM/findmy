@@ -11,12 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.findmy.POI.POI;
-import com.example.findmy.POI.RatingType;
-import com.example.findmy.R;
 import com.example.findmy.databinding.FragmentMarketplaceBinding;
-import com.example.findmy.databinding.MarketplaceListRowBinding;
-import com.example.findmy.ui.friends.FriendsAdapter;
-import com.example.findmy.user.User;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -79,12 +75,14 @@ public class MarketplaceFragment extends Fragment {
         View root = binding.getRoot();
         ArrayList<MarketplaceListing> listingArray = new ArrayList<>();
 
-        POI testPOI = new POI(new RatingType[]{RatingType.cleanliness}, 0.0, 0.0, "bathroom");
+        POI testPOI = POI.testPOI;
         MarketplaceListing testListing = new MarketplaceListing(18, testPOI);
         listingArray.add(testListing);
 
+        // TODO: update with live location
+        LatLng currentLatLng = new LatLng(0.0, 0.0);
         RecyclerView friendsRecycler = binding.listingsRecylcer;
-        MarketplaceListingAdapter adapter = new MarketplaceListingAdapter(listingArray);
+        MarketplaceListingAdapter adapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
         friendsRecycler.setAdapter(adapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));

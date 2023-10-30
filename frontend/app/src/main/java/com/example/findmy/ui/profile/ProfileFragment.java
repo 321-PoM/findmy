@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,9 +28,6 @@ public class ProfileFragment extends Fragment {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textNotifications;
-        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         Button signOutButton = binding.profileSignOutButton;
         signOutButton.setOnClickListener(new View.OnClickListener() {
