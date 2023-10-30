@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoutes.js';
 import poiRoutes  from './routes/poiRoutes.js';
 import marketRoutes from './routes/marketRoutes.js';
 import reviewRoutes from '/routes/reviewRoutes.js';
+import friendRoutes from './routes/friendRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -15,12 +16,7 @@ app.use(userRoutes);
 app.use(poiRoutes);
 app.use(marketRoutes);
 app.use(reviewRoutes);
-
-// // Friendlist
-// app.get(   "/user/friend", async(req, res) => {await friend['get'](req, res)});
-// app.post(  "/user/friend", async(req, res) => {await friend['post'](req, res)});
-// app.put(   "/user/friend", async(req, res) => {await friend['put'](req, res)});
-// app.delete("/user/friend", async(req, res) => {await friend['delete'](req, res)});
+app.use(friendRoutes);
 
 // Payment
 
