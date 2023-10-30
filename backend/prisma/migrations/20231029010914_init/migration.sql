@@ -42,6 +42,7 @@ CREATE TABLE `review` (
     `poiId` INTEGER NOT NULL AUTO_INCREMENT,
     `rating` INTEGER NOT NULL,
     `description` VARCHAR(255) NOT NULL,
+    `reliabilityScore` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `isDeleted` BOOLEAN NOT NULL DEFAULT false,
 
