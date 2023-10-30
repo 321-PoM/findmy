@@ -70,6 +70,14 @@ export const updateReview = async (id, updateData) => {
     });
 }
 
+export const updateRating = async (id, newRating) => {
+    return await prisma.review.update({
+        where: { id: id },
+        data: { rating: newRating}, 
+        select: { poiId: true },
+    });
+}
+
 export const deleteReview = async (id) => {
     return await prisma.review.update({
         where: { id: id },

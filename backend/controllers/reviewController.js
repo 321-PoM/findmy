@@ -32,17 +32,27 @@ export const createReview = async (req, res) => {
     }
 };
 
+// Please do not update rating with this method -> use the more specific updateRating
 export const updateReview = async (req, res) => {
     try{
         const review = await reviewService.updateReview(req.params.id, req.body.data);
-        const newRating = await calcPoiRating(req.body.poiId);
-        const update = await updatePoi(req.params.poiId, {rating: newRating});
         res.status(200).json(review);
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error"});
     }
 }
   
+export const updateRating = async (req, res) => {
+    try{
+        const newRating = await reviewService.updateRating(req.params.id, req.body.data);
+        const newPoiRating = await calcPoiRating(newRating.poiId);
+        const update = await updatePoi(newRating.poiId, {rating: newPoiRating});
+        res.status(200).json(newRating);
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error"});
+    }
+}
+
 export const deleteReview = async (req, res) => {
     try{
         const del = await reviewService.deleteReview(req.params.id);
