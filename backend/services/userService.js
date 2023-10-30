@@ -55,14 +55,17 @@ export const getUserReliabilityScore = async (userId) => {
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
-        let totalNonOutliers = reviewsByUser.filter(review => !isOutlier(review));
-        return totalNonOutliers / totalReviews;
+        let sumDist = reviewsByUser
+                        .map(review => distFromSafeZone(review))
+                        .reduce((sum, dist) => sum += dist, 0);
+                        
+        return 100 - sumDist / totalReviews;
     } catch (err) {
         throw err; 
     }
 };
 
-const isOutlier = async (review) => {
+const distFromSafeZone = async (review) => {
     let poiId = review['poiId'];
     let rating = review['rating'];
 
@@ -83,11 +86,13 @@ const isOutlier = async (review) => {
     let mean = sumRating / numRatings;
 
     // find stdev
-    let sumDist = poiRatings.reducce((sum, rating) => {sum += Math.pow((rating - mean), 2)}, 0);
+    let sumDist = poiRatings.reducce((sum, rating) => sum += Math.pow((rating - mean), 2), 0);
     let stdev = Math.pow((sumDist / numRatings), 0.5);
 
     let max = mean + 1.5 * stdev;
     let min = mean - 1.5 * stdev;
 
-    return rating > max || rating < min;
+    if(rating > max) return rating - max;
+    else if(rating < min) return min - rating;
+    return 0;
 }
