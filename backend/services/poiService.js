@@ -54,20 +54,19 @@ export const calcPoiRating = async (poiId) => {
                 poiId: poiId,
             },
             include: {
-                userId: true,
                 rating: true,
+                reliabilityScore: true,
             }
         });
         
         // Calculate new weighted rating
-        let sumWeight = await getUserReliabilityScore(userId)
-        let weightedSumRating = rating * sumWeight;
+        let totalWeight = 0;
+        let weightedSum = 0;
         for(const rating of allRatings){
-            let weight = await getUserReliabilityScore(rating['userId']);
-            sumWeight += weight;
-            weightedSumRating += rating['rating'] * weight;
+            totalWeight += rating['reliabilityScore'];
+            weightedSum += rating['rating'] * rating['reliabilityScore'];
         }
-        return weightedSumRating / sumWeight;
+        return weightedSum / totalWeight;
     } catch (err) {
         throw err;
     }
