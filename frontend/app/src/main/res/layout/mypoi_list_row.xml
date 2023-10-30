@@ -8,14 +8,14 @@
     android:paddingBottom="5dp" >
 
     <TextView
-        android:id="@+id/marketplaceListName"
+        android:id="@+id/myPOINameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/marketplaceListDistance"
+        android:id="@+id/myPOIDistance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

@@ -23,8 +23,8 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameText = (TextView) itemView.findViewById(R.id.marketplaceListName);
-            distanceText = (TextView) itemView.findViewById(R.id.marketplaceListDistance);
+            nameText = (TextView) itemView.findViewById(R.id.myPOINameText);
+            distanceText = (TextView) itemView.findViewById(R.id.myPOIDistance);
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewDetailsButton);
         }
     }
@@ -40,7 +40,7 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View marketplaceView = layoutInflater.inflate(R.layout.marketplace_list_row, parent, false);
+        View marketplaceView = layoutInflater.inflate(R.layout.mypoi_list_row, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(marketplaceView);
         return viewHolder;
