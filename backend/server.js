@@ -5,6 +5,7 @@ import fs         from 'fs';
 import userRoutes from './routes/userRoutes.js';
 import poiRoutes  from './routes/poiRoutes.js';
 import marketRoutes from './routes/marketRoutes.js';
+import reviewRoutes from '/routes/reviewRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(userRoutes);
 app.use(poiRoutes);
 app.use(marketRoutes);
+app.use(reviewRoutes);
 
 // // Friendlist
 // app.get(   "/user/friend", async(req, res) => {await friend['get'](req, res)});

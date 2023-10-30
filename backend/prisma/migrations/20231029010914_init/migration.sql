@@ -37,8 +37,24 @@ CREATE TABLE `poi` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+CREATE TABLE `review` (
+    `userId` INTEGER NOT NULL AUTO_INCREMENT,
+    `poiId` INTEGER NOT NULL AUTO_INCREMENT,
+    `rating` INTEGER NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `reliabilityScore` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `isDeleted` BOOLEAN NOT NULL DEFAULT false,
+
+    PRIMARY KEY (`poiId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Image` ADD CONSTRAINT `Image_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `poi` ADD CONSTRAINT `poi_ownerId_fkey` FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `rating` ADD CONSTRAINT `review_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `rating` ADD CONSTRAINT `review_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

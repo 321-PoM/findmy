@@ -63,3 +63,13 @@ model Market {
   isActive  Boolean  @default(true)
   isDeleted Boolean  @default(false)
 }
+
+model review {
+  userId           Int       @id @default(autoincrement())
+  poiId            Int       @id @default(autoincrement())
+  rating           Int
+  description      String    @db.VarChar(255)
+  reliabilityScore Int
+  createdAt        DateTime  @default(now())
+  isDeleted        Boolean   @default(false)
+}

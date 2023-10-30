@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { getUserReliabilityScore } from './userService';
 
 const prisma = new PrismaClient();
 
@@ -45,3 +46,28 @@ export const listPois = async () => {
         },
     });
 };
+
+export const calcPoiRating = async (poiId) => {
+    try{
+        const allRatings = await prisma.review.findMany({
+            where: {
+                poiId: poiId,
+            },
+            include: {
+                rating: true,
+                reliabilityScore: true,
+            }
+        });
+        
+        // Calculate new weighted rating
+        let totalWeight = 0;
+        let weightedSum = 0;
+        for(const rating of allRatings){
+            totalWeight += rating['reliabilityScore'];
+            weightedSum += rating['rating'] * rating['reliabilityScore'];
+        }
+        return weightedSum / totalWeight;
+    } catch (err) {
+        throw err;
+    }
+}
