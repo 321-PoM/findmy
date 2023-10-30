@@ -12,19 +12,17 @@ datasource db {
 //| Models |//
 //----------//
 model User {
-  id               Int      @id @default(autoincrement())
-  avatar           String   @db.VarChar(255)
-  biography        String   @db.VarChar(255)
+  id               Int          @id @default(autoincrement())
+  avatar           String       @db.VarChar(255)
+  biography        String       @db.VarChar(255)
   reliabilityScore Int
-  premiumStatus    Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  isActive         Boolean  @default(true)
-  isDeleted        Boolean  @default(false)
+  premiumStatus    Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  isActive         Boolean      @default(true)
+  isDeleted        Boolean      @default(false)
   poi              poi[]
-  Market           Market[]
-  RequestsReceived Request[] @relation("received")
-  RequestsSent     Request[] @relation("sent")   
+  Market           Market[] 
   Reviews          Review[]
 }
 
@@ -82,26 +80,16 @@ model Review {
   isDeleted        Boolean  @default(false)
 }
 
-enum requestType {
-  friend
-  purchase
-  share
-  verify
-}
-
-enum requestStatus {
+enum friendshipStatus {
   requested
   accepted
   rejected
 }
 
-model Request {
-  requestId Int           @id
-  type      requestType   
-  sender    User          @relation("received", fields: [requestId], references: [id])
-  fromId    Int   
-  toId      Int
-  recipient User          @relation("sent", fields: [toId], references: [id])
-  status    requestStatus
-  createdAt DateTime      @default(now())
+model Friendship {
+  friendshipId Int              @id
+  userFromId   Int   
+  userToId     Int
+  status       friendshipStatus
+  createdAt    DateTime         @default(now())
 }
