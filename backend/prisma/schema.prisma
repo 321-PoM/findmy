@@ -23,6 +23,8 @@ model User {
   isDeleted        Boolean  @default(false)
   poi              poi[]
   Market           Market[]
+  friends          friendship[] @relation("user")
+  friendsOf        friendship[] @relation("friend")
 }
 
 model Image {
@@ -82,8 +84,11 @@ enum FriendshipStatus {
 
 model friendship {
   friendshipId Int              @id
-  userId1      Int              
-  userId2      Int
+  userId       Int
+  friendId     Int
+  user         User             @relation("user", fields: [userId], references: [id]) 
+  friend       User             @relation("friend", fields: [friendId], references: [id])
   status       FriendshipStatus
   createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 }
