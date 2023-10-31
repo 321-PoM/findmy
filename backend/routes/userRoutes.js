@@ -1,15 +1,11 @@
 import express from "express";
 import * as userController from "../controllers/userController.js";
-import * as poiController from "../controllers/poiController.js";
 
 const router = express.Router();
 
 router.get("/users", userController.listUsers); // It's user's'.
 router.get("/user/:id", userController.getUser);
-router.get(
-    "/userPoiWithMarketListing/:userID",
-    poiController.getUserPoiWithMarketListing
-);
+router.get("/userPoiWithMarketListing/:userID", userController.getUserPoiWithMarketListing);
 router.post("/user", userController.createUser);
 router.put("/user/:id", userController.updateUser);
 router.put("/user/:id/updateUserBux", userController.updateUserBux);
