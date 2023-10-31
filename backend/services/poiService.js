@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { isPointWithinRadius } from 'geolib';
-import { updateUserBux } from './userService';
+import { updateUserBux } from './userService.js';
 
 const prisma = new PrismaClient();
 
