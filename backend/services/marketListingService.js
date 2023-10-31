@@ -70,7 +70,7 @@ export const deleteListing = async (id) => {
     });
 };
 
-export const getMarketListingByUser = async (userID) => {
+export const getMarketListingByUser = async (userId) => {
     const uid = parseInt(userId);
 
     if (isNaN(uid)) {
