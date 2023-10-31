@@ -1,4 +1,6 @@
 import * as userService from '../services/userService.js';
+import * as poiService from '../services/poiService.js';
+import * as marketListingService from '../services/marketListingService.js';
 
 export const getUser = async (req, res) => {
     try {
@@ -58,7 +60,20 @@ export const getReliabilityScore = async (req, res) => {
     try {
         const score = await userService.getUserReliabilityScore(req.params.userId);
         res.status(200).json({ reliabilityScore: score });
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getUserPoiWithMarketListing = async (req, res) => {
+    try {
+        const pois = await poiService.getPoiByUser(req.params.id);
+        const mlistings = await marketListingService.getMarketListingByUser(req.params.id);
+        res.status(200).json({
+            pois: pois,
+            marketListings: mlistings
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
