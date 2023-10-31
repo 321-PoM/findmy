@@ -7,8 +7,8 @@ router.get('/users', userController.listUsers);  // It's user's'.
 router.get('/user/:id', userController.getUser);
 router.post('/user', userController.createUser);
 router.put('/user/:id', userController.updateUser);
+router.put('/user/:id/updateUserBux', userController.updateUserBux);
 router.delete('/user/:id', userController.deleteUser);
 router.get('/rscore/:userId', userController.getReliabilityScore);
-
 
 export default router;
