@@ -4,7 +4,8 @@ import https      from 'https';
 import fs         from 'fs';
 import userRoutes from './routes/userRoutes.js';
 import poiRoutes  from './routes/poiRoutes.js';
-import marketRoutes from './routes/marketRoutes.js';
+import marketListingRoutes from './routes/marketListingRoutes.js';
+import transactionRoutes from './routes/transactionRoute.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import friendRoutes from './routes/friendRoutes.js';
 import dotenv from 'dotenv';
@@ -17,7 +18,8 @@ app.use(express.json());
 // API Routers
 app.use(userRoutes);
 app.use(poiRoutes);
-app.use(marketRoutes);
+app.use(marketListingRoutes);
+app.use(transactionRoutes);
 app.use(reviewRoutes);
 app.use(friendRoutes);
 
