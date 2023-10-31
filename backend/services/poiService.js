@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { isPointWithinRadius } from 'geolib';
+import { updateUserBux } from './userService';
 
 const prisma = new PrismaClient();
 
@@ -45,6 +46,35 @@ export const reportPoi = async (poiId) => {
         return numReports / numReview;
     } catch (err) {
         throw err;
+    }
+}
+
+export const transferPoi = async (transactionId) => {
+    try{
+        const transaction = prisma.Transaction.findUnique({
+            where: { id: transactionId },
+            include: { 
+                buyerId: true,
+                listingId: true,
+            }
+        });
+
+        const listedPrice = prisma.marketListing.findUnique({
+            where: { id: transaction.listingId },
+            include: { price: true },
+        });
+
+        const buyerWallet = prisma.User.findUnique({
+            where: { id: transaction.buyerId },
+            include: { mapBux: true },
+        });
+
+        if(buyerWallet.mapBux < listedPrice) throw new Error("If you're broke just say that");
+
+        const updateBux = await updateUserBux(transaction.buyerId, false, listedPrice.price);
+        return updateBux;
+    } catch (err) {
+        throw new err;
     }
 }
 
