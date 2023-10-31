@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,15 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
     private View.OnClickListener submitRatingListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // TODO: call backend handler
+        }
+    };
+
+    private View.OnClickListener reportButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(requireContext(), "Thank you for reporting", Toast.LENGTH_SHORT)
+                    .show();
             // TODO: call backend handler
         }
     };
@@ -45,6 +55,9 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
         Button submitRatingButton = binding.ratingSubmitButton;
         submitRatingButton.setOnClickListener(submitRatingListener);
+
+        Button reportPOIButton = binding.reportButton;
+        reportPOIButton.setOnClickListener(reportButtonListener);
 
         View root = binding.getRoot();
         return root;
