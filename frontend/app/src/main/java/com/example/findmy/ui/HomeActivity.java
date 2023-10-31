@@ -19,7 +19,7 @@ public class HomeActivity extends BaseActivity {
 
     private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
-    NavController navController;
+    public NavController navController;
     private AppBarConfiguration appBarConfiguration;
 
     @Override
@@ -34,18 +34,20 @@ public class HomeActivity extends BaseActivity {
         Toolbar mainToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mainToolbar);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView bottomNavView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_map ,R.id.navigation_friends, R.id.navigation_profile)
-                .build();
-
+//                R.id.navigation_home,
+                R.id.navigation_map ,
+                R.id.navigation_friends,
+                R.id.navigation_profile
+        ).build();
 
         NavHostFragment navHostFragment = (NavHostFragment) manager.findFragmentById(R.id.nav_host_fragment_activity_home);
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(bottomNavView, navController);
 
     }
 

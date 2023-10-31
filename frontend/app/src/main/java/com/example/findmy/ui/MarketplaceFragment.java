@@ -81,11 +81,11 @@ public class MarketplaceFragment extends Fragment {
 
         // TODO: update with live location
         LatLng currentLatLng = new LatLng(0.0, 0.0);
-        RecyclerView friendsRecycler = binding.listingsRecylcer;
+        RecyclerView listingsRecylcer = binding.listingsRecylcer;
         MarketplaceListingAdapter adapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
-        friendsRecycler.setAdapter(adapter);
-        friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        listingsRecylcer.setAdapter(adapter);
+        listingsRecylcer.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return root;
     }

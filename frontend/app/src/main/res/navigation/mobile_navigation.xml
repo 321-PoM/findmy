@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_map">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.example.findmy.ui.MapsFragment"
+        android:name="com.example.findmy.ui.map.MapsFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_maps" >
         <action
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/navigation_add_poi"
-        android:name="com.example.findmy.ui.AddPOIFragment"
+        android:name="com.example.findmy.ui.map.AddPOIFragment"
         android:label="@string/title_add_poi"
         tools:layout="@layout/fragment_add_p_o_i" />
 </navigation>

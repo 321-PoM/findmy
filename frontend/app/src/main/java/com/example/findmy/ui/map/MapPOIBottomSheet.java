@@ -1,4 +1,4 @@
-package com.example.findmy.ui;
+package com.example.findmy.ui.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import com.example.findmy.POI.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class POIBottomSheet extends BottomSheetDialogFragment {
+public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
     PoiBottomSheetBinding binding;
     private final POI poi;
@@ -27,7 +27,7 @@ public class POIBottomSheet extends BottomSheetDialogFragment {
         }
     };
 
-    public POIBottomSheet(POI poi) {
+    public MapPOIBottomSheet(POI poi) {
         this.poi = poi;
     }
 

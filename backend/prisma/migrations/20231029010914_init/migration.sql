@@ -37,7 +37,7 @@ CREATE TABLE `poi` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE TABLE `review` (
+CREATE TABLE `Review` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL
     `poiId` INTEGER NOT NULL
