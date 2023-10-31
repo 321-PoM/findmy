@@ -39,7 +39,7 @@ export const reportPoi = async (req, res) => {
   }
 }
 
-export const transactPoi = async (req, res) => {
+export const transferPoi = async (req, res) => {
   try{
     const transaction = await poiService.transactPoi(req.params.transactionId);
     res.status(200).json(transaction);

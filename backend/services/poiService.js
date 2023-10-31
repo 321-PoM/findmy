@@ -49,7 +49,7 @@ export const reportPoi = async (poiId) => {
     }
 }
 
-export const transactPoi = async (transactionId) => {
+export const transferPoi = async (transactionId) => {
     try{
         const transaction = prisma.Transaction.findUnique({
             where: { id: transactionId },
