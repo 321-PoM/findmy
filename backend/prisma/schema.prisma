@@ -9,6 +9,9 @@ datasource db {
 
 model User {
   id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  email            String   @db.VarChar(255)
+  mapbuxBalance    Int 
   avatar           String   @db.VarChar(255)
   biography        String   @db.VarChar(255)
   reliabilityScore Int
