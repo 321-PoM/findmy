@@ -1,4 +1,4 @@
-package com.example.findmy.ui;
+package com.example.findmy.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +26,7 @@ import android.widget.Spinner;
 
 import com.example.findmy.POI.POI;
 import com.example.findmy.R;
+import com.example.findmy.ui.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,7 +50,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     Spinner filterSpinner;
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
          * Manipulates the map once available.
@@ -234,9 +235,9 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         // TODO: testPOI
-        POIBottomSheet poiBottomSheet = new POIBottomSheet(POI.testPOI);
+        MapPOIBottomSheet mapPoiBottomSheet = new MapPOIBottomSheet(POI.testPOI);
 
-        poiBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
+        mapPoiBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
         return true;
     }
 }

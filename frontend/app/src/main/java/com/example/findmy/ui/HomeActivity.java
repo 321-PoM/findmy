@@ -19,7 +19,7 @@ public class HomeActivity extends BaseActivity {
 
     private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
-    NavController navController;
+    public NavController navController;
     private AppBarConfiguration appBarConfiguration;
 
     @Override

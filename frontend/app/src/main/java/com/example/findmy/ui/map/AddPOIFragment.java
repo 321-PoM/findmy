@@ -1,4 +1,4 @@
-package com.example.findmy.ui;
+package com.example.findmy.ui.map;
 
 import android.os.Bundle;
 
