@@ -12,7 +12,7 @@ export const createPoi = async (poiData) => {
 export const getPoi = async (poiId) => {
     return await prisma.poi.findUnique({
         where: {
-            id: poiId,
+            id: Number(poiId),
         },
         include: {
             image: true,
@@ -23,7 +23,7 @@ export const getPoi = async (poiId) => {
 
 export const updatePoi = async (poiId, updateData) => {
     return await prisma.poi.update({
-        where: { id: poiId },
+        where: { id: Number(poiId) },
         data: updateData,
     });
 };
@@ -31,7 +31,7 @@ export const updatePoi = async (poiId, updateData) => {
 export const reportPoi = async (poiId) => {
     try{
         const numReports = await prisma.poi.update({
-            where: { poiId: poiId },
+            where: { poiId: Number(poiId) },
             data: { reports: { increment: 1 }},
             include: { 
                 id: true,
@@ -138,6 +138,25 @@ export const calcPoiRating = async (poiId) => {
         return weightedSum / totalWeight;
     } catch (err) {
         throw err;
+    }
+}
+
+export const getPoiByUser = async (userID) => {
+    const uid = parseInt(userId);
+
+    if (isNaN(uid)) {
+        return res.status(400).json({ message: "Error: getUser | user ID is not int." });
+    }
+
+    try {
+        const allPois = await prisma.poi.findMany({
+            where: {
+                userId: userID,
+            },
+        });
+        return allPois
+    } catch (err) {
+        return err;
     }
 }
 

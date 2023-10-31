@@ -21,3 +21,18 @@ export const update = async (id, data) => {
 export const deleteListing = async (id) => {
     return prisma.marketListing.delete({ where: { id: Number(id) } });
 };
+
+export const getMarketListingByUser = async (userID) => {
+    const uid = parseInt(userId);
+
+    if (isNaN(uid)) {
+        return res.status(400).json({ message: "Error: getUser | user ID is not int." });
+    }
+
+    return await prisma.poi.findMany({
+        where: {
+            isDeleted: false,
+            ownerId: uid,
+        },
+    });
+};
