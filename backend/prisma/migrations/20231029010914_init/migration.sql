@@ -28,10 +28,11 @@ CREATE TABLE `poi` (
     `latitude` VARCHAR(31) NOT NULL,
     `longitudes` VARCHAR(31) NOT NULL,
     `category` VARCHAR(255) NOT NULL,
-    `status` ENUM('unlisted', 'verfied', 'private', 'reported') NOT NULL,
+    `status` ENUM('unlisted', 'verfied', 'private') NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `ownerId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,
+    `reports` INTEGER NOT NULL,
     `isDeleted` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`id`)
