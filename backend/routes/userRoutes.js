@@ -1,5 +1,6 @@
 import express from "express";
 import * as userController from "../controllers/userController.js";
+import * as poiController from "../controllers/poiController.js";
 
 const router = express.Router();
 
