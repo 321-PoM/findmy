@@ -18,6 +18,8 @@ model User {
   isActive         Boolean  @default(true)
   isDeleted        Boolean  @default(false)
   poi              poi[]
+  Market           Market[]
+  Review           Review[]
 }
 
 model Image {
@@ -41,6 +43,7 @@ model poi {
   isDeleted   Boolean   @default(false)
   image       Image[]
   owner       User      @relation(fields: [ownerId], references: [id])
+  Review      Review[]
 
   @@index([ownerId], map: "poi_ownerId_fkey")
 }
@@ -49,4 +52,44 @@ enum PoiStatus {
   unlisted
   verfied
   private
+}
+
+model Market {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  price     Float
+  seller    User     @relation(fields: [sellerId], references: [id])
+  sellerId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive  Boolean  @default(true)
+  isDeleted Boolean  @default(false)
+}
+
+model Review {
+  reviewId         Int      @id
+  userId           Int
+  poiId            Int
+  reviewer         User     @relation(fields: [userId], references: [id])
+  poi              poi      @relation(fields: [poiId], references: [id])
+  rating           Int
+  description      String   @db.VarChar(255)
+  reliabilityScore Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean  @default(false)
+}
+
+enum friendshipStatus {
+  requested
+  accepted
+  rejected
+}
+
+model Friendship {
+  friendshipId Int              @id
+  userIdFrom   Int
+  userIdTo     Int
+  status       friendshipStatus @default(requested)
+  createdAt    DateTime         @default(now())
 }
