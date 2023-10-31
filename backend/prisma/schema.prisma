@@ -12,17 +12,17 @@ datasource db {
 //| Models |//
 //----------//
 model User {
-  id               Int      @id @default(autoincrement())
-  avatar           String   @db.VarChar(255)
-  biography        String   @db.VarChar(255)
+  id               Int          @id @default(autoincrement())
+  avatar           String       @db.VarChar(255)
+  biography        String       @db.VarChar(255)
   reliabilityScore Int
-  premiumStatus    Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  isActive         Boolean  @default(true)
-  isDeleted        Boolean  @default(false)
+  premiumStatus    Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  isActive         Boolean      @default(true)
+  isDeleted        Boolean      @default(false)
   poi              poi[]
-  Market           Market[]
+  Market           Market[] 
   Reviews          Review[]
 }
 
@@ -78,4 +78,18 @@ model Review {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   isDeleted        Boolean  @default(false)
+}
+
+enum friendshipStatus {
+  requested
+  accepted
+  rejected
+}
+
+model Friendship {
+  friendshipId Int              @id
+  userIdFrom   Int   
+  userIdTo     Int
+  status       friendshipStatus @default(requested)
+  createdAt    DateTime         @default(now())
 }

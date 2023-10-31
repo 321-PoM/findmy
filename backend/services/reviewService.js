@@ -13,7 +13,7 @@ export const listReviews = async (searchBy, id) => {
             {isDeleted: false, userId: id} : 
             {isDeleted: false, poiId: id};
 
-        return await prisma.review.findMany({
+        return await prisma.Review.findMany({
             where: inputParams,
             include: {
                 id: true,
@@ -30,7 +30,7 @@ export const listReviews = async (searchBy, id) => {
 };
 
 export const getReview = async (id) => {
-    return await prisma.review.findUnique({
+    return await prisma.Review.findUnique({
         where: {
             id: id
         },
@@ -47,7 +47,7 @@ export const getReview = async (id) => {
 export const createReview = async (poiId, data) => {
     try{
         let rScore = getUserReliabilityScore(data.userId);
-        return await prisma.review.create({
+        return await prisma.Review.create({
             data: {
                 poiId: data.poiId,
                 userId: data.userId,
@@ -62,7 +62,7 @@ export const createReview = async (poiId, data) => {
 };
 
 export const updateReview = async (id, updateData) => {
-    return await prisma.review.update({
+    return await prisma.Review.update({
         where: { 
             id: id,
         },
@@ -71,7 +71,7 @@ export const updateReview = async (id, updateData) => {
 }
 
 export const updateRating = async (id, newRating) => {
-    return await prisma.review.update({
+    return await prisma.Review.update({
         where: { id: id },
         data: { rating: newRating}, 
         select: { poiId: true },
@@ -79,7 +79,7 @@ export const updateRating = async (id, newRating) => {
 }
 
 export const deleteReview = async (id) => {
-    return await prisma.review.update({
+    return await prisma.Review.update({
         where: { id: id },
         data: { isDeleted: true },
         select: { poiId: true },
