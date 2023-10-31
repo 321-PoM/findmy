@@ -83,6 +83,8 @@ public class MainActivity extends BaseActivity {
         // goto HomeActivity
         Log.d(TAG, "Logged in!");
 
+        Log.d(TAG, "signInResult id: " + account.getId());
+
         Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
         homeIntent.putExtra("ACCOUNT", account);
         startActivity(homeIntent);
