@@ -5,8 +5,11 @@ import fs         from 'fs';
 import userRoutes from './routes/userRoutes.js';
 import poiRoutes  from './routes/poiRoutes.js';
 import marketRoutes from './routes/marketRoutes.js';
-import reviewRoutes from '/routes/reviewRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 import friendRoutes from './routes/friendRoutes.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -23,8 +26,8 @@ app.use(friendRoutes);
 var key_cert_path = process.env.KEY_CERT_PATH
 
 var server_opt = {
-    key: fs.readFileSync(key_cert_path + '/privkey.pem'),
-    cert: fs.readFileSync(key_cert_path + '/fullchain.pem')
+    key: fs.readFileSync(process.env.KEY_PATH),
+    cert: fs.readFileSync(process.env.CERT_PATH)
 };
 
 var ports = {
