@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { isPointWithinRadius } from 'geolib';
-import { getUserReliabilityScore } from './userService.js';
 
 const prisma = new PrismaClient();
 
@@ -28,6 +27,26 @@ export const updatePoi = async (poiId, updateData) => {
         data: updateData,
     });
 };
+
+export const reportPoi = async (poiId) => {
+    try{
+        const numReports = await prisma.poi.update({
+            where: { poiId: poiId },
+            data: { reports: { increment: 1 }},
+            include: { 
+                id: true,
+                reports: true,
+            },
+        });
+    
+        const numReview = prisma.Review.count({
+            where: { poiId: numReports['id'] }
+        });
+        return numReports / numReview;
+    } catch (err) {
+        throw err;
+    }
+}
 
 export const deletePoi = async (poiId) => {
     return await prisma.poi.update({
@@ -68,7 +87,6 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
     })
 
     return bboxPois.filter(poi => isPointWithinRadius({latitude: currLat, longitude: currLong}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
-
 }
 
 function getBoundingBox(lat, lon, distance) {
