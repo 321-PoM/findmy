@@ -1,7 +1,9 @@
 package com.example.findmy.POI;
 
 
+import com.example.findmy.model.Review;
 import com.example.findmy.user.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,12 +19,27 @@ public class POI implements Rateable {
 
     POIType poiType;
 
+    @SerializedName("longitudes")
     private double longitude;
+
+    @SerializedName("latitude")
     private double latitude;
 
     String name;
 
+    @SerializedName("owner")
     User owner;
+
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("description")
+    String description;
+
+    // Image
+
+    @SerializedName("Reviews")
+    Review[] reviews;
 
     public enum POIType {
       washroom,
