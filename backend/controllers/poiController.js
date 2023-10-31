@@ -39,6 +39,15 @@ export const reportPoi = async (req, res) => {
   }
 }
 
+export const transactPoi = async (req, res) => {
+  try{
+    const transaction = await poiService.transactPoi(req.params.transactionId);
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const deletePoi = async (req, res) => {
   try {
     await poiService.deletePoi(req.params.id);
