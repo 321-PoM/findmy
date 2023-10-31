@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,8 +26,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.POI;
 import com.example.findmy.R;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,12 +43,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
     private LocationManager locationManager;
 
     private FloatingActionButton newPOIButton;
+
+    private FindMyService findMyService;
 
     GoogleMap mMap = null;
 
@@ -88,6 +98,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
         getLocationPermissions();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -188,38 +199,32 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         mMap.clear();
     }
 
-    private void updateMapPins(String type) {
+    private void updateMapPins(String category) {
         // TODO: Complete with backend
         if (mMap == null) { return; }
         clearMapPins();
-        ArrayList<POI> filteredPOIs;
-        POI.POIType filter;
-        switch (type) {
-            case "Washroom":
-                filter = POI.POIType.washroom;
-                break;
-            case "Study Space":
-                filter = POI.POIType.studySpace;
-                break;
-            case "Microwave":
-                filter = POI.POIType.microwave;
-                break;
-            case "myPOIs":
-                filter = POI.POIType.myPOI;
-                break;
-            default: // All
-                filter = null;
-                break;
-        }
-        if (filter != null) {
-            filteredPOIs = (ArrayList<POI>) POI.retrievePOIsWithType(filter);
-        } else {
-            filteredPOIs = (ArrayList<POI>) POI.retrievePOIs();
-        }
+        // TODO - lat, lon, and distance, are stubs, please extract it from current location
+        double lon = 10;
+        double lat = 10;
+        int distance = 10;
+        Call<POI[]> callFilteredPOIs = findMyService.getFilteredPOIs(lon, lat, category, distance);
 
-        for (POI poi : filteredPOIs) {
-            placePOI(mMap, poi);
-        }
+        callFilteredPOIs.enqueue(new Callback<POI[]>() {
+            @Override
+            public void onResponse(Call<POI[]> call, Response<POI[]> response) {
+                POI[] filteredPOIs = response.body();
+                for (POI poi : filteredPOIs) {
+                    placePOI(mMap, poi);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<POI[]> call, Throwable t) {
+                //TODO - do something
+            }
+        });
+
+
     }
 
     private void placePOI(GoogleMap gMap, POI poi) {

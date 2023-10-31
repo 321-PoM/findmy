@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -11,6 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.findmy.R;
 import com.example.findmy.databinding.ActivityHomeBinding;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends BaseActivity {
@@ -21,6 +23,7 @@ public class HomeActivity extends BaseActivity {
     FragmentManager manager =  getSupportFragmentManager();
     public NavController navController;
     private AppBarConfiguration appBarConfiguration;
+    private FindMyServiceViewModel findMyServiceViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class HomeActivity extends BaseActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavView, navController);
 
+        findMyServiceViewModel = new ViewModelProvider(this).get(FindMyServiceViewModel.class);
+        findMyServiceViewModel.initFindMyService();
     }
 
     @Override
