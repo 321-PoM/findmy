@@ -27,6 +27,15 @@ export const updateUser = async (req, res) => {
     }
 };
 
+export const updateUserBux = async (req, res) => {
+    try {
+        const bux = await userService.updateUserBux(req.params.id, req.body.polarity, req.body.amount);
+        res.status(200).json(bux);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const deleteUser = async (req, res) => {
     try {
         await userService.deleteUser(req.params.id);
