@@ -39,4 +39,6 @@
     <string name="current_listing_price">Current Listing Price</string>
     <string name="list_on_marketplace">List On Marketplace</string>
     <string name="your_user">Username</string>
+    <string name="add_friend_field">Add a friend</string>
+    <string name="add_friend_button_text">Add</string>
 </resources>
