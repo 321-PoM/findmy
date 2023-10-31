@@ -59,7 +59,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/myPOIRecycler"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@+id/profile_sign_out_button"
@@ -76,7 +76,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/your_mypoi"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintStart_toStartOf="@+id/myPOIRecycler"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

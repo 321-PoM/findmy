@@ -35,4 +35,7 @@
     <string name="listing_price">Listing Price</string>
     <string name="purchase">Purchase</string>
     <string name="owner_name">Owner</string>
+    <string name="unlist">Unlist</string>
+    <string name="current_listing_price">Current Listing Price</string>
+    <string name="list_on_marketplace">List On Marketplace</string>
 </resources>
