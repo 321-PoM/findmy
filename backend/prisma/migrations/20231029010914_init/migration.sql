@@ -51,6 +51,16 @@ CREATE TABLE `review` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+CREATE TABLE `Friendship` (
+    `friendshipId` INTEGER NOT NULL AUTO_INCREMENT,
+    `userIdFrom` INTEGER NOT NULL,
+    `userIdTo` INTEGER NOT NULL,
+    `status` ENUM('requested', 'accepted', 'rejected') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`friendshipId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Image` ADD CONSTRAINT `Image_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -58,5 +68,5 @@ ALTER TABLE `Image` ADD CONSTRAINT `Image_poiId_fkey` FOREIGN KEY (`poiId`) REFE
 ALTER TABLE `poi` ADD CONSTRAINT `poi_ownerId_fkey` FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `rating` ADD CONSTRAINT `review_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE `rating` ADD CONSTRAINT `review_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Review` ADD CONSTRAINT `Review_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Review` ADD CONSTRAINT `Review_poiId_fkey` FOREIGN KEY (`poiId`) REFERENCES `poi`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
