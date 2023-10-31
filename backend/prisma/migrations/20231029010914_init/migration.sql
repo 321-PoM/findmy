@@ -5,6 +5,7 @@ CREATE TABLE `User` (
     `biography` VARCHAR(255) NOT NULL,
     `reliabilityScore` INTEGER NOT NULL,
     `premiumStatus` BOOLEAN NOT NULL DEFAULT false,
+    `mapBux` INTEGER NOT NULL DEFAULT 0, 
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `isActive` BOOLEAN NOT NULL DEFAULT true,

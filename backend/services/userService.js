@@ -30,6 +30,16 @@ export const updateUser = async (userId, updateData) => {
     });
 };
 
+export const updateUserBux = async (userId, add, amount) => {
+    return await prisma.User.update({
+        where: { id: userId },
+        data: {
+            mapBux: (add) ? { increment: amount } : { decrement: amount }
+        },
+        select: { mapBux: true }
+    })
+}
+
 export const deleteUser = async (userId) => {
     return await prisma.User.update({
         where: { id: userId },

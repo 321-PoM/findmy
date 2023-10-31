@@ -8,18 +8,23 @@ datasource db {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  avatar           String   @db.VarChar(255)
-  biography        String   @db.VarChar(255)
+  id               Int             @id @default(autoincrement())
+  name             String          @db.VarChar(255)
+  email            String          @db.VarChar(255)
+  mapbuxBalance    Int
+  avatar           String          @db.VarChar(255)
+  biography        String          @db.VarChar(255)
   reliabilityScore Int
   premiumStatus    Boolean  @default(false)
+  mapBux           Int      @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   isActive         Boolean  @default(true)
   isDeleted        Boolean  @default(false)
   poi              poi[]
-  Market           Market[]
   Review           Review[]
+  marketListing    marketListing[]
+  Transaction      Transaction[]
 }
 
 model Image {
@@ -32,19 +37,20 @@ model Image {
 }
 
 model poi {
-  id          Int       @id @default(autoincrement())
-  latitude    String    @db.VarChar(31)
-  longitudes  String    @db.VarChar(31)
-  category    String    @db.VarChar(255)
-  status      PoiStatus
-  description String    @db.VarChar(255)
-  ownerId     Int
-  rating      Int
-  reports     Int
-  isDeleted   Boolean   @default(false)
-  image       Image[]
-  owner       User      @relation(fields: [ownerId], references: [id])
-  Review      Review[]
+  id            Int             @id @default(autoincrement())
+  latitude      String          @db.VarChar(31)
+  longitudes    String          @db.VarChar(31)
+  category      String          @db.VarChar(255)
+  status        PoiStatus
+  description   String          @db.VarChar(255)
+  ownerId       Int
+  rating        Int
+  reports       Int
+  isDeleted     Boolean         @default(false)
+  image         Image[]
+  owner         User            @relation(fields: [ownerId], references: [id])
+  Review        Review[]
+  marketListing marketListing[]
 
   @@index([ownerId], map: "poi_ownerId_fkey")
 }
@@ -55,16 +61,27 @@ enum PoiStatus {
   private
 }
 
-model Market {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  price     Float
-  seller    User     @relation(fields: [sellerId], references: [id])
-  sellerId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isActive  Boolean  @default(true)
-  isDeleted Boolean  @default(false)
+model marketListing {
+  id          Int           @id @default(autoincrement())
+  price       Float
+  seller      User          @relation(fields: [sellerId], references: [id])
+  sellerId    Int
+  poi         poi           @relation(fields: [poiId], references: [id])
+  poiId       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  isActive    Boolean       @default(true)
+  isDeleted   Boolean       @default(false)
+  Transaction Transaction[]
+}
+
+model Transaction {
+  id              Int           @id @default(autoincrement())
+  buyer           User          @relation(fields: [buyerId], references: [id])
+  buyerId         Int
+  listing         marketListing @relation(fields: [listingId], references: [id])
+  listingId       Int
+  transactionDate DateTime      @default(now())
 }
 
 model Review {
