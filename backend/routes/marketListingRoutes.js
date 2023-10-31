@@ -3,10 +3,11 @@ import * as marketListingController from '../controllers/marketListingController
 
 const router = express.Router();
 
-router.post('/marketListing', marketListingController.create);
-router.get('/marketListing/:id', marketListingController.getOne);
+router.post('/marketListing', marketListingController.createListing);
+router.get('/marketListing/:listingId', marketListingController.getOne);
 router.get('/marketListings', marketListingController.getAll);
-router.put('/marketListing/:id', marketListingController.update);
-router.delete('/marketListing/:id', marketListingController.deleteListing);
+router.get('/marketListings/:userId', marketListingController.getUserListings);
+router.put('/marketListing/:listingId', marketListingController.updateListing);
+router.delete('/marketListing/:listingId', marketListingController.deleteListing);
 
 export default router;
