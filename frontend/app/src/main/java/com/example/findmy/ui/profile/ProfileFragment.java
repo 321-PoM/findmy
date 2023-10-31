@@ -10,9 +10,15 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findmy.POI.POI;
 import com.example.findmy.ui.HomeActivity;
 import com.example.findmy.databinding.FragmentProfileBinding;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
@@ -36,6 +42,20 @@ public class ProfileFragment extends Fragment {
                 signOut();
             }
         });
+
+        // setup myPOI list
+        ArrayList<POI> myPOIList = new ArrayList<POI>();
+
+        POI testPOI = POI.testPOI;
+        myPOIList.add(testPOI);
+
+        // TODO: update with live location
+        LatLng currentLatLng = new LatLng(0.0, 0.0);
+        RecyclerView myPOIRecycler = binding.myPOIRecycler;
+        MyPOIListAdapter mAdapter = new MyPOIListAdapter(requireActivity(), myPOIList, currentLatLng);
+
+        myPOIRecycler.setAdapter(mAdapter);
+        myPOIRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return root;
     }

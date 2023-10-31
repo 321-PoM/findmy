@@ -4,18 +4,23 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.findmy.R;
+import com.example.findmy.databinding.FragmentAddPOIBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddPOIFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddPOIFragment extends Fragment {
+public class AddPOIFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +30,12 @@ public class AddPOIFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    FragmentAddPOIBinding binding;
+
+    String newPOISelection;
+
+    private final String TAG = "AddPOIFragment";
 
     public AddPOIFragment() {
         // Required empty public constructor
@@ -61,8 +72,34 @@ public class AddPOIFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_p_o_i, container, false);
+        binding = FragmentAddPOIBinding.inflate(inflater, container, false);
+
+        setupSpinner(binding);
+
+        return binding.getRoot();
     }
 
+    private void setupSpinner(FragmentAddPOIBinding binding) {
+        Spinner newPOISpinner = binding.spinner;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.new_poi_choices,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        newPOISpinner.setSelection(0);
+        newPOISpinner.setAdapter(adapter);
+        newPOISpinner.setOnItemSelectedListener(this);
+    }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        newPOISelection = (String) parent.getItemAtPosition(position);
+        Log.d(TAG, "New selection: " + newPOISelection);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        newPOISelection = null;
+    }
 }

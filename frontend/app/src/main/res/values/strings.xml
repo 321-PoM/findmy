@@ -17,6 +17,12 @@
         <item>Washroom</item>
         <item>myPOIs</item>
     </string-array>
+    <string-array name="new_poi_choices">
+        <item>Study Space</item>
+        <item>Microwave</item>
+        <item>Washroom</item>
+        <item>myPOIs</item>
+    </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_add_poi">Add POI</string>
     <string name="rating">Rating</string>
@@ -35,4 +41,10 @@
     <string name="listing_price">Listing Price</string>
     <string name="purchase">Purchase</string>
     <string name="owner_name">Owner</string>
+    <string name="unlist">Unlist</string>
+    <string name="current_listing_price">Current Listing Price</string>
+    <string name="list_on_marketplace">List On Marketplace</string>
+    <string name="your_user">Username</string>
+    <string name="add_friend_field">Add a friend</string>
+    <string name="add_friend_button_text">Add</string>
 </resources>
