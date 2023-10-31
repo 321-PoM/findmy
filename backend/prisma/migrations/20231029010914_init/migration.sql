@@ -33,6 +33,7 @@ CREATE TABLE `poi` (
     `description` VARCHAR(255) NOT NULL,
     `ownerId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,
+    `reports` INTEGER NOT NULL,
     `isDeleted` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`id`)

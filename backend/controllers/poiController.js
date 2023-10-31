@@ -27,6 +27,18 @@ export const updatePoi = async (req, res) => {
   }
 };
 
+export const reportPoi = async (req, res) => {
+  try{
+    const reportReviewRatio = await poiService.reportPoi(req.param.id);
+    if(reportReviewRatio >= 1/2){
+      const del = await poiService.deletePoi(req.param.id);
+    }
+    res.status(200).json(reportReviewRatio)
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export const deletePoi = async (req, res) => {
   try {
     await poiService.deletePoi(req.params.id);
