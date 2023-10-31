@@ -38,4 +38,5 @@
     <string name="unlist">Unlist</string>
     <string name="current_listing_price">Current Listing Price</string>
     <string name="list_on_marketplace">List On Marketplace</string>
+    <string name="your_user">Username</string>
 </resources>
