@@ -61,7 +61,8 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
             userIdFrom: userIdFrom,
             userIdTo: userIdTo,
             status: 'accepted',
-        }
+        },
+        select: { friendshipId: true }
     });
 };
 
