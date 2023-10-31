@@ -5,7 +5,7 @@ import fs         from 'fs';
 import userRoutes from './routes/userRoutes.js';
 import poiRoutes  from './routes/poiRoutes.js';
 import marketRoutes from './routes/marketRoutes.js';
-import reviewRoutes from '/routes/reviewRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 const app = express();
 app.use(express.json());
