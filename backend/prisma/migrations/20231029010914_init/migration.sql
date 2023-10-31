@@ -26,8 +26,8 @@ CREATE TABLE `Image` (
 -- CreateTable
 CREATE TABLE `poi` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `latitude` VARCHAR(31) NOT NULL,
-    `longitudes` VARCHAR(31) NOT NULL,
+    `latitude` DOUBLE NOT NULL,
+    `longitude` DOUBLE NOT NULL,
     `category` VARCHAR(255) NOT NULL,
     `status` ENUM('unlisted', 'verfied', 'private') NOT NULL,
     `description` VARCHAR(255) NOT NULL,

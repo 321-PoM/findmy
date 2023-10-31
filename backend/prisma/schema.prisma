@@ -38,8 +38,8 @@ model Image {
 
 model poi {
   id            Int             @id @default(autoincrement())
-  latitude      String          @db.VarChar(31)
-  longitudes    String          @db.VarChar(31)
+  latitude      Float           
+  longitude     Float           
   category      String          @db.VarChar(255)
   status        PoiStatus
   description   String          @db.VarChar(255)
