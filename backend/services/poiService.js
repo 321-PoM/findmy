@@ -171,7 +171,7 @@ export const calcPoiRating = async (poiId) => {
     }
 }
 
-export const getPoiByUser = async (userID) => {
+export const getPoiByUser = async (userId) => {
     const uid = parseInt(userId);
 
     if (isNaN(uid)) {
