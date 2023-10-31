@@ -1,5 +1,3 @@
-//| DB connection |//
-//-----------------//
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,34 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//| Models |//
-//----------//
 model User {
-  id               Int          @id @default(autoincrement())
-  avatar           String       @db.VarChar(255)
-  biography        String       @db.VarChar(255)
+  id               Int      @id @default(autoincrement())
+  avatar           String   @db.VarChar(255)
+  biography        String   @db.VarChar(255)
   reliabilityScore Int
-  premiumStatus    Boolean      @default(false)
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-  isActive         Boolean      @default(true)
-  isDeleted        Boolean      @default(false)
+  premiumStatus    Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isActive         Boolean  @default(true)
+  isDeleted        Boolean  @default(false)
   poi              poi[]
-  Market           Market[] 
-  Reviews          Review[]
 }
 
 model Image {
   id    Int    @id @default(autoincrement())
   url   String
-  poi   poi    @relation(fields: [poiId], references: [id])
   poiId Int
-}
+  poi   poi    @relation(fields: [poiId], references: [id])
 
-enum PoiStatus {
-  unlisted
-  verfied
-  private
+  @@index([poiId], map: "Image_poiId_fkey")
 }
 
 model poi {
@@ -46,50 +36,17 @@ model poi {
   category    String    @db.VarChar(255)
   status      PoiStatus
   description String    @db.VarChar(255)
-  image       Image[]
-  owner       User      @relation(fields: [ownerId], references: [id])
-  Reviews     Review[]
   ownerId     Int
   rating      Int
   isDeleted   Boolean   @default(false)
+  image       Image[]
+  owner       User      @relation(fields: [ownerId], references: [id])
+
+  @@index([ownerId], map: "poi_ownerId_fkey")
 }
 
-model Market {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  price     Float
-  seller    User     @relation(fields: [sellerId], references: [id])
-  sellerId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isActive  Boolean  @default(true)
-  isDeleted Boolean  @default(false)
-}
-
-model Review {
-  reviewId         Int      @id
-  userId           Int       
-  poiId            Int        
-  reviewer         User     @relation(fields: [userId], references: [id])
-  poi              poi      @relation(fields: [poiId], references: [id])
-  rating           Int
-  description      String   @db.VarChar(255)
-  reliabilityScore Int
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  isDeleted        Boolean  @default(false)
-}
-
-enum friendshipStatus {
-  requested
-  accepted
-  rejected
-}
-
-model Friendship {
-  friendshipId Int              @id
-  userIdFrom   Int   
-  userIdTo     Int
-  status       friendshipStatus @default(requested)
-  createdAt    DateTime         @default(now())
+enum PoiStatus {
+  unlisted
+  verfied
+  private
 }
