@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.R;
@@ -28,8 +29,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         }
     }
 
+    FragmentActivity parentActivity;
+
     private List<User> friends;
-    public FriendsAdapter(List<User> friends) {
+    public FriendsAdapter(FragmentActivity parentActivity, List<User> friends) {
+        this.parentActivity = parentActivity;
         this.friends = friends;
     }
 
@@ -54,6 +58,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         // TODO: set button functionality
         Button button = holder.viewDetailsButton;
+        button.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FriendsBottomSheet bottomSheet = new FriendsBottomSheet(friend);
+                    bottomSheet.show(parentActivity.getSupportFragmentManager(), "TEST_TAG");
+                }
+           }
+        );
     }
 
     @Override
