@@ -6,7 +6,7 @@ export const listFriends = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
             userIdFrom: userId,
-            status: accepted,
+            status: 'accepted',
         },
         include: {
             friendshipId: true,
@@ -19,7 +19,7 @@ export const listRequestsSent = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
             userIdFrom: userId,
-            status: requested,
+            status: 'requested',
         },
         include: {
             friendshipId: true,
@@ -32,7 +32,7 @@ export const listRequestsReceived = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
             userIdTo: userId,
-            status: requested,
+            status: 'requested',
         },
         include: {
             friendshipId: true,
@@ -60,6 +60,7 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
         data: {
             userIdFrom: userIdFrom,
             userIdTo: userIdTo,
+            status: 'accepted',
         }
     });
 };
