@@ -28,7 +28,7 @@ CREATE TABLE `poi` (
     `latitude` VARCHAR(31) NOT NULL,
     `longitudes` VARCHAR(31) NOT NULL,
     `category` VARCHAR(255) NOT NULL,
-    `status` ENUM('unlisted', 'verfied', 'private') NOT NULL,
+    `status` ENUM('unlisted', 'verfied', 'private', 'reported') NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `ownerId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,

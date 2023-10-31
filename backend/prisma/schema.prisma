@@ -52,6 +52,7 @@ enum PoiStatus {
   unlisted
   verfied
   private
+  reported
 }
 
 model Market {
