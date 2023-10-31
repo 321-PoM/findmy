@@ -47,4 +47,5 @@
     <string name="your_user">Username</string>
     <string name="add_friend_field">Add a friend</string>
     <string name="add_friend_button_text">Add</string>
+    <string name="remove_friend">Remove Friend</string>
 </resources>

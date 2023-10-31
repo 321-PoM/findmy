@@ -34,7 +34,7 @@ public class FriendsFragment extends Fragment {
         friendsArray.add(testUser);
 
         RecyclerView friendsRecycler = binding.friendsRecycler;
-        FriendsAdapter adapter = new FriendsAdapter(friendsArray);
+        FriendsAdapter adapter = new FriendsAdapter(requireActivity(), friendsArray);
 
         friendsRecycler.setAdapter(adapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
