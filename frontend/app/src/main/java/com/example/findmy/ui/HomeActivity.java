@@ -39,6 +39,7 @@ public class HomeActivity extends BaseActivity {
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
 //                R.id.navigation_home,
+                R.id.navigation_marketplace,
                 R.id.navigation_map ,
                 R.id.navigation_friends,
                 R.id.navigation_profile
