@@ -30,7 +30,12 @@ export const getUserByEmail = async (email) => {
         })
         if(user.length >= 1) return user;
         const createdUser = prisma.User.create({
-            data: { email: email }
+            data: { 
+                name: email,
+                email: email,
+                avatar: 'none',
+                biography: 'none',
+            }
         })
         return createdUser;
     } catch (err) {
