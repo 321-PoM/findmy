@@ -33,9 +33,9 @@ public class FindMyServiceTest {
 
         FindMyService findMyService = findMyServiceViewModel.getFindMyService();
 
+        System.out.println("Create User");
+
         Call<User> call = findMyService.createUser(User.testUser);
-
-
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -51,6 +51,84 @@ public class FindMyServiceTest {
                 signal.countDown();
             }
         });
+
+        System.out.println("-------------------------------");
+        System.out.println("Get all users");
+
+        findMyService.getUsers().enqueue(new Callback<User[]>() {
+            @Override
+            public void onResponse(Call<User[]> call, Response<User[]> response) {
+                System.out.println("Response Body: " + response.body());
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<User[]> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+
+        System.out.println("-------------------------------");
+        System.out.println("Get test user");
+
+        findMyService.getUser(1).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                System.out.println("Response Body: " + response.body());
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+
+        System.out.println("-------------------------------");
+        System.out.println("Get user by email");
+
+        findMyService.getUserByEmail("kk@example.com").enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                System.out.println("Response Body: " + response.body());
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+
+        System.out.println("-------------------------------");
+        System.out.println("Get user by email");
+
+        findMyService.getUserByEmail("kk@example.com").enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                System.out.println("Response Body: " + response.body());
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+
+
 
         // wait for response to call signal.countDown() before terminating test;
         signal.await();
