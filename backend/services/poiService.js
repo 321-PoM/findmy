@@ -100,19 +100,19 @@ export const listPois = async () => {
 // ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
 
-    latMin, latMax, lonMin, lonMax = getBoundingBox(currLat, currLong, distance);
+    const coords = getBoundingBox(currLat, currLong, distance);
 
     const bboxPois = await prisma.poi.findMany({
         where: {
             isDeleted: false,
             category: poiType,
             latitude: {
-                gt:latMin,
-                lt:laxMax,
+                gt:coords.latMin,
+                lt:coords.latMax,
             },
             longitude: {
-                gt: lonMin,
-                lt: lonMax,
+                gt: coords.lonMin,
+                lt: coords.lonMax,
             }
         },
     })
