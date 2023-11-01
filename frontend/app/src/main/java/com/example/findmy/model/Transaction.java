@@ -25,4 +25,11 @@ public class Transaction {
         this.listing = listing;
         this.listingId = listingId;
     }
+
+    public int getTransactionId() { return id; }
+    public void setTransactionId(int id) { this.id = id; }
+    public int getBuyerId() { return buyerId; }
+    public void setBuyerId(int buyerId) { this.buyerId = buyerId; }
+    public int getListingId() { return listingId; }
+    public void setListingId(int listingId) { this.listingId = listingId; }
 }
