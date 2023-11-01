@@ -1,5 +1,6 @@
 package com.example.findmy.network;
 
+import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.User;
@@ -52,22 +53,30 @@ public interface NodeApiService {
     Call<POI> deletePOI(@Path("id") int id);
 
     // Reviews
-
     @GET("/reviews/{searchBy}/{id}")
     Call<Review[]> listReviews(@Path("searchBy") String search, @Path("id") int id);
-
     @GET("/review/{id}")
     Call<Review> getReview(@Path("id") int id);
-
     @POST("/review")
     Call<Review> createReview(@Body Review review);
-
     @PUT("/review/{id}")
     Call<Review> updateReview(@Path("id") int id, @Body Review review);
-
     @PUT("/review/{id}/rating")
     Call<Review> updateRating(@Path("id") int id, @Body int rating);
-
     @DELETE("/review/{id}")
     Call<Review> deleteReview(@Path("id") int id);
+
+    // MarketListings
+    @GET("/marketListings")
+    Call<MarketListing[]> getListings();
+    @GET("/marketListing/{listingId}")
+    Call<MarketListing> getListing(@Path("listingId") int id);
+    @GET("/marketListings/{userId}")
+    Call<MarketListing[]> getUserListings(@Path("userId") int id);
+    @POST("/marketListing")
+    Call<MarketListing> createListing(@Body int price, User seller, POI poi);
+    @PUT("/marketListing/{listingId}")
+    Call<MarketListing> updateListing(@Path("listingId") int id, @Body MarketListing listing);
+    @DELETE("/marketListing/{listingId}")
+    Call<MarketListing> deleteListing(@Path("listingId") int id);
 }
