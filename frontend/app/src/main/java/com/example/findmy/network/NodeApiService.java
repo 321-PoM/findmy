@@ -3,6 +3,7 @@ package com.example.findmy.network;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.Review;
+import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 
 import retrofit2.Call;
@@ -79,4 +80,18 @@ public interface NodeApiService {
     Call<MarketListing> updateListing(@Path("listingId") int id, @Body MarketListing listing);
     @DELETE("/marketListing/{listingId}")
     Call<MarketListing> deleteListing(@Path("listingId") int id);
+
+    // Transactions
+    @GET("/transaction/{transactionId}")
+    Call<Transaction> getTransaction(@Path("transactionId") int id);
+    @GET("/transactions/buyer/{userId}")
+    Call<Transaction[]> getUserTransactions(@Path("userId") int id);
+    @GET("/transactions/listing/{listingId}")
+    Call<Transaction[]> getListingTransactions(@Path("listingId") int id);
+    @POST("/transaction")
+    Call<Transaction> createTransaction(@Body int buyerId, int listingId);
+    @PUT("/transaction/{transactionId}")
+    Call<Transaction> updateTransaction(@Path("transactionId") int id, @Body Transaction transaction);
+    @DELETE("/transaction/{transactionId}")
+    Call<Transaction> deleteTransaction(@Path("transactionId") int id);
 }
