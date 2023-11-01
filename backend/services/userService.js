@@ -35,6 +35,7 @@ export const getUserByEmail = async (email) => {
                 email: email,
                 avatar: 'none',
                 biography: 'none',
+                reliabilityScore: 100,
             }
         })
         return createdUser;
