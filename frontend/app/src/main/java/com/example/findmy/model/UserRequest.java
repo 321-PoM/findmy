@@ -3,12 +3,7 @@ package com.example.findmy.model;
 import com.example.findmy.DateWrapper;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
-public class User {
-    @SerializedName("id")
-    private int id;
-
+public class UserRequest {
     @SerializedName("name")
     private String name;
 
@@ -30,20 +25,13 @@ public class User {
     @SerializedName("mapBux")
     private int mapBux;
 
-    @SerializedName("createdAt")
-    private String createdAt;
-
-    @SerializedName("updatedAt")
-    private String updatedAt;
-
     @SerializedName("isActive")
     private boolean isActive;
 
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public User(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
-        this.id = id;
+    public UserRequest(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted, POI[] poi, Review[] reviews, MarketListing[] marketListings, Transaction[] transactions) {
         this.name = name;
         this.email = email;
         this.mapBux = mapBux;
@@ -51,27 +39,17 @@ public class User {
         this.biography = biography;
         this.reliabilityScore = reliabilityScore;
         this.premiumStatus = premiumStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.isActive = isActive;
         this.isDeleted = isDeleted;
     }
 
-    public static final User testUser = new User(
+    public static final UserRequest testUser = new UserRequest(
             0,
-        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false
+        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false, new POI[]{}, new Review[]{}, new MarketListing[]{}, new Transaction[]{}
     );
 
     public String getName() {
         return this.name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getAvatar() {
@@ -104,22 +82,6 @@ public class User {
 
     public void setPremiumStatus(boolean premiumStatus) {
         this.premiumStatus = premiumStatus;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {

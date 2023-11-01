@@ -2,28 +2,20 @@ package com.example.findmy.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Transaction {
-    @SerializedName("id")
-    private int id;
-
+public class TransactionRequest {
     @SerializedName("buyer")
     private User buyer;
 
     @SerializedName("buyerId")
     private int buyerId;
-
     @SerializedName("listingId")
     private int listingId;
 
-    public Transaction(int id, User buyer, int buyerId, MarketListing listing, int listingId) {
-        this.id = id;
+    public TransactionRequest(int id, User buyer, int buyerId, MarketListing listing, int listingId) {
         this.buyer = buyer;
         this.buyerId = buyerId;
         this.listingId = listingId;
     }
-
-    public int getTransactionId() { return id; }
-    public void setTransactionId(int id) { this.id = id; }
     public int getBuyerId() { return buyerId; }
     public void setBuyerId(int buyerId) { this.buyerId = buyerId; }
     public int getListingId() { return listingId; }
