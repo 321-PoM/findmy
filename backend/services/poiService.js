@@ -97,6 +97,7 @@ export const listPois = async () => {
     });
 };
 
+// ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
 
     latMin, latMax, lonMin, lonMax = getBoundingBox(currLat, currLong, distance);
@@ -119,6 +120,7 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
     return bboxPois.filter(poi => isPointWithinRadius({latitude: currLat, longitude: currLong}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
 }
 
+// ChatGPT usage: Partial
 function getBoundingBox(lat, lon, distance) {
     // Radius of the Earth in meters
     const earthRadius = 6371000;
