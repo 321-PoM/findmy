@@ -75,7 +75,7 @@ public interface NodeApiService {
     @GET("/marketListings/{userId}")
     Call<MarketListing[]> getUserListings(@Path("userId") int id);
     @POST("/marketListing")
-    Call<MarketListing> createListing(@Body int price, User seller, POI poi);
+    Call<MarketListing> createListing(@Body int price, int sellerId, int poiId);
     @PUT("/marketListing/{listingId}")
     Call<MarketListing> updateListing(@Path("listingId") int id, @Body MarketListing listing);
     @DELETE("/marketListing/{listingId}")
