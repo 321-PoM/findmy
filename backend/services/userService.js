@@ -69,6 +69,7 @@ export const getUserReliabilityScore = async (userId) => {
                 rating: true
             }
         });
+        if(reviewsByUser.length < 1) return 100;
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
@@ -96,6 +97,7 @@ const distFromSafeZone = async (review) => {
         }
     });
     const poiRatings = poiReviews.map(review => review['rating']);
+    if(poiRatings.length < 4) return 0;
 
     // find mean
     let sumRating = poiRatings.reduce((sum, rating) => sum += rating, 0);
