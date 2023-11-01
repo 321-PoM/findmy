@@ -56,7 +56,7 @@ model poi {
 
 enum PoiStatus {
   unlisted
-  verfied
+  verified
   private
 }
 
