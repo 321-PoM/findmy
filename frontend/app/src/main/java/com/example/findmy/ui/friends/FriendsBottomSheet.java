@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.findmy.databinding.FriendsBottomSheetBinding;
-import com.example.findmy.user.User;
+import com.example.findmy.model.User;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FriendsBottomSheet extends BottomSheetDialogFragment {

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -47,7 +47,7 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         binding = PoiBottomSheetBinding.inflate(inflater, container, false);
 
         TextView poiNameText = binding.poiName;
-        poiNameText.setText(poi.getName());
+        poiNameText.setText(poi.getDescription());
 
         RatingBar currentRatingBar = binding.currentRatingBar;
         // TODO: update with POI rating

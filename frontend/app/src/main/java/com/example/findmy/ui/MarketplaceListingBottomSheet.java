@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.findmy.databinding.MarketplaceListingBottomSheetBinding;
+import com.example.findmy.model.MarketListing;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
@@ -23,10 +24,10 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
     };
 
     MarketplaceListingBottomSheetBinding binding;
-    private final MarketplaceListing marketplaceListing;
+    private final MarketListing marketplaceListing;
 
 
-    MarketplaceListingBottomSheet(MarketplaceListing marketplaceListing) {
+    MarketplaceListingBottomSheet(MarketListing marketplaceListing) {
         this.marketplaceListing = marketplaceListing;
     }
 
@@ -36,13 +37,13 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
         binding = MarketplaceListingBottomSheetBinding.inflate(inflater, container, false);
 
         TextView poiNameText = binding.poiName;
-        poiNameText.setText(marketplaceListing.getListingName());
+        poiNameText.setText(marketplaceListing.getName());
 
         TextView listPriceText = binding.listingPrice;
-        listPriceText.setText(String.valueOf(marketplaceListing.getListingAmount()));
+        listPriceText.setText(String.valueOf(marketplaceListing.getPrice()));
 
         TextView ownerNameText = binding.ownerName ;
-        ownerNameText.setText(marketplaceListing.getOwner().getUsername());
+        ownerNameText.setText(marketplaceListing.getSeller().getName());
 
         Button purchaseButton = binding.purchaseButton;
         purchaseButton.setOnClickListener(purchaseButtonListener);

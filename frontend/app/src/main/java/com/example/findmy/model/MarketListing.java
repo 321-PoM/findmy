@@ -2,18 +2,24 @@ package com.example.findmy.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Market {
+public class MarketListing {
     @SerializedName("id")
     private int id;
-
-    @SerializedName("name")
-    private String name;
 
     @SerializedName("price")
     private float price;
 
+    @SerializedName("seller")
+    private User seller;
+
     @SerializedName("sellerId")
     private int sellerId;
+
+    @SerializedName("poi")
+    POI poi;
+
+    @SerializedName("poiId")
+    int poiID;
 
     @SerializedName("createdAt")
     private String createdAt;
@@ -27,6 +33,21 @@ public class Market {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
+    public MarketListing(int id, float price, User seller, int sellerId, POI poi, int poiID, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
+        this.id = id;
+        this.price = price;
+        this.seller = seller;
+        this.sellerId = sellerId;
+        this.poi = poi;
+        this.poiID = poiID;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isActive = isActive;
+        this.isDeleted = isDeleted;
+    }
+
+    public static MarketListing testListing = new MarketListing(0, 30, User.testUser, User.testUser.getId(), POI.testPOI, POI.testPOI.getId(), "createdAt", "updatedAt", true, false);
+
     public int getId() {
         return id;
     }
@@ -36,11 +57,15 @@ public class Market {
     }
 
     public String getName() {
-        return name;
+        return this.poi.getDescription();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public POI getPoi() {
+        return this.poi;
+    }
+
+    public User getSeller() {
+        return this.seller;
     }
 
     public float getPrice() {
