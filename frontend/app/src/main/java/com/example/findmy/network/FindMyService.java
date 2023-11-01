@@ -23,6 +23,9 @@ public class FindMyService {
     public Call<User> getUser(int id) {
         return apiService.getUser(id);
     }
+    public Call<User> getUserByEmail(String email) {
+        return apiService.getUserByEmail(email);
+    }
     public Call<Integer> getUserReliabilityScore(int id) {
         return apiService.getUserReliabilityScore(id);
     }

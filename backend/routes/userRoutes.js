@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/users", userController.listUsers); // It's user's'.
 router.get("/user/:id", userController.getUser);
 router.get("/userPoiWithMarketListing/:userID", userController.getUserPoiWithMarketListing);
+router.get("/user/email/:email", userController.getUserByEmail);
 router.post("/user", userController.createUser);
 router.put("/user/:id", userController.updateUser);
 router.put("/user/:id/updateUserBux", userController.updateUserBux);
