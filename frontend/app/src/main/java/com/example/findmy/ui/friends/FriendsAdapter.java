@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.R;
-import com.example.findmy.user.User;
+import com.example.findmy.model.User;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         User friend = friends.get(position);
 
         TextView textView = holder.nameText;
-        textView.setText(friend.getFullName());
+        textView.setText(friend.getName());
 
         // TODO: set button functionality
         Button button = holder.viewDetailsButton;

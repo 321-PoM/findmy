@@ -23,6 +23,21 @@ export const getUser = async (userId) => {
     });
 };
 
+export const getUserByEmail = async (email) => {
+    try{
+        const user = prisma.User.findUnique({
+            where: { email: email },
+        })
+        if(user.length >= 1) return user;
+        const createdUser = prisma.User.create({
+            data: { email: email }
+        })
+        return createdUser;
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const updateUser = async (userId, updateData) => {
     return await prisma.User.update({
         where: { id: userId },
@@ -69,6 +84,7 @@ export const getUserReliabilityScore = async (userId) => {
                 rating: true
             }
         });
+        if(reviewsByUser.length < 1) return 100;
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
@@ -96,6 +112,7 @@ const distFromSafeZone = async (review) => {
         }
     });
     const poiRatings = poiReviews.map(review => review['rating']);
+    if(poiRatings.length < 4) return 0;
 
     // find mean
     let sumRating = poiRatings.reduce((sum, rating) => sum += rating, 0);

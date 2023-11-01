@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.POI;
 import com.example.findmy.databinding.ProfilePoiBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -42,7 +42,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         binding = ProfilePoiBottomSheetBinding.inflate(inflater, container, false);
 
         TextView myPOINameText = binding.poiName;
-        myPOINameText.setText(this.myPOI.getName());
+        myPOINameText.setText(this.myPOI.getDescription());
 
         return binding.getRoot();
     }

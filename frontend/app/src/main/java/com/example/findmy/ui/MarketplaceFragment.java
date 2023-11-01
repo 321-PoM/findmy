@@ -10,7 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.MarketListing;
+import com.example.findmy.model.POI;
 import com.example.findmy.databinding.FragmentMarketplaceBinding;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -73,11 +74,9 @@ public class MarketplaceFragment extends Fragment {
 
         binding = FragmentMarketplaceBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        ArrayList<MarketplaceListing> listingArray = new ArrayList<>();
+        ArrayList<MarketListing> listingArray = new ArrayList<>();
 
-        POI testPOI = POI.testPOI;
-        MarketplaceListing testListing = new MarketplaceListing(18, testPOI);
-        listingArray.add(testListing);
+        listingArray.add(MarketListing.testListing);
 
         // TODO: update with live location
         LatLng currentLatLng = new LatLng(0.0, 0.0);
