@@ -2,9 +2,12 @@ package com.example.findmy.network;
 
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POI;
+import com.example.findmy.model.POIRequest;
 import com.example.findmy.model.Review;
+import com.example.findmy.model.ReviewRequest;
 import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
+import com.example.findmy.model.UserRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -29,10 +32,10 @@ public interface NodeApiService {
     Call<Integer> getUserReliabilityScore(@Path("userId") int id);
 
     @POST("/user")
-    Call<User> createUser(@Body User user);
+    Call<User> createUser(@Body UserRequest user);
 
     @PUT("/user/{id}")
-    Call<User> updateUser(@Path("id") int id, @Body User user);
+    Call<User> updateUser(@Path("id") int id, @Body UserRequest user);
 
     @DELETE("/user/{id}")
     Call<User> deleteUser(@Path("id") int id);
@@ -48,10 +51,10 @@ public interface NodeApiService {
     Call<POI[]> getFilteredPOIs(@Path("longitude") double lon, @Path("latitude") double lat, @Path("poiType") String category, @Path("distance") int distance);
 
     @POST("/poi")
-    Call<POI> createPOI(@Body POI poi);
+    Call<POI> createPOI(@Body POIRequest poi);
 
     @PUT("/poi/{id}")
-    Call<POI> updatePOI(@Path("id") int id, @Body POI poi);
+    Call<POI> updatePOI(@Path("id") int id, @Body POIRequest poi);
 
     @DELETE("/poi/{id}")
     Call<POI> deletePOI(@Path("id") int id);
@@ -62,9 +65,9 @@ public interface NodeApiService {
     @GET("/review/{id}")
     Call<Review> getReview(@Path("id") int id);
     @POST("/review")
-    Call<Review> createReview(@Body Review review);
+    Call<Review> createReview(@Body ReviewRequest review);
     @PUT("/review/{id}")
-    Call<Review> updateReview(@Path("id") int id, @Body Review review);
+    Call<Review> updateReview(@Path("id") int id, @Body ReviewRequest review);
     @PUT("/review/{id}/rating")
     Call<Review> updateRating(@Path("id") int id, @Body int rating);
     @DELETE("/review/{id}")
