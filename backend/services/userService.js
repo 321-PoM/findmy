@@ -28,7 +28,7 @@ export const getUserByEmail = async (email) => {
         const user = prisma.User.findUnique({
             where: { email: email },
         })
-        if(user.length >= 1) return user;
+        if(user != null) return user;
         const createdUser = prisma.User.create({
             data: { 
                 name: email,
