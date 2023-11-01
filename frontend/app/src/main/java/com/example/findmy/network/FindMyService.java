@@ -71,6 +71,6 @@ public class FindMyService {
     public Call<Transaction[]> getUserTransactions(int userId) { return apiService.getUserTransactions(userId); }
     public Call<Transaction[]> getListingTransactions(int listingId) { return apiService.getListingTransactions(listingId); }
     public Call<Transaction> createTransaction(int buyerId, int listingId) { return apiService.createTransaction(buyerId, listingId); }
-    public Call<Transaction> updateTransaction(Transaction transaction) { return apiService.updateTransaction(transaction.getId(), transaction); }
+    public Call<Transaction> updateTransaction(Transaction transaction) { return apiService.updateTransaction(transaction.getTransactionId(), transaction); }
     public Call<Transaction> deleteTransaction(int id) { return apiService.deleteTransaction(id); }
 }
