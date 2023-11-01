@@ -3,9 +3,9 @@ package com.example.findmy.model;
 import com.example.findmy.DateWrapper;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     @SerializedName("id")
     private int id;
 

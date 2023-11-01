@@ -6,9 +6,11 @@ import com.example.findmy.model.Review;
 import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 
+import java.io.Serializable;
+
 import retrofit2.Call;
 
-public class FindMyService {
+public class FindMyService implements Serializable {
 
     private NodeApiService apiService;
 

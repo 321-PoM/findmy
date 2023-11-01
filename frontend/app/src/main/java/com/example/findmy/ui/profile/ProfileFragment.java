@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.model.POI;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -70,6 +72,8 @@ public class ProfileFragment extends Fragment {
         myPOIRecycler.setAdapter(mPOIAdapter);
         myPOIRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        setupUsernameText(binding);
+
         return root;
     }
 
@@ -109,6 +113,14 @@ public class ProfileFragment extends Fragment {
         if (activity != null) {
             activity.signOut();
         }
+    }
+
+    private void setupUsernameText(FragmentProfileBinding binding) {
+        TextView usernameText = binding.usernameText;
+
+        HomeActivity homeActivity = (HomeActivity) requireActivity();
+        User currentUser = homeActivity.currentUser;
+        usernameText.setText(currentUser.getName());
     }
 
 }

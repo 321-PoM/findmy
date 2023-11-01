@@ -119,6 +119,5 @@ public class MarketplaceFragment extends Fragment {
                         .show();
             }
         });
-
     }
 }
