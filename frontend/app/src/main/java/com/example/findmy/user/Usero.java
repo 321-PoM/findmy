@@ -3,9 +3,9 @@ package com.example.findmy.user;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class Usero {
 
-    public static final User testUser = new User(0, "John", "Doe", "jdoe123", "jdoe@gmail.com", 1.0, "smth.com/avatar", true);
+    public static final Usero testUser = new Usero(0, "John", "Doe", "jdoe123", "jdoe@gmail.com", 1.0, "smth.com/avatar", true);
     private int id;
 
     private String surname;
@@ -17,20 +17,20 @@ public class User {
     private String email;
     private double reliabilityScore;
 
-    private List<User> friends;
+    private List<Usero> friends;
 
     private String avatarURI;
 
     private boolean hasPremium;
 
-    public User(int id, String surname, String preferredName, String username, String email, double reliabilityScore, String avatarURI, boolean hasPremium) {
+    public Usero(int id, String surname, String preferredName, String username, String email, double reliabilityScore, String avatarURI, boolean hasPremium) {
         this.id = id;
         this.surname = surname;
         this.preferredName = preferredName;
         this.username = username;
         this.reliabilityScore = reliabilityScore;
         this.email = email;
-        friends = new ArrayList<User>();
+        friends = new ArrayList<Usero>();
         this.avatarURI = avatarURI;
         this.hasPremium = hasPremium;
     }
@@ -43,7 +43,7 @@ public class User {
 
     public double getReliabilityScore() { return this.reliabilityScore; }
 
-    public List<User> getFriends() { return this.friends; }
+    public List<Usero> getFriends() { return this.friends; }
 
     public String getAvatarURI() { return this.avatarURI; }
 

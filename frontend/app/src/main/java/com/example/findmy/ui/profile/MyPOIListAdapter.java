@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.POI;
 import com.example.findmy.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -62,7 +62,7 @@ public class MyPOIListAdapter extends RecyclerView.Adapter<MyPOIListAdapter.View
         POI poi = myPOIList.get(position);
 
         TextView nameText = holder.nameText;
-        nameText.setText(poi.getName());
+        nameText.setText(poi.getDescription());
 
         TextView distanceText = holder.distanceText;
         distanceText.setText(getDistanceFromUserToPOI(poi, this.userLocation));

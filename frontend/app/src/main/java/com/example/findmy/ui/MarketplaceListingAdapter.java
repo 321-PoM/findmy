@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findmy.POI.POI;
+import com.example.findmy.model.MarketListing;
+import com.example.findmy.model.POI;
 import com.example.findmy.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -34,12 +35,12 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
     }
 
     LatLng userLocation;
-    private List<MarketplaceListing> listings;
+    private List<MarketListing> listings;
 
     private FragmentActivity parentActivity;
     private static final float maxDistanceToDisplay = (float) 2000.0;
 
-    public MarketplaceListingAdapter(FragmentActivity parentActivity, List<MarketplaceListing> listings, LatLng userLocation) {
+    public MarketplaceListingAdapter(FragmentActivity parentActivity, List<MarketListing> listings, LatLng userLocation) {
         this.listings = listings;
         this.userLocation = userLocation;
         this.parentActivity = parentActivity;
@@ -59,14 +60,15 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
 
     @Override
     public void onBindViewHolder(@NonNull MarketplaceListingAdapter.ViewHolder holder, int position) {
-        MarketplaceListing listing = listings.get(position);
-        POI listingPOI = listing.getPOI();
+        MarketListing listing = listings.get(position);
 
         TextView nameText = holder.nameText;
-        nameText.setText(listing.getListingName());
+        nameText.setText(listing.getName());
 
         TextView distanceText = holder.distanceText;
-        distanceText.setText(getDistanceFromUserToPOI(listingPOI, this.userLocation));
+
+        // TODO get real POI from listing
+        distanceText.setText(getDistanceFromUserToPOI(listing.getPoi(), this.userLocation));
 
         Button button = holder.viewDetailsButton;
         button.setOnClickListener(new View.OnClickListener() {

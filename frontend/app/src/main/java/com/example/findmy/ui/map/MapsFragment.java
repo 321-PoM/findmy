@@ -213,6 +213,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             @Override
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {
                 POI[] filteredPOIs = response.body();
+                if (filteredPOIs == null) { return; }
                 for (POI poi : filteredPOIs) {
                     placePOI(mMap, poi);
                 }
@@ -231,7 +232,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         LatLng loc = new LatLng(poi.getLatitude(), poi.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(loc)
-                .title(poi.getName());
+                .title(poi.getDescription());
         Marker marker = gMap.addMarker(markerOptions);
         // may need to clear tag upon clearing pin
         marker.setTag(poi);
@@ -240,7 +241,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         // TODO: testPOI
-        MapPOIBottomSheet mapPoiBottomSheet = new MapPOIBottomSheet(POI.testPOI);
+        MapPOIBottomSheet mapPoiBottomSheet = new MapPOIBottomSheet((POI) marker.getTag());
 
         mapPoiBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
         return true;
