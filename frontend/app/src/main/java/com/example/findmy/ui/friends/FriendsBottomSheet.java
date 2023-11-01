@@ -8,9 +8,12 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.databinding.FriendsBottomSheetBinding;
 import com.example.findmy.model.User;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FriendsBottomSheet extends BottomSheetDialogFragment {
@@ -18,9 +21,10 @@ public class FriendsBottomSheet extends BottomSheetDialogFragment {
     View.OnClickListener removeFriendButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: add calls to backend
+//            Call<UserRequest> call = findMyService.re
         }
     };
+    private FindMyService findMyService;
     FriendsBottomSheetBinding binding;
     private final User friend;
 
@@ -32,6 +36,8 @@ public class FriendsBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
         binding = FriendsBottomSheetBinding.inflate(inflater, container, false);
 
         Button removeFriendButton = binding.removeFriendButton;
