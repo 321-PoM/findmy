@@ -42,7 +42,7 @@ public class User {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public User(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted, POI[] poi, Review[] reviews, MarketListing[] marketListings, Transaction[] transactions) {
+    public User(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -59,7 +59,7 @@ public class User {
 
     public static final User testUser = new User(
             0,
-        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false, new POI[]{}, new Review[]{}, new MarketListing[]{}, new Transaction[]{}
+        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false
     );
 
     public String getName() {
