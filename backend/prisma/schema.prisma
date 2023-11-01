@@ -38,7 +38,7 @@ model Image {
 model poi {
   id            Int             @id @default(autoincrement())
   latitude      Float           
-  longitude     Float           
+  longitudes    Float           
   category      String          @db.VarChar(255)
   status        PoiStatus
   description   String          @db.VarChar(255)
@@ -56,7 +56,7 @@ model poi {
 
 enum PoiStatus {
   unlisted
-  verfied
+  verified
   private
 }
 
