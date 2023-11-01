@@ -40,4 +40,13 @@ public interface NodeApiService {
 
     @GET("/filteredPois/{longitude}/{latitude}/{poiType}/{distance}")
     Call<POI[]> getFilteredPOIs(@Path("longitude") double lon, @Path("latitude") double lat, @Path("poiType") String category, @Path("distance") int distance);
+
+    @POST("/poi")
+    Call<POI> createPOI(@Body POI poi);
+
+    @PUT("/poi/{id}")
+    Call<POI> updatePOI(@Path("id") int id, @Body POI poi);
+
+    @DELETE("/poi/{id}")
+    Call<POI> deletePOI(@Path("id") int id);
 }
