@@ -21,6 +21,9 @@ public interface NodeApiService {
 
     @GET("/user/{id}")
     Call<User> getUser(@Path("id") int id);
+    
+    @GET("/user/email/{email}")
+    Call<User> getUserByEmail(@Path("email") String email);
 
     @GET("/rscore/{userId}")
     Call<Integer> getUserReliabilityScore(@Path("userId") int id);
