@@ -54,7 +54,7 @@ public class FindMyService {
     public Call<Review[]> listReviews(String searchBy, int id) { return apiService.listReviews(searchBy, id); }
     public Call<Review> getReview(int id) { return apiService.getReview(id); }
     public Call<Review> createReview(Review review) { return apiService.createReview(review); }
-    public Call<Review> updateReview(Review review) { return apiService.updateReview(review.getId(), review); }
+    public Call<Review> updateReview(Review review) { return apiService.updateReview(review.getReviewId(), review); }
     public Call<Review> updateRating(int id, int rating) { return apiService.updateRating(id, rating); }
     public Call<Review> deleteReview(int id) { return apiService.deleteReview(id); }
 
