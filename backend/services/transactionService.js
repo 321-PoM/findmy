@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export const createTransaction = async (buyerId, listingId) => {
     return await prisma.Transaction.create({
         data: {
-            buyerId: buyerId,
+            buyerId: Number(buyerId),
             listingId: listingId,
         },
         select: { id: true },

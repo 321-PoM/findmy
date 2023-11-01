@@ -32,7 +32,7 @@ export const listReviews = async (searchBy, id) => {
 export const getReview = async (id) => {
     return await prisma.Review.findUnique({
         where: {
-            id: id
+            id: Number(id)
         },
         include: {
             userId: true,
@@ -64,7 +64,7 @@ export const createReview = async (poiId, data) => {
 export const updateReview = async (id, updateData) => {
     return await prisma.Review.update({
         where: { 
-            id: id,
+            id: Number(id),
         },
         data: updateData,
     });
@@ -72,7 +72,7 @@ export const updateReview = async (id, updateData) => {
 
 export const updateRating = async (id, newRating) => {
     return await prisma.Review.update({
-        where: { id: id },
+        where: { id: Number(id) },
         data: { rating: newRating}, 
         select: { poiId: true },
     });
@@ -80,7 +80,7 @@ export const updateRating = async (id, newRating) => {
 
 export const deleteReview = async (id) => {
     return await prisma.Review.update({
-        where: { id: id },
+        where: { id: Number(id) },
         data: { isDeleted: true },
         select: { poiId: true },
     })

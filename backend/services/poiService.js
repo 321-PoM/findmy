@@ -52,7 +52,7 @@ export const reportPoi = async (poiId) => {
 export const transferPoi = async (transactionId) => {
     try{
         const transaction = prisma.Transaction.findUnique({
-            where: { id: transactionId },
+            where: { id: Number(transactionId)},
             include: { 
                 buyerId: true,
                 listingId: true,
@@ -152,7 +152,7 @@ export const calcPoiRating = async (poiId) => {
     try{
         const allRatings = await prisma.review.findMany({
             where: {
-                poiId: poiId,
+                poiId: Number(poiId),
             },
             include: {
                 rating: true,

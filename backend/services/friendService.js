@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export const listFriends = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
-            userIdFrom: userId,
-            status: 'accepted',
+            userIdFrom: Number(userId),
+            status: "accepted",
         },
         include: {
             friendshipId: true,
@@ -18,8 +18,8 @@ export const listFriends = async (userId) => {
 export const listRequestsSent = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
-            userIdFrom: userId,
-            status: 'requested',
+            userIdFrom: Number(userId),
+            status: "requested",
         },
         include: {
             friendshipId: true,
@@ -31,20 +31,20 @@ export const listRequestsSent = async (userId) => {
 export const listRequestsReceived = async (userId) => {
     return await prisma.Friend.findMany({
         where: {
-            userIdTo: userId,
-            status: 'requested',
+            userIdTo: Number(userId),
+            status: "requested",
         },
         include: {
             friendshipId: true,
             userIdFrom: true,
-        }
+        },
     });
 };
 
 export const getFriendship = async (friendshipId) => {
     return await prisma.Friend.findUnique({
         where: {
-            friendshipId: friendshipId,
+            friendshipId: Number(friendshipId),
         },
         include: {
             userIdFrom: true,
@@ -60,33 +60,32 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
         data: {
             userIdFrom: userIdFrom,
             userIdTo: userIdTo,
-            status: 'accepted',
+            status: "accepted",
         },
-        select: { friendshipId: true }
+        select: { friendshipId: true },
     });
 };
 
 export const handleFriendRequest = async (friendshipId, accept) => {
-    try{
-        if(accept) {
+    try {
+        if (accept) {
             const accepted = await prisma.Friend.update({
-                where: { friendshipId: friendshipId },
+                where: { friendshipId: Number(friendshipId) },
                 data: { status: accept },
                 include: {
                     userIdFrom: true,
                     userIdTo: true,
                     status: true,
-                }
+                },
             });
             return await prisma.Friend.create({
-                data:{
+                data: {
                     userIdFrom: accepted.userIdTo,
                     userIdTo: accepted.userIdFrom,
                     status: accepted.status,
-                }
+                },
             });
-        }
-        else {
+        } else {
             return await prisma.Friend.update({
                 where: { friendshipId: friendshipId },
                 data: { status: rejected },
@@ -99,20 +98,18 @@ export const handleFriendRequest = async (friendshipId, accept) => {
 
 export const deleteFriendship = async (friendshipId) => {
     const del = await prisma.Friend.update({
-        where: { friendshipId: friendshipId },
-        data: { isDeleted: true },  // Soft-delete.
+        where: { friendshipId: Number(friendshipId) },
+        data: { isDeleted: true }, // Soft-delete.
         include: {
             userIdFrom: true,
             userIdTo: true,
-        }
+        },
     });
     return await prisma.Friend.update({
         where: {
             userIdFrom: del.userIdTo,
             userIdTo: del.userIdFrom,
         },
-        data: { isDeleted: true }
+        data: { isDeleted: true },
     });
 };
-
-

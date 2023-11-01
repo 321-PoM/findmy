@@ -40,7 +40,7 @@ export const getAll = async () => {
 export const getUserListings = async (userId) => {
     return await prisma.marketListing.findMany({
         where: {
-            sellerId: userId,
+            sellerId: Number(userId),
             isDeleted: false,
         },
         select: {

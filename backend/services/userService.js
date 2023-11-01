@@ -40,14 +40,14 @@ export const getUserByEmail = async (email) => {
 
 export const updateUser = async (userId, updateData) => {
     return await prisma.User.update({
-        where: { id: userId },
+        where: { id: Number(userId) },
         data: updateData,
     });
 };
 
 export const updateUserBux = async (userId, polarity, amount) => {
     return await prisma.User.update({
-        where: { id: userId },
+        where: { id: Number(userId) },
         data: {
             mapBux: (polarity) ? { increment: amount } : { decrement: amount }
         },
@@ -57,7 +57,7 @@ export const updateUserBux = async (userId, polarity, amount) => {
 
 export const deleteUser = async (userId) => {
     return await prisma.User.update({
-        where: { id: userId },
+        where: { id: Number(userId) },
         data: { isDeleted: true },  // Soft-delete user.
     });
 };
@@ -76,7 +76,7 @@ export const getUserReliabilityScore = async (userId) => {
         // Query for Pois reviewed by the user
         const reviewsByUser = await prisma.Review.findMany({
             where: {
-                userId: userId,
+                userId: Number(userId),
                 isDeleted: false,
             },
             select: {
