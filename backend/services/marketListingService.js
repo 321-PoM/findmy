@@ -6,8 +6,8 @@ export const createListing = async (price, sellerId, poiId) => {
     return await prisma.marketListing.create({
         data: {
             price: price,
-            sellerId: sellerId,
-            poiId: poiId
+            sellerId: Number(sellerId),
+            poiId: Number(poiId)
         },
         select: { id: true },
     });
