@@ -102,20 +102,39 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
 
     const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), distance);
 
-    const bboxPois = await prisma.poi.findMany({
-        where: {
-            isDeleted: false,
-            category: poiType,
-            latitude: {
-                gt:coords.latMin,
-                lt:coords.latMax,
+    var bboxPois;
+
+    if (poiType == "All") {
+        bboxPois = await prisma.poi.findMany({
+            where: {
+                isDeleted: false,
+                latitude: {
+                    gt:coords.latMin,
+                    lt:coords.latMax,
+                },
+                longitudes: {
+                    gt: coords.lonMin,
+                    lt: coords.lonMax,
+                }
             },
-            longitudes: {
-                gt: coords.lonMin,
-                lt: coords.lonMax,
-            }
-        },
-    })
+        })
+    } else {
+        bboxPois = await prisma.poi.findMany({
+            where: {
+                isDeleted: false,
+                category: poiType,
+                latitude: {
+                    gt:coords.latMin,
+                    lt:coords.latMax,
+                },
+                longitudes: {
+                    gt: coords.lonMin,
+                    lt: coords.lonMax,
+                }
+            },
+        })
+    }
+
 
     return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
 }
