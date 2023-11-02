@@ -117,7 +117,7 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
         },
     })
 
-    return bboxPois.filter(poi => isPointWithinRadius({latitude: currLat, longitude: currLong}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
+    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
 }
 
 // ChatGPT usage: Partial
@@ -141,10 +141,10 @@ function getBoundingBox(lat, lon, distance) {
     const lonMax = lon + (angularDistance * (180 / Math.PI) / Math.cos(latRad));
   
     return {
-      latMin,
-      latMax,
-      lonMin,
-      lonMax,
+        latMin: parseFloat(latMin),
+        latMax: parseFloat(latMax),
+        lonMin: parseFloat(lonMin),
+        lonMax: parseFloat(lonMax),
     };
   }
 
