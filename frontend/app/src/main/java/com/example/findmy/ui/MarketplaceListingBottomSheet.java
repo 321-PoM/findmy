@@ -9,9 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.databinding.MarketplaceListingBottomSheetBinding;
 import com.example.findmy.model.MarketListing;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
@@ -25,6 +28,7 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
 
     MarketplaceListingBottomSheetBinding binding;
     private final MarketListing marketplaceListing;
+    private FindMyService findMyService;
 
 
     MarketplaceListingBottomSheet(MarketListing marketplaceListing) {
@@ -34,10 +38,12 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
         binding = MarketplaceListingBottomSheetBinding.inflate(inflater, container, false);
 
         TextView poiNameText = binding.poiName;
-        poiNameText.setText(marketplaceListing.getName());
+        poiNameText.setText(String.valueOf(marketplaceListing.getId()));
 
         TextView listPriceText = binding.listingPrice;
         listPriceText.setText(String.valueOf(marketplaceListing.getPrice()));

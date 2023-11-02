@@ -56,9 +56,6 @@ public class MarketListing {
         this.id = id;
     }
 
-    public String getName() {
-        return this.poi.getDescription();
-    }
 
     public POI getPoi() {
         return this.poi;

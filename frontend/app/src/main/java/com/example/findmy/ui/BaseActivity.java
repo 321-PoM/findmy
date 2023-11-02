@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.findmy.R;
+import com.example.findmy.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,6 +24,8 @@ public class BaseActivity extends AppCompatActivity {
     protected final Integer RC_SIGN_IN = 1;
 
     private static final String TAG = "BaseActivity";
+
+    User currentUserAccount;
 
     protected void getSignInClient() {
         // Configure sign-in to request the user's ID, email address, and basic

@@ -6,18 +6,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.findmy.R;
+import com.example.findmy.model.User;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends BaseActivity {
 
     final static String TAG="MainActivity";
     private SignInButton signInButton;
+    private FindMyServiceViewModel findMyServiceViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,7 @@ public class MainActivity extends BaseActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            updateUI(account);
+            attemptUpdateUI(account);
         }
     }
 
@@ -55,7 +64,7 @@ public class MainActivity extends BaseActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-            updateUI(account);
+            attemptUpdateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -79,14 +88,37 @@ public class MainActivity extends BaseActivity {
             handleSignInResult(task);
         }
     }
-    private void updateUI(GoogleSignInAccount account) {
-        // goto HomeActivity
-        Log.d(TAG, "Logged in!");
+    private void attemptUpdateUI(GoogleSignInAccount account) {
 
-        Log.d(TAG, "signInResult id: " + account.getId());
+        FindMyService fmyService = new FindMyService();
 
-        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-        homeIntent.putExtra("ACCOUNT", account);
-        startActivity(homeIntent);
+        Call<User> currentUserCall = fmyService.getUserByEmail(account.getEmail());
+
+        currentUserCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Unable to login!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                // goto HomeActivity
+                Log.d(TAG, "Logged in!");
+
+                Log.d(TAG, "signInResult id: " + account.getId());
+
+                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                homeIntent.putExtra("ACCOUNT", account);
+
+                User currentUser = response.body();
+
+                homeIntent.putExtra("CURRENTUSER",currentUser);
+                startActivity(homeIntent);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -41,8 +40,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +56,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     GoogleMap mMap = null;
 
     Spinner filterSpinner;
+
+    Location currentLocation;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -139,7 +138,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Log.d(TAG, "Lat: " + location.getLatitude() + " | Long: " + location.getLongitude());
+        currentLocation = location;
     }
 
     @Override
@@ -204,9 +203,9 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         if (mMap == null) { return; }
         clearMapPins();
         // TODO - lat, lon, and distance, are stubs, please extract it from current location
-        double lon = 10;
-        double lat = 10;
-        int distance = 10;
+        double lon = currentLocation.getLongitude();
+        double lat = currentLocation.getLatitude();
+        int distance = Integer.MAX_VALUE;
         Call<POI[]> callFilteredPOIs = findMyService.getFilteredPOIs(lon, lat, category, distance);
 
         callFilteredPOIs.enqueue(new Callback<POI[]>() {

@@ -3,19 +3,27 @@ package com.example.findmy.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.findmy.model.MarketListing;
-import com.example.findmy.model.POI;
 import com.example.findmy.databinding.FragmentMarketplaceBinding;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +42,9 @@ public class MarketplaceFragment extends Fragment {
     private String mParam2;
 
     private FragmentMarketplaceBinding binding;
+    private FindMyService findMyService;
+    private ArrayList<MarketListing> listingArray;
+    private MarketplaceListingAdapter marketplaceListingAdapter;
 
     public MarketplaceFragment() {
         // Required empty public constructor
@@ -69,23 +80,44 @@ public class MarketplaceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // retrieve findMyService from parent activity
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
         // Inflate the layout for this fragment
-
-
         binding = FragmentMarketplaceBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        ArrayList<MarketListing> listingArray = new ArrayList<>();
 
-        listingArray.add(MarketListing.testListing);
+        retrieveListings();
 
         // TODO: update with live location
         LatLng currentLatLng = new LatLng(0.0, 0.0);
         RecyclerView listingsRecylcer = binding.listingsRecylcer;
-        MarketplaceListingAdapter adapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
+        marketplaceListingAdapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
-        listingsRecylcer.setAdapter(adapter);
+        listingsRecylcer.setAdapter(marketplaceListingAdapter);
         listingsRecylcer.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return root;
+    }
+
+    private void retrieveListings() {
+        listingArray = new ArrayList<>();
+        Call<MarketListing[]> call = findMyService.getListings();
+
+        call.enqueue(new Callback<MarketListing[]>() {
+            @Override
+            public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
+                MarketListing[] retrievedListings = response.body();
+                listingArray.addAll(Arrays.asList(retrievedListings));
+                marketplaceListingAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<MarketListing[]> call, Throwable t) {
+                Toast.makeText(requireContext(), "Error: Unable to retrieve Marketplace listings", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 }
