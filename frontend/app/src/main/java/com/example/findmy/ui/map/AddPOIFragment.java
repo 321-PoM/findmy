@@ -3,6 +3,7 @@ package com.example.findmy.ui.map;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 
 import com.example.findmy.R;
 import com.example.findmy.databinding.FragmentAddPOIBinding;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +42,11 @@ public class AddPOIFragment extends Fragment implements AdapterView.OnItemSelect
     String newPOISelection;
 
     private final String TAG = "AddPOIFragment";
+    private FindMyService findMyService;
+    private Button button;
+    private EditText nameTextField;
+    private Spinner newPOISpinner;
+    private RatingBar rBar;
 
     public AddPOIFragment() {
         // Required empty public constructor
@@ -74,13 +85,18 @@ public class AddPOIFragment extends Fragment implements AdapterView.OnItemSelect
         // Inflate the layout for this fragment
         binding = FragmentAddPOIBinding.inflate(inflater, container, false);
 
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
+        setupTextField(binding);
         setupSpinner(binding);
+        setupRatingBar(binding);
+        setupButton(binding);
 
         return binding.getRoot();
     }
 
     private void setupSpinner(FragmentAddPOIBinding binding) {
-        Spinner newPOISpinner = binding.spinner;
+        newPOISpinner = binding.spinner;
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.new_poi_choices,
@@ -90,6 +106,37 @@ public class AddPOIFragment extends Fragment implements AdapterView.OnItemSelect
         newPOISpinner.setSelection(0);
         newPOISpinner.setAdapter(adapter);
         newPOISpinner.setOnItemSelectedListener(this);
+    }
+
+    private void setupTextField(FragmentAddPOIBinding binding) {
+        nameTextField = binding.editTextText;
+    }
+
+    private void setupRatingBar(FragmentAddPOIBinding binding) {
+        rBar = binding.ratingBar;
+    }
+
+    private void setupButton(FragmentAddPOIBinding binding) {
+        button = binding.button;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String poiName = getInputPOIName();
+                String poiType = getNewPOIType();
+                double rating = (double) rBar.getRating();
+
+                Log.d(TAG, "Submitting form: poiName " + poiName + "; poiType " + poiType + "; rating: " + rating);
+                // TODO: add logic here
+            }
+        });
+    }
+
+    private String getInputPOIName() {
+        return nameTextField.getText().toString();
+    }
+
+    private String getNewPOIType() {
+        return newPOISelection;
     }
 
     @Override

@@ -11,9 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MapPOIBottomSheet extends BottomSheetDialogFragment {
@@ -21,10 +24,13 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
     PoiBottomSheetBinding binding;
     private final POI poi;
 
+    RatingBar inputRatingBar;
+
     private View.OnClickListener submitRatingListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             // TODO: call backend handler
+            inputRatingBar.getRating();
         }
     };
 
@@ -36,6 +42,7 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
             // TODO: call backend handler
         }
     };
+    private FindMyService findMyService;
 
     public MapPOIBottomSheet(POI poi) {
         this.poi = poi;
@@ -44,6 +51,8 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
         binding = PoiBottomSheetBinding.inflate(inflater, container, false);
 
         TextView poiNameText = binding.poiName;
@@ -51,7 +60,9 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
         RatingBar currentRatingBar = binding.currentRatingBar;
         // TODO: update with POI rating
-        currentRatingBar.setRating((float) 3.5);
+        currentRatingBar.setRating(poi.getRating());
+
+        inputRatingBar = binding.editRatingBar;
 
         Button submitRatingButton = binding.ratingSubmitButton;
         submitRatingButton.setOnClickListener(submitRatingListener);

@@ -13,33 +13,42 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.model.User;
 import com.example.findmy.databinding.FragmentFriendsBinding;
+import com.example.findmy.network.FindMyService;
+import com.example.findmy.network.FindMyServiceViewModel;
 
 import java.util.ArrayList;
+
 
 public class FriendsFragment extends Fragment {
 
     private FragmentFriendsBinding binding;
+    private FindMyService findMyService;
+    private FriendsAdapter friendsAdapter;
+    private ArrayList<User> friendsArray;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FriendsViewModel friendsViewModel =
                 new ViewModelProvider(this).get(FriendsViewModel.class);
 
+        findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
         binding = FragmentFriendsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ArrayList<User> friendsArray = new ArrayList<>();
-
-        User testUser = User.testUser;
-        friendsArray.add(testUser);
+        retrieveFriends();
 
         RecyclerView friendsRecycler = binding.friendsRecycler;
-        FriendsAdapter adapter = new FriendsAdapter(requireActivity(), friendsArray);
+        friendsAdapter = new FriendsAdapter(requireActivity(), friendsArray);
 
-        friendsRecycler.setAdapter(adapter);
+        friendsRecycler.setAdapter(friendsAdapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return root;
+    }
+
+    private void retrieveFriends() {
+        friendsArray = new ArrayList<>();
     }
 
     @Override
