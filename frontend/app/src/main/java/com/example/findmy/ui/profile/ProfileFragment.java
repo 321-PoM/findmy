@@ -24,6 +24,7 @@ import com.example.findmy.databinding.FragmentProfileBinding;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +40,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ArrayList<POI> myPOIList;
     private MyPOIListAdapter mPOIAdapter;
+    private User currentUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class ProfileFragment extends Fragment {
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+
+        HomeActivity homeActivity = (HomeActivity) requireActivity();
+        currentUser = homeActivity.currentUser;
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -59,25 +64,31 @@ public class ProfileFragment extends Fragment {
         });
 
         // setup myPOI list
-        retrieveMyPOIs();
-
-        POI testPOI = POI.testPOI;
-        myPOIList.add(testPOI);
+        retrieveMyPOIsAndUpdateRecycler();
 
         // TODO: update with live location
-        LatLng currentLatLng = new LatLng(0.0, 0.0);
+        setupUsernameText(binding);
+
+        setupMapBuxText(binding);
+
+        return root;
+    }
+
+    private void setupMapBuxText(FragmentProfileBinding binding) {
+       TextView mapbuxText = binding.mapBuxAmountText;
+       mapbuxText.setText(String.valueOf(currentUser.getMapBux()));
+    }
+
+    private void setupRecycler(FragmentProfileBinding binding, List<POI> pois, LatLng currentLatLng) {
         RecyclerView myPOIRecycler = binding.myPOIRecycler;
         mPOIAdapter = new MyPOIListAdapter(requireActivity(), myPOIList, currentLatLng);
 
         myPOIRecycler.setAdapter(mPOIAdapter);
         myPOIRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        setupUsernameText(binding);
-
-        return root;
     }
 
-    private void retrieveMyPOIs() {
+    private void retrieveMyPOIsAndUpdateRecycler() {
         myPOIList = new ArrayList<POI>();
         Call<POI[]> call = findMyService.getPOIs();
         call.enqueue(new Callback<POI[]>() {
@@ -85,11 +96,13 @@ public class ProfileFragment extends Fragment {
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {
                 POI[] retrievedPOIs = response.body();
                 for (POI p : retrievedPOIs) {
-                    if (p.getCategory() == "myPOI") {
+                    Log.d(TAG, p.getCategory());
+                    if (p.getCategory().equals("myPOI") && p.getOwnderId() == currentUser.getId()) {
                         myPOIList.add(p);
                     }
                 }
-                mPOIAdapter.notifyDataSetChanged();
+                LatLng currentLatLng = new LatLng(0.0, 0.0);
+                setupRecycler(binding, myPOIList, currentLatLng);
             }
 
             @Override
@@ -117,9 +130,6 @@ public class ProfileFragment extends Fragment {
 
     private void setupUsernameText(FragmentProfileBinding binding) {
         TextView usernameText = binding.usernameText;
-
-        HomeActivity homeActivity = (HomeActivity) requireActivity();
-        User currentUser = homeActivity.currentUser;
         usernameText.setText(currentUser.getName());
     }
 

@@ -137,4 +137,8 @@ public class User implements Serializable {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    public int getMapBux() {
+        return mapBux;
+    }
 }
