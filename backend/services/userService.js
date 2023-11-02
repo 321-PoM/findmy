@@ -25,10 +25,10 @@ export const getUser = async (userId) => {
 
 export const getUserByEmail = async (email) => {
     try{
-        const user = prisma.User.findUnique({
+        const user = prisma.User.findMany({
             where: { email: email },
         })
-        if(user != null) return user;
+        if(user.length < 1) return user;
         const createdUser = prisma.User.create({
             data: { 
                 name: email,
