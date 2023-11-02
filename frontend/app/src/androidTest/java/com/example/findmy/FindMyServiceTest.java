@@ -1,5 +1,6 @@
 package com.example.findmy;
 
+import com.example.findmy.model.POI;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 import com.example.findmy.network.FindMyService;
@@ -32,7 +33,18 @@ public class FindMyServiceTest {
             String json = gson.toJson(user); //convert
             System.out.println("User: \n" + json);
         }
+    }
 
+    public void printPOI(POI[] pois) {
+        if (pois == null) {
+            System.out.println("NULL response");
+            return;
+        }
+        for (POI poi: pois) {
+            Gson gson = new Gson();
+            String json = gson.toJson(poi); //convert
+            System.out.println("POI: \n" + json);
+        }
     }
 
     @BeforeClass
@@ -212,5 +224,52 @@ public class FindMyServiceTest {
     }
 
     //POI
+    @Test
+    public void testGetPOIs() throws InterruptedException {
+        FindMyService findMyService = findMyServiceViewModel.getFindMyService();
+        findMyService.getPOIs().enqueue(new Callback<POI[]>() {
+            @Override
+            public void onResponse(Call<POI[]> call, Response<POI[]> response) {
+                printPOI(response.body());
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<POI[]> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+        // wait for response to call signal.countDown() before terminating test;
+        signal.await();
+    }
+
+    @Test
+    public void testGetPOIById() throws InterruptedException {
+        FindMyService findMyService = findMyServiceViewModel.getFindMyService();
+        findMyService.getPOI(1).enqueue(new Callback<POI>() {
+            @Override
+            public void onResponse(Call<POI> call, Response<POI> response) {
+                POI[] res = {response.body()};
+                printPOI(res);
+
+                signal.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<POI> call, Throwable t) {
+                System.out.println("Failed");
+
+                signal.countDown();
+            }
+        });
+        // wait for response to call signal.countDown() before terminating test;
+        signal.await();
+    }
+
+
+
 
 }
