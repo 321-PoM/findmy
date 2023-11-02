@@ -66,9 +66,9 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
     });
 };
 
-export const handleFriendRequest = async (friendshipId, accept) => {
+export const handleFriendRequest = async (friendshipId, acceptRequest) => {
     try {
-        if (accept) {
+        if (acceptRequest.toLowerCase() == "true") {
             const accepted = await prisma.Friend.update({
                 where: { friendshipId: Number(friendshipId) },
                 data: { status: accept },

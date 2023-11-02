@@ -8,7 +8,7 @@ router.get('/friends/:userId/received', friendController.listRequestsReceived);
 router.get('/friends/:userId/sent', friendController.listRequestsSent);
 router.get('/friend/:friendshipId', friendController.getFriendship);
 router.post('/friend', friendController.createFriendship);
-router.put('/friend', friendController.handleFriendRequest);
+router.put('/friend/:friendshipId/:acceptRequest', friendController.handleFriendRequest);
 router.delete('/friend', friendController.deleteFriendship);
 
 export default router;
