@@ -31,7 +31,7 @@ public class UserRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public UserRequest(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted, POI[] poi, Review[] reviews, MarketListing[] marketListings, Transaction[] transactions) {
+    public UserRequest(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
         this.name = name;
         this.email = email;
         this.mapBux = mapBux;
@@ -43,9 +43,9 @@ public class UserRequest {
         this.isDeleted = isDeleted;
     }
 
-    public static final UserRequest testUser = new UserRequest(
+    public static final UserRequest testUserRequest = new UserRequest(
             0,
-        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false, new POI[]{}, new Review[]{}, new MarketListing[]{}, new Transaction[]{}
+        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false
     );
 
     public String getName() {
