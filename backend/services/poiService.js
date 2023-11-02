@@ -100,7 +100,7 @@ export const listPois = async () => {
 // ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
 
-    const coords = getBoundingBox(currLat, currLong, distance);
+    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), distance);
 
     const bboxPois = await prisma.poi.findMany({
         where: {
