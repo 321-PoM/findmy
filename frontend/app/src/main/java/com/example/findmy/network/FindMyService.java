@@ -56,6 +56,8 @@ public class FindMyService implements Serializable {
     }
     public Call<POI> createPOI(POIRequest poi){ return apiService.createPOI(poi); }
     public Call<POI> updatePOI(int id, POIRequest poi) { return apiService.updatePOI(id, poi); }
+    public Call<POI> reportPOI(int id) { return apiService.reportPOI(id); }
+    public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); };
     public Call<POI> deletePOI(int id) { return apiService.deletePOI(id); }
 
     // Review
