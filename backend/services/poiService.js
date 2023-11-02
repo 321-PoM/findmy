@@ -111,8 +111,8 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
                 lt:coords.latMax,
             },
             longitudes: {
-                gt: lonMin,
-                lt: lonMax,
+                gt: coords.lonMin,
+                lt: coords.lonMax,
             }
         },
     })
