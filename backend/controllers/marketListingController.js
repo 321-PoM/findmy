@@ -11,7 +11,7 @@ export const createListing = async (req, res) => {
 
 export const getOne = async (req, res) => {
     try{
-        const listing = await marketListingService.getOne(req.param.listingId);
+        const listing = await marketListingService.getOne(req.params.listingId);
         res.status(200).json(listing);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -29,7 +29,7 @@ export const getAll = async (req, res) => {
 
 export const getUserListings = async (req, res) => {
     try{
-        const listings = await marketListingService.getUserListings(req.param.userId);
+        const listings = await marketListingService.getUserListings(req.params.userId);
         res.status(200).json(listings);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -38,7 +38,7 @@ export const getUserListings = async (req, res) => {
 
 export const updateListing = async (req, res) => {
     try{
-        const listing = await marketListingService.updateListing(req.param.listingId, req.body.data);
+        const listing = await marketListingService.updateListing(req.params.listingId, req.body.data);
         res.status(200).json(listing);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -47,7 +47,7 @@ export const updateListing = async (req, res) => {
 
 export const deleteListing = async (req, res) => {
     try{
-        const listing = await marketListingService.deleteListing(req.param.listingId);
+        const listing = await marketListingService.deleteListing(req.params.listingId);
         res.status(200).json(listing);
     } catch (error) {
         res.status(500).json({ message: error.message });

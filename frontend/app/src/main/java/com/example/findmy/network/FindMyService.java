@@ -1,5 +1,7 @@
 package com.example.findmy.network;
 
+import com.example.findmy.model.Friendship;
+import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
@@ -83,4 +85,27 @@ public class FindMyService implements Serializable {
     public Call<Transaction> createTransaction(int buyerId, int listingId) { return apiService.createTransaction(buyerId, listingId); }
     public Call<Transaction> updateTransaction(Transaction transaction) { return apiService.updateTransaction(transaction.getTransactionId(), transaction); }
     public Call<Transaction> deleteTransaction(int id) { return apiService.deleteTransaction(id); }
+
+    // Friendship
+
+    public Call<Friendship[]> getFriendships(int userId) {
+        return apiService.getFriendships(userId);
+    }
+    public Call<Friendship[]> getReceivedFriendshipRequests(int userId) {
+        return apiService.getReceivedFriendshipRequests(userId);
+    }
+    public Call<Friendship[]> getSentFriendshipRequests(int userId) {
+        return apiService.getSentFriendshipRequests(userId);
+    }
+    public Call<Friendship> getFriendship(int friendshipId) {
+        return apiService.getFriendship(friendshipId);
+    }
+    public Call<Friendship> createFriendship(FriendshipRequest friendshipRequest) {
+        return apiService.createFriendship(friendshipRequest);
+    }
+
+    public Call<Friendship> respondToFriendship(int friendshipId, boolean acceptRequest) {
+        String accept = acceptRequest? "true" : "false";
+        return apiService.respondToFriendship(friendshipId, accept);
+    }
 }

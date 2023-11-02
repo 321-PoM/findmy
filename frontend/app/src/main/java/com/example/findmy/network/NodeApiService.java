@@ -1,5 +1,7 @@
 package com.example.findmy.network;
 
+import com.example.findmy.model.Friendship;
+import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
@@ -105,4 +107,18 @@ public interface NodeApiService {
     Call<Transaction> updateTransaction(@Path("transactionId") int id, @Body Transaction transaction);
     @DELETE("/transaction/{transactionId}")
     Call<Transaction> deleteTransaction(@Path("transactionId") int id);
+
+    // Friendship
+    @GET("/friends/{userId}")
+    Call<Friendship[]> getFriendships(@Path("userId") int userId);
+    @GET("/friends/{userId}/received")
+    Call<Friendship[]> getReceivedFriendshipRequests(@Path("userId") int userId);
+    @GET("/friends/{userId}/sent")
+    Call<Friendship[]> getSentFriendshipRequests(@Path("userId") int id);
+    @GET("/friend/{friendshipId}")
+    Call<Friendship> getFriendship(@Path("friendshipId") int friendshipId);
+    @POST("/friend")
+    Call<Friendship> createFriendship(@Body FriendshipRequest friendshipRequest);
+    @PUT("/friend/{friendshipId}/{acceptRequest}")
+    Call<Friendship> respondToFriendship(@Path("friendshipId") int friendshipId, @Path("acceptRequest") String acceptRequest);
 }

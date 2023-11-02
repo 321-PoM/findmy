@@ -29,9 +29,9 @@ export const updatePoi = async (req, res) => {
 
 export const reportPoi = async (req, res) => {
   try{
-    const reportReviewRatio = await poiService.reportPoi(req.param.id);
+    const reportReviewRatio = await poiService.reportPoi(req.params.id);
     if(reportReviewRatio >= 1/2){
-      const del = await poiService.deletePoi(req.param.id);
+      const del = await poiService.deletePoi(req.params.id);
     }
     res.status(200).json(reportReviewRatio)
   } catch (error) {
