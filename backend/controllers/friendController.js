@@ -29,7 +29,7 @@ export const listRequestsSent = async (req, res) => {
 
 export const getFriendship = async (req, res) => {
     try {
-        const friend = await friendService.getFriendship(req.body.friendshipId)
+        const friend = await friendService.getFriendship(req.param.friendshipId)
         res.status(200).json(friend);
     } catch (err) {
         res.status(500).json({ message: "Internal Server Error" });
