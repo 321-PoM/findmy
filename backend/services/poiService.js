@@ -100,7 +100,7 @@ export const listPois = async () => {
 // ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
 
-    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), distance);
+    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance));
 
     var bboxPois;
 
@@ -136,7 +136,7 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
     }
 
 
-    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitude}, distance));
+    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitudes}, parseInt(distance)));
 }
 
 // ChatGPT usage: Partial
