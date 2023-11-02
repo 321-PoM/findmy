@@ -15,17 +15,7 @@
         android:id="@+id/navigation_map"
         android:name="com.example.findmy.ui.map.MapsFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_maps" >
-        <action
-            android:id="@+id/action_navigation_map_to_navigation_add_poi"
-            app:destination="@id/navigation_add_poi"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigation_map"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@id/navigation_marketplace"
@@ -45,9 +35,4 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
-    <fragment
-        android:id="@+id/navigation_add_poi"
-        android:name="com.example.findmy.ui.map.AddPOIFragment"
-        android:label="@string/title_add_poi"
-        tools:layout="@layout/fragment_add_p_o_i" />
 </navigation>
