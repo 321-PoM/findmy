@@ -1,6 +1,8 @@
 package com.example.findmy.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -14,7 +16,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.findmy.model.User;
 import com.example.findmy.R;
 import com.example.findmy.databinding.ActivityHomeBinding;
-import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,8 +31,12 @@ public class HomeActivity extends BaseActivity {
     private AppBarConfiguration appBarConfiguration;
     private FindMyServiceViewModel findMyServiceViewModel;
 
+    public LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
         super.onCreate(savedInstanceState);
 
         Intent intentFromMain = getIntent();
