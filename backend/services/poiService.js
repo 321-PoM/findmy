@@ -52,32 +52,132 @@ export const reportPoi = async (poiId) => {
     }
 }
 
-export const transferPoi = async (transactionId) => {
+export const buyPoi = async (poiId, buyerId) => {
     try{
-        const transaction = prisma.Transaction.findUnique({
-            where: { id: Number(transactionId)},
-            include: { 
-                buyerId: true,
-                listingId: true,
+        // get POI
+        const poiOnSale = await prisma.poi.findFirst({
+            where: { id: Number(poiId) },
+            include: {
+                ownerId: true,
             }
         });
+        if(!poiOnSale) throw new Error("Cannot find by poiId");
 
-        const listedPrice = prisma.marketListing.findUnique({
-            where: { id: transaction.listingId },
-            include: { price: true },
+        // get Listing
+        const poiListing = await prisma.marketListing.findFirst({
+            where: {
+                poiId: Number(poiId),
+                sellerId: Number(poiOnSale.ownerId),
+            },
+            include: {
+                price: true,
+                id: true,
+            }
         });
+        if(!poiListing) throw new Error("Cannot find listing");
 
-        const buyerWallet = prisma.User.findUnique({
-            where: { id: transaction.buyerId },
+        // get Seller and Buyer
+        const seller = await prisma.User.findUnique({
+            where: { id: Number(poiOnSale.ownerId) },
+            include: {
+                id: true,
+                mapBux: true,
+            },
+        });
+        const buyer = await prisma.User.findUnique({
+            where: { id: Number(buyerId) },
+            include: {
+                id: true,
+                mapBux: true,
+            }
+        });
+        if(!seller || !buyer) throw new Error("Cannot find seller/buyer");
+        if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
+
+        // Update wallets
+        const sellerWalletAfter = await prisma.User.update({
+            where: { id: Number(seller.id) },
+            data: { mapBux: { increment: Number(poiListing.price) }},
             include: { mapBux: true },
         });
+        const buyerWalletAfter = await prisma.User.update({
+            where: { id: Number(buyer.id) },
+            data: { mapBux: { decrement: Number(poiListing.price) }},
+            include: { mapBux: true },
+        });
+        if(!sellerWalletAfter || !buyerWalletAfter){
+            throw {
+                position: 0, 
+                buyer: buyer,
+                seller: seller,
+                message: "Transfer mapBux failed, putting funds back"
+            };
+        }
+        // Update poi
+        const poiWithNewOwner = await prisma.poi.update({
+            where: { id: Number(id) },
+            data: { ownerId: Number(buyerId) },
+            include: { ownerId: true },
+        })
+        if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
+            throw {
+                position: 1,
+                buyer: buyer,
+                seller: seller,
+                originalOwner: seller.id,
+                poiId: id,
+                message: "Change poi owner failed, putting funds and owner back now"
+            }
+        } 
 
-        if(buyerWallet.mapBux < listedPrice) throw new Error("If you're broke just say that");
+        // Delete listing
+        const deleteListing = await prisma.marketListing.update({
+            where: { id: Number(poiListing.id) },
+            data: { 
+                isActive: false,
+                isDeleted: true,
+            },
+            select: { isDeleted: true },
+        });
+        if(!deleteListing || !deleteListing.isDeleted) {
+            throw {
+                position: 2,
+                listingId: poiListing.id,
+                message: "Delete listing failed, transaction was successful"
+            };
+        } 
 
-        const updateBux = await updateUserBux(transaction.buyerId, false, listedPrice.price);
-        return updateBux;
+        return poiWithNewOwner;
     } catch (err) {
-        throw new err;
+        if(!err.hasOwnProperty('position')) throw err;
+        // Put money back if failed during transaction
+        if(err.position == 0 || err.position == 1) {
+            const putBackBuyer = await prisma.User.update({
+                where: { id: Number(err.buyer.id) },
+                data: err.buyer,
+            });
+            const putBackSeller = await prisma.User.update({
+                where: { id: Number(err.seller.id) },
+                data: err.seller,
+            });
+        }
+        // Put owner back if failed after owner transfer
+        if(err.position == 1) {
+            const putBackOwner = await prisma.poi.update({
+                where: { id: Number(err.poiId) },
+                data: { ownerId: Number(err.originalOwner) },
+            })
+        }
+        if(err.position == 2) {
+            const deleteListing = await prisma.marketListing.update({
+                where: { id: Number(err.listingId) },
+                data: { 
+                    isActive: false,
+                    isDeleted: true,
+                }
+            });
+        }
+        throw new Error(err.message);
     }
 }
 
