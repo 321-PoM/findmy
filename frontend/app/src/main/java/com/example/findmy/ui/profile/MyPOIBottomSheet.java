@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,14 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         @Override
         public void onClick(View v) {
             User currentUser = ((HomeActivity) requireActivity()).currentUser;
-            MarketListingRequest request = new MarketListingRequest(getListingPrice(), currentUser.getId(), myPOI.getId(), true, false);
+            int listingPrice;
+            try {
+                listingPrice = getListingPrice();
+            } catch (NumberFormatException e) {
+                Toast.makeText(requireContext(), "Invalid Price - Enter a different value", Toast.LENGTH_LONG).show();
+                return;
+            }
+            MarketListingRequest request = new MarketListingRequest(listingPrice, currentUser.getId(), myPOI.getId(), true, false);
             findMyService.createListing(request).enqueue(new Callback<MarketListing>() {
                 @Override
                 public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
@@ -112,7 +120,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         inputListingPriceText = binding.inputListingPrice;
     }
 
-    private int getListingPrice() {
+    private int getListingPrice() throws NumberFormatException {
         String listingPrice = String.valueOf(inputListingPriceText.getText());
         return Integer.parseInt(listingPrice);
     }

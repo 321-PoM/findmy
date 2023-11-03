@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -39,7 +40,12 @@ public class FriendsFragment extends Fragment {
     private final View.OnClickListener addFriendListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            initiateFriendRequest(getFriendTextField());
+            String text = getFriendTextField();
+            if(text == null || text.isEmpty()) {
+                Toast.makeText(requireContext(), "Invalid Input - Enter a different value", Toast.LENGTH_LONG).show();
+                return;
+            }
+            initiateFriendRequest(text);
         }
     };
     private EditText friendTextField;
