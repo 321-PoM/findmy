@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.findmy.model.MapBuxRequest;
 import com.example.findmy.model.MapBuxResponse;
 import com.example.findmy.model.POI;
+import com.example.findmy.model.POIComparator;
 import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
@@ -138,6 +139,10 @@ public class ProfileFragment extends Fragment {
                 }
                 @SuppressLint("MissingPermission") Location currentLocation = ((HomeActivity) requireActivity()).locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                // Sort list by distance
+                myPOIList.sort(new POIComparator(currentLatLng));
+
                 setupRecycler(binding, myPOIList, currentLatLng);
             }
 

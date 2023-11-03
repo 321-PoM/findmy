@@ -17,12 +17,14 @@ import android.widget.Toast;
 
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.databinding.FragmentMarketplaceBinding;
+import com.example.findmy.model.POIComparator;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +50,7 @@ public class MarketplaceFragment extends Fragment {
     private FindMyService findMyService;
     private ArrayList<MarketListing> listingArray;
     private MarketplaceListingAdapter marketplaceListingAdapter;
+    private LatLng currentLatLng;
 
     public MarketplaceFragment() {
         // Required empty public constructor
@@ -96,7 +99,7 @@ public class MarketplaceFragment extends Fragment {
         LocationManager locationManager = ((HomeActivity) requireActivity()).locationManager;
         @SuppressLint("MissingPermission") Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        LatLng currentLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        currentLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         RecyclerView listingsRecylcer = binding.listingsRecylcer;
         marketplaceListingAdapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
@@ -115,6 +118,15 @@ public class MarketplaceFragment extends Fragment {
             public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
                 MarketListing[] retrievedListings = response.body();
                 listingArray.addAll(Arrays.asList(retrievedListings));
+
+                listingArray.sort(new Comparator<MarketListing>() {
+                    @Override
+                    public int compare(MarketListing o1, MarketListing o2) {
+                        POIComparator poiComparator = new POIComparator(currentLatLng);
+                        return poiComparator.compare(o1.getPoi(), o2.getPoi());
+                    }
+                });
+
                 marketplaceListingAdapter.notifyDataSetChanged();
             }
 
