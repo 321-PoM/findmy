@@ -42,6 +42,10 @@ export const reportPoi = async (poiId) => {
 
         // There's at least one review by default, but just quick sanity check.
         if (numReview == 0) {
+            // One grace report.
+            if (updatePoi.reports == 1) {
+                return 0;
+            }
             numReview = 1;
         }
 
