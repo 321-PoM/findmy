@@ -93,7 +93,7 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         if (distanceToPOI >= maxDistanceToDisplay) {
             distanceDisplayText = "Very Far";
         } else {
-            distanceDisplayText = String.valueOf((distanceToPOI));
+            distanceDisplayText = String.valueOf((distanceToPOI))+'m';
         }
         return distanceDisplayText;
     }

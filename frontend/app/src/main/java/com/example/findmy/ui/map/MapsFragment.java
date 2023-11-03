@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
@@ -29,6 +28,7 @@ import com.example.findmy.model.POI;
 import com.example.findmy.R;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
+import com.example.findmy.ui.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,8 +46,6 @@ import retrofit2.Response;
 public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
-    private LocationManager locationManager;
-
     private FloatingActionButton newPOIButton;
 
     private FindMyService findMyService;
@@ -89,6 +87,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             updateMapPins(spinnerSelection);
         }
     };
+    private LocationManager locationManager;
 
     @Nullable
     @Override
@@ -97,6 +96,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                              @Nullable Bundle savedInstanceState) {
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
+        locationManager = ((HomeActivity) requireActivity()).locationManager;
         getLocationPermissions();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -175,7 +175,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     @SuppressLint("MissingPermission")
     private void getLocationPermissions() {
         FragmentActivity parentActivity = requireActivity();
-        locationManager = (LocationManager) parentActivity.getSystemService(Context.LOCATION_SERVICE);
         if (!checkLocationPermissions()) {
             // get permissions
             String[] permissionsRequested = {

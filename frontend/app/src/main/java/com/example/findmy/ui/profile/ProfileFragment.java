@@ -1,5 +1,8 @@
 package com.example.findmy.ui.profile;
 
+import android.annotation.SuppressLint;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findmy.model.MapBuxRequest;
+import com.example.findmy.model.MapBuxResponse.MapBuxResponse;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
@@ -71,12 +76,42 @@ public class ProfileFragment extends Fragment {
 
         setupMapBuxText(binding);
 
+        setupGetMapBuxButton(binding);
+
         return root;
+    }
+
+    private void setupGetMapBuxButton(FragmentProfileBinding binding) {
+        binding.getMapBuxButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findMyService.updateUserMapBux(currentUser.getId(), new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
+                    @Override
+                    public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
+                       if (!response.isSuccessful()) {
+                           findMyService.showErrorToast(requireContext());
+                           return;
+                       }
+                       updateMapBuxText(binding, response.body().getMapBux());
+                    }
+
+                    @Override
+                    public void onFailure(Call<MapBuxResponse> call, Throwable t) {
+                        findMyService.showErrorToast(requireContext());
+                    }
+                });
+            }
+        });
     }
 
     private void setupMapBuxText(FragmentProfileBinding binding) {
        TextView mapbuxText = binding.mapBuxAmountText;
        mapbuxText.setText(String.valueOf(currentUser.getMapBux()));
+    }
+
+    private void updateMapBuxText(FragmentProfileBinding binding, int amount) {
+        TextView mapBuxText = binding.mapBuxAmountText;
+        mapBuxText.setText(String.valueOf(amount));
     }
 
     private void setupRecycler(FragmentProfileBinding binding, List<POI> pois, LatLng currentLatLng) {
@@ -101,7 +136,8 @@ public class ProfileFragment extends Fragment {
                         myPOIList.add(p);
                     }
                 }
-                LatLng currentLatLng = new LatLng(0.0, 0.0);
+                @SuppressLint("MissingPermission") Location currentLocation = ((HomeActivity) requireActivity()).locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 setupRecycler(binding, myPOIList, currentLatLng);
             }
 
