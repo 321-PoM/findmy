@@ -120,6 +120,8 @@ const distFromSafeZone = async (poiId, rating) => {
             isDeleted: false,
         }
     });
+    console.log("poiReviews");
+    console.log(poiReviews);
     const poiRatings = poiReviews.map(review => review.rating);
     if(poiRatings.length < 4) return 0;
 
