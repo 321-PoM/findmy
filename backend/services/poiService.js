@@ -76,7 +76,6 @@ export const buyPoi = async (poiId, buyerId) => {
         if(!seller || !buyer) throw new Error("Cannot find seller/buyer");
         if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
 
-        console.log("update wallets");
         // Update wallets
         const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing.price);
         const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing.price);
@@ -88,7 +87,6 @@ export const buyPoi = async (poiId, buyerId) => {
                 message: "Transfer mapBux failed, putting funds back"
             };
         }
-        console.log("updatePoi");
         // Update poi
         const poiWithNewOwner = await updatePoi(id, { ownerId: Number(buyerId) });
         if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
@@ -102,10 +100,9 @@ export const buyPoi = async (poiId, buyerId) => {
             }
         } 
 
-        console.log("delete listing");
         // Delete listing
         const del = await deleteListing(poiListing.id);
-        if(!del || !del.isDeleted) {
+        if(!del) {
             throw {
                 position: 2,
                 listingId: poiListing.id,
@@ -113,7 +110,6 @@ export const buyPoi = async (poiId, buyerId) => {
             };
         } 
 
-        console.log("success");
         return poiWithNewOwner;
     } catch (err) {
         if(!err.hasOwnProperty('position')) throw err;
