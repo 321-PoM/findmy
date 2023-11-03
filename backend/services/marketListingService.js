@@ -21,7 +21,11 @@ export const getOne = async (id) => {
             price: true,
             sellerId: true,
             poiId: true,
-        } 
+        },
+        include: { 
+            poi: true,
+            seller: true,
+        }
     });
 };
 
@@ -33,6 +37,10 @@ export const getAll = async () => {
             price: true,
             sellerId: true,
             poiId: true,
+        },
+        include: { 
+            poi: true,
+            seller: true,
         }
     });
 };
@@ -48,6 +56,10 @@ export const getUserListings = async (userId) => {
             price: true,
             sellerId: true,
             poiId: true,
+        },
+        include: { 
+            poi: true,
+            seller: true,
         }
     });
 };
@@ -82,5 +94,9 @@ export const getMarketListingByUser = async (userId) => {
             isDeleted: false,
             ownerId: uid,
         },
+        include: { 
+            poi: true,
+            seller: true,
+        }
     });
 };
