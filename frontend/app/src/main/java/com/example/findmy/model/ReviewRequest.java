@@ -21,6 +21,12 @@ public class ReviewRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
+    public ReviewRequest(int userId, int poiId, int rating) {
+        this.userId = userId;
+        this.poiId = poiId;
+        this.rating = rating;
+    }
+
 
     public int getUserId() {
         return userId;

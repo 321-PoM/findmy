@@ -63,7 +63,7 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         MarketListing listing = listings.get(position);
 
         TextView nameText = holder.nameText;
-        nameText.setText(String.valueOf(listing.getId()));
+        nameText.setText(String.valueOf(listing.getPoi().getDescription()));
 
         TextView distanceText = holder.distanceText;
 

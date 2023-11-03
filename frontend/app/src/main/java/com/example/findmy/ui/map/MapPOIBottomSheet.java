@@ -16,8 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.model.Review;
+import com.example.findmy.model.ReviewRequest;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
+import com.example.findmy.ui.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import retrofit2.Call;
@@ -36,13 +39,19 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         public void onClick(View v) {
             int rating = (int) inputRatingBar.getRating();
 
-            findMyService.updateRating(poi.getId(), rating).enqueue(
+            User currentUser = ((HomeActivity) requireActivity()).currentUser;
+
+            ReviewRequest request = new ReviewRequest(currentUser.getId(), poi.getId(), rating);
+
+            findMyService.createReview(request).enqueue(
                     new Callback<Review>() {
                         public void onResponse(Call<Review> call, Response<Review> response) {
                             if (!response.isSuccessful()) {
                                 findMyService.showErrorToast(requireContext());
+                                return;
                             }
                             Toast.makeText(MapPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
+                            dismiss();
                         }
 
                         @Override
