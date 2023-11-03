@@ -129,8 +129,6 @@ const distFromSafeZone = async (poiId, rating) => {
         }
     });
     const poiRatings = poiReviews.map(review => review['rating']);
-    console.log("poiRatings: ");
-    console.log(poiRatings);
     if(poiRatings.length < 4) return 0;
 
     // find mean
@@ -145,9 +143,6 @@ const distFromSafeZone = async (poiId, rating) => {
     let max = mean + 1.5 * stdev;
     let min = mean - 1.5 * stdev;
 
-    console.log(`rating: ${rating}`);
-    console.log(`max: ${max}`);
-    console.log(`min: ${min}`);
     if(rating > max) return rating - max;
     else if(rating < min) return min - rating;
     return 0;
