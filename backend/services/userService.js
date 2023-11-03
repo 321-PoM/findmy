@@ -90,7 +90,6 @@ export const listUsers = async () => {
 export const getUserReliabilityScore = async (userId) => {
     try {
         // Query for Pois reviewed by the user
-        console.log(userId)
         const reviewsByUser = await prisma.Review.findMany({
             where: {
                 userId: Number(userId),
@@ -101,25 +100,24 @@ export const getUserReliabilityScore = async (userId) => {
                 rating: true
             }
         });
-        console.log(reviewsByUser);
         if(reviewsByUser.length < 1) return 100;
+	console.log("reviewsByUser");
+	console.log(reviewsByUser);
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
         let sumDist = reviewsByUser
-                        .map(review => distFromSafeZone(review))
+                        .map(review => await distFromSafeZone(review.poiId, review.rating))
                         .reduce((sum, dist) => sum += dist, 0);
-                        
+                       
+	console.log(sumDist);
         return 100 - sumDist / totalReviews;
     } catch (err) {
         throw err; 
     }
 };
 
-const distFromSafeZone = async (review) => {
-    let poiId = review['poiId'];
-    let rating = review['rating'];
-
+const distFromSafeZone = async (poiId, rating) => {
     const poiReviews = await prisma.Review.findMany({
         where: {
             poiId: poiId,
@@ -130,6 +128,8 @@ const distFromSafeZone = async (review) => {
         }
     });
     const poiRatings = poiReviews.map(review => review['rating']);
+    console.log("poiRatings: ");
+    console.log(poiRatings);
     if(poiRatings.length < 4) return 0;
 
     // find mean
@@ -144,6 +144,9 @@ const distFromSafeZone = async (review) => {
     let max = mean + 1.5 * stdev;
     let min = mean - 1.5 * stdev;
 
+    console.log(`rating: ${rating}`);
+    console.log(`max: ${max}`);
+    console.log(`min: ${min}`);
     if(rating > max) return rating - max;
     else if(rating < min) return min - rating;
     return 0;
