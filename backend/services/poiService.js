@@ -88,7 +88,7 @@ export const buyPoi = async (poiId, buyerId) => {
             };
         }
         // Update poi
-        const poiWithNewOwner = await updatePoi(id, { ownerId: Number(buyerId) });
+        const poiWithNewOwner = await updatePoi(poiId, { ownerId: Number(buyerId) });
         if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
             throw {
                 position: 1,
