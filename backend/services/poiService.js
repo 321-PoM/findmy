@@ -37,7 +37,7 @@ export const reportPoi = async (poiId) => {
         });
     
         const numReview = await prisma.Review.count({
-            where: { poiId: numReports['id'] }
+            where: { poiId: updatedPoi['id'] }
         });
 
         // There's at least one review by default, but just quick sanity check.
