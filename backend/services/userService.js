@@ -19,6 +19,8 @@ export const getUser = async (userId) => {
     return await prisma.User.findUnique({
         where: {
             id: uid,
+            isDeleted: false,
+            isActive: true,
         },
     });
 };
@@ -26,7 +28,11 @@ export const getUser = async (userId) => {
 export const getUserByEmail = async (email) => {
     try{
         const user = prisma.User.findMany({
-            where: { email: email },
+            where: { 
+                email: email,
+                isDeleted: false,
+                isActive: true,
+            },
         })
         if(user.length < 1) return user;
         const createdUser = prisma.User.create({
