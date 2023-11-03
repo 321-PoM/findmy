@@ -94,13 +94,10 @@ export const getUserReliabilityScore = async (userId) => {
             where: {
                 userId: Number(userId),
                 isDeleted: false,
-            },
-            select: {
-                poiId: true,
-                rating: true
             }
         });
         if(reviewsByUser.length < 1) return 100;
+        console.log(reviewsByUser);
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
@@ -110,10 +107,8 @@ export const getUserReliabilityScore = async (userId) => {
             distOfReview.push(dist);
         }
         let sumDist = reviewsByUser.reduce((sum, dist) => sum += dist, 0);
-                       
-	    console.log(`sumDist: ${sumDist}`);
-        console.log(`totalReviews: ${totalReviews}`);
-        return 100 - sumDist / totalReviews;
+        let meanDist = (sumDist === 0) ? 0 : parseInt(sumDist / totalReviews);
+        return 100 - meanDist;
     } catch (err) {
         throw err; 
     }
