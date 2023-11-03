@@ -226,6 +226,13 @@ export const calcPoiRating = async (poiId) => {
                 reliabilityScore: true,
             }
         });
+        if(allRatings.length < 1){
+            const poi = await prisma.poi.findUnique({
+                where: { poiId: Number(poiId) },
+                include: { rating: true },
+            });
+            return poi.rating;
+        }
         
         // Calculate new weighted rating
         let totalWeight = 0;
