@@ -141,8 +141,8 @@ const distFromSafeZone = async (poiId, rating) => {
     let sumDist = poiRatings.reduce((sum, rating) => sum += Math.pow((rating - mean), 2), 0);
     let stdev = Math.pow((sumDist / numRatings), 0.5);
 
-    let max = mean + 1.5 * stdev;
-    let min = mean - 1.5 * stdev;
+    let max = mean + stdev;
+    let min = mean - stdev;
 
     if(rating > max) return rating - max;
     else if(rating < min) return min - rating;
