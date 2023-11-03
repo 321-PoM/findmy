@@ -69,6 +69,7 @@ public class FindMyService implements Serializable {
     public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }
     public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); }
     public Call<POI> deletePOI(int id) { return apiService.deletePOI(id); }
+    public Call<Void> buyPoi(int poiId, int buyerId) { return apiService.buyPoi(poiId, buyerId); }
 
     // Review
     public Call<Review[]> listReviews(String searchBy, int id) { return apiService.listReviews(searchBy, id); }

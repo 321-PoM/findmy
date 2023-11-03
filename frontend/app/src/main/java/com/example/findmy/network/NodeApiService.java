@@ -72,6 +72,9 @@ public interface NodeApiService {
     @DELETE("/poi/{id}")
     Call<POI> deletePOI(@Path("id") int id);
 
+    @PUT("/poi/{id}/buy/{buyerId}")
+    Call<Void> buyPoi(@Path("id") int poiId, @Path("buyerId") int buyerId);
+
     // Reviews
     @GET("/reviews/{searchBy}/{id}")
     Call<Review[]> listReviews(@Path("searchBy") String search, @Path("id") int id);

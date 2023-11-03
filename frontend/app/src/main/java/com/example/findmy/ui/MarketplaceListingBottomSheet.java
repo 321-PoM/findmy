@@ -13,18 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.databinding.MarketplaceListingBottomSheetBinding;
 import com.example.findmy.model.MarketListing;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    View.OnClickListener purchaseButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // TODO: add calls to backend
-        }
-    };
+public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
 
     MarketplaceListingBottomSheetBinding binding;
     private final MarketListing marketplaceListing;
@@ -51,10 +49,38 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
         TextView ownerNameText = binding.ownerName ;
         ownerNameText.setText(marketplaceListing.getSeller().getName());
 
-        Button purchaseButton = binding.purchaseButton;
-        purchaseButton.setOnClickListener(purchaseButtonListener);
+        setupPurchaseButton(binding);
 
         return binding.getRoot();
+    }
+
+    private void setupPurchaseButton(MarketplaceListingBottomSheetBinding binding) {
+        User currentUser = ((HomeActivity) requireActivity()).currentUser;
+        Button purchaseButton = binding.purchaseButton;
+        View.OnClickListener purchaseButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findMyService.buyPoi(marketplaceListing.getPoi().getId(), currentUser.getId()).enqueue(
+                        new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(!response.isSuccessful()) {
+                                    findMyService.showErrorToast(requireContext());
+                                    return;
+                                }
+                                dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                findMyService.showErrorToast(requireContext());
+                            }
+                        }
+                );
+            }
+        };
+
+        purchaseButton.setOnClickListener(purchaseButtonListener);
     }
 
 }
