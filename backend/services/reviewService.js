@@ -45,15 +45,15 @@ export const getReview = async (id) => {
     })
 }
 
-export const createReview = async (poiId, data) => {
+export const createReview = async (poiId, userId, rating, desc) => {
     try{
-        let rScore = getUserReliabilityScore(data.userId);
+        let rScore = getUserReliabilityScore(Number(userId));
         return await prisma.Review.create({
             data: {
                 poiId: Number(poiId),
-                userId: data.userId,
-                rating: data.rating,
-                description: data.desc,
+                userId: Number(userId),
+                rating: rating,
+                description: String(desc),
                 reliabilityScore: rScore,
             }
         });
