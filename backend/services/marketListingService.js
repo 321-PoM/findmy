@@ -91,3 +91,13 @@ export const getMarketListingByUser = async (userId) => {
         }
     });
 };
+
+export const getMarketListingsByPoiId = async (poiId) => {
+    return await prisma.marketListing.findMany({
+        where: {
+            poiId: Number(poiId),
+            isActive: true,
+            isDeleted: false
+        }
+    });
+};

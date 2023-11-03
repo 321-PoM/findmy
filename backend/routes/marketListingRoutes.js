@@ -7,6 +7,7 @@ router.post('/marketListing', marketListingController.createListing);
 router.get('/marketListing/:listingId', marketListingController.getOne);
 router.get('/marketListings', marketListingController.getAll);
 router.get('/marketListings/:userId', marketListingController.getUserListings);
+router.get('/marketListing/poi/:poiId', marketListingController.getMarketListingsByPoi);
 router.put('/marketListing/:listingId', marketListingController.updateListing);
 router.delete('/marketListing/:listingId', marketListingController.deleteListing);
 
