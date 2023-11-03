@@ -45,7 +45,7 @@ export const reportPoi = async (poiId) => {
             numReview = 1;
         }
 
-        return update.reports / numReview;
+        return updatedPoi.reports / numReview;
     } catch (err) {
         throw err;
     }
