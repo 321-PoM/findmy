@@ -10,7 +10,7 @@ public class FriendshipRequest {
     private int userIdTo;
 
 
-    public FriendshipRequest( int userIdFrom, int userIdTo, String status) {
+    public FriendshipRequest( int userIdFrom, int userIdTo) {
         this.userIdFrom = userIdFrom;
         this.userIdTo = userIdTo;
     }
