@@ -64,6 +64,7 @@ export const buyPoi = async (poiId, buyerId) => {
             where: {
                 poiId: Number(poiId),
                 sellerId: Number(poiOnSale.ownerId),
+                isDeleted: false,
             }
         });
         console.log(poiListing);
