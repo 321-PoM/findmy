@@ -62,7 +62,7 @@ export const updateListing = async (id, data) => {
 };
 
 export const deleteListing = async (id) => {
-    return prisma.marketListing.update({
+    return await prisma.marketListing.update({
         where: { id: Number(id) },
         data: { 
             isActive: false,

@@ -39,10 +39,10 @@ export const reportPoi = async (req, res) => {
     }
 }
 
-export const transferPoi = async (req, res) => {
+export const buyPoi = async (req, res) => {
     try{
-        const transaction = await poiService.transactPoi(req.params.transactionId);
-        res.status(200).json(transaction);
+        const success = await poiService.buyPoi(req.params.id, req.params.buyerId);
+        res.status(200).json(success);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

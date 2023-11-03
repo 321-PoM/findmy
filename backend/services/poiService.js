@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { isPointWithinRadius } from 'geolib';
-import { updateUserBux } from './userService.js';
+import { PrismaClient } from "@prisma/client";
+import { isPointWithinRadius } from "geolib";
+import { getUser, updateUserBux, updateUser } from "./userService.js";
+import { getOne, deleteListing } from "./marketListingService.js";
 
 const prisma = new PrismaClient();
 
@@ -52,32 +53,76 @@ export const reportPoi = async (poiId) => {
     }
 }
 
-export const transferPoi = async (transactionId) => {
+export const buyPoi = async (poiId, buyerId) => {
     try{
-        const transaction = prisma.Transaction.findUnique({
-            where: { id: Number(transactionId)},
-            include: { 
-                buyerId: true,
-                listingId: true,
+        // get POI
+        const poiOnSale = await getPoi(poiId);
+        if(!poiOnSale) throw new Error("Cannot find by poiId");
+
+        // get Listing
+        const listings = await prisma.marketListing.findMany({
+            where: {
+                poiId: Number(poiId),
+                sellerId: Number(poiOnSale.ownerId),
+                isDeleted: false,
             }
         });
+        const poiListing = listings[0];
+        if(!poiListing) throw new Error("Cannot find listing");
 
-        const listedPrice = prisma.marketListing.findUnique({
-            where: { id: transaction.listingId },
-            include: { price: true },
-        });
+        // get Seller and Buyer
+        const seller = await getUser(poiOnSale.ownerId);
+        const buyer = await getUser(buyerId);
+        if(!seller || !buyer) throw new Error("Cannot find seller/buyer");
+        if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
 
-        const buyerWallet = prisma.User.findUnique({
-            where: { id: transaction.buyerId },
-            include: { mapBux: true },
-        });
+        // Update wallets
+        const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing.price);
+        const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing.price);
+        if(!sellerWalletAfter || !buyerWalletAfter){
+            throw {
+                position: 0, 
+                buyer: buyer,
+                seller: seller,
+                message: "Transfer mapBux failed, putting funds back"
+            };
+        }
+        // Update poi
+        const poiWithNewOwner = await updatePoi(poiId, { ownerId: Number(buyerId) });
+        if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
+            throw {
+                position: 1,
+                buyer: buyer,
+                seller: seller,
+                originalOwner: seller.id,
+                poiId: id,
+                message: "Change poi owner failed, putting funds and owner back now"
+            }
+        } 
 
-        if(buyerWallet.mapBux < listedPrice) throw new Error("If you're broke just say that");
+        // Delete listing
+        const del = await deleteListing(poiListing.id);
+        if(!del) {
+            throw {
+                position: 2,
+                listingId: poiListing.id,
+                message: "Delete listing failed, transaction was successful"
+            };
+        } 
 
-        const updateBux = await updateUserBux(transaction.buyerId, false, listedPrice.price);
-        return updateBux;
+        return poiWithNewOwner;
     } catch (err) {
-        throw new err;
+        if(!err.hasOwnProperty('position')) throw err;
+        // Put money back if failed during transaction
+        if(err.position === 0 || err.position === 1) {
+            const putBackBuyer = await updateUser(err.buyer.id, err.buyer);
+            const putBackSeller = await updateUser(err.seller.id, err.seller);
+        }
+        // Put owner back if failed after owner transfer
+        if(err.position === 1) await updatePoi(err.poiId, { ownerId: Number(err.originalOwner) });
+        // Try delete again if transaction suceeded but listing stays up
+        if(err.position === 2) await deleteListing(err.listingId);
+        throw new Error(err.message);
     }
 }
 
