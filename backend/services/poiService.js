@@ -35,7 +35,6 @@ export const reportPoi = async (poiId) => {
             where: { poiId: Number(poiId) },
             data: { reports: { increment: 1 }},
             include: { 
-                id: true,
                 reports: true,
             },
         });
