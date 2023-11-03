@@ -118,12 +118,9 @@ const distFromSafeZone = async (poiId, rating) => {
         where: {
             poiId: poiId,
             isDeleted: false,
-        },
-        select: {
-            rating: true
         }
     });
-    const poiRatings = poiReviews.map(review => review['rating']);
+    const poiRatings = poiReviews.map(review => review.rating);
     if(poiRatings.length < 4) return 0;
 
     // find mean
