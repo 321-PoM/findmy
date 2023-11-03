@@ -26,16 +26,18 @@ export const getUser = async (userId) => {
 };
 
 export const getUserByEmail = async (email) => {
-    try{
-        const user = prisma.User.findMany({
+    try {
+        const user = await prisma.User.findFirst({
             where: { 
                 email: email,
                 isDeleted: false,
                 isActive: true,
             },
-        })
-        if(user.length < 1) return user;
-        const createdUser = prisma.User.create({
+        });
+
+        if (user) return user;
+
+        const createdUser = await prisma.User.create({
             data: { 
                 name: email,
                 email: email,
@@ -43,8 +45,10 @@ export const getUserByEmail = async (email) => {
                 biography: 'none',
                 reliabilityScore: 100,
             }
-        })
+        });
+
         return createdUser;
+
     } catch (err) {
         throw err;
     }
