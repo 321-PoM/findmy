@@ -60,8 +60,11 @@ export const buyPoi = async (poiId, buyerId) => {
         if(!poiOnSale) throw new Error("Cannot find by poiId");
 
         // get Listing
-        const poiListing = await prisma.marketListing.findFirst({
-            where: { poiId: Number(poiId) }
+        const poiListing = await prisma.marketListing.findMany({
+            where: {
+                poiId: Number(poiId),
+                sellerId: Number(poiOnSale.ownerId),
+            }
         });
         console.log(poiListing);
         if(!poiListing) throw new Error("Cannot find listing");
