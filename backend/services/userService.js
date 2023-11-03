@@ -101,14 +101,15 @@ export const getUserReliabilityScore = async (userId) => {
             }
         });
         if(reviewsByUser.length < 1) return 100;
-	console.log("reviewsByUser");
-	console.log(reviewsByUser);
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
-        let sumDist = reviewsByUser
-                        .map(review => await distFromSafeZone(review.poiId, review.rating))
-                        .reduce((sum, dist) => sum += dist, 0);
+        let distOfReview = new Array();
+        for(const review of reviewsByUser){
+            let dist = await distFromSafeZone(review.poiId, review.rating);
+            distOfReview.push(dist);
+        }
+        let sumDist = reviewsByUser.reduce((sum, dist) => sum += dist, 0);
                        
 	console.log(sumDist);
         return 100 - sumDist / totalReviews;
