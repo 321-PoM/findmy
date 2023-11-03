@@ -29,7 +29,6 @@ import com.example.findmy.model.POI;
 import com.example.findmy.R;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
-import com.example.findmy.ui.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -116,8 +115,9 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         newPOIButton.setOnClickListener( new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     HomeActivity homeActivity = (HomeActivity) requireActivity();
-                     homeActivity.navController.navigate(R.id.action_navigation_map_to_navigation_add_poi);
+                     AddPOIBottomSheet addPOIBottomSheet = new AddPOIBottomSheet(currentLocation);
+
+                     addPOIBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
                  }
              }
         );

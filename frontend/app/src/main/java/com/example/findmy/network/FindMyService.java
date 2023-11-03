@@ -1,5 +1,8 @@
 package com.example.findmy.network;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.MarketListing;
@@ -17,7 +20,7 @@ import retrofit2.Call;
 
 public class FindMyService implements Serializable {
 
-    private NodeApiService apiService;
+    private final NodeApiService apiService;
 
     public FindMyService() {
         apiService = RetrofitClient.getNodeRetrofitInstance().create(NodeApiService.class);
@@ -58,8 +61,8 @@ public class FindMyService implements Serializable {
     }
     public Call<POI> createPOI(POIRequest poi){ return apiService.createPOI(poi); }
     public Call<POI> updatePOI(int id, POIRequest poi) { return apiService.updatePOI(id, poi); }
-    public Call<POI> reportPOI(int id) { return apiService.reportPOI(id); }
-    public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); };
+    public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }
+    public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); }
     public Call<POI> deletePOI(int id) { return apiService.deletePOI(id); }
 
     // Review
@@ -107,5 +110,8 @@ public class FindMyService implements Serializable {
     public Call<Friendship> respondToFriendship(int friendshipId, boolean acceptRequest) {
         String accept = acceptRequest? "true" : "false";
         return apiService.respondToFriendship(friendshipId, accept);
+    }
+    public void showErrorToast(Context context) {
+        Toast.makeText(context, "Failed - Try again later", Toast.LENGTH_LONG).show();
     }
 }

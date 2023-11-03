@@ -6,7 +6,7 @@ public class POIRequest {
     @SerializedName("latitude")
     private double latitude;
 
-    @SerializedName("longitude")
+    @SerializedName("longitudes")
     private double longitude;
 
     @SerializedName("category")
@@ -30,7 +30,7 @@ public class POIRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public POIRequest(int id, double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted) {
+    public POIRequest(double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted) {
        this.latitude = latitude;
        this.longitude = longitude;
        this.category = category;
@@ -42,7 +42,7 @@ public class POIRequest {
        this.isDeleted = isDeleted;
     }
 
-    public static final POIRequest testPOI = new POIRequest(0, 0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false);
+    public static final POIRequest testPOI = new POIRequest(0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false);
     public double getLatitude() {
         return latitude;
     }
