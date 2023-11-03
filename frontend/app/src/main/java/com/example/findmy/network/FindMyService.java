@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.MarketListing;
+import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
 import com.example.findmy.model.Review;
@@ -77,7 +78,7 @@ public class FindMyService implements Serializable {
     public Call<MarketListing[]> getListings() { return apiService.getListings(); }
     public Call<MarketListing> getListing(int id) { return apiService.getListing(id); }
     public Call<MarketListing[]> getUserListings(int userId) { return apiService.getUserListings(userId); }
-    public Call<MarketListing> createListing(int price, int sellerId, int poiId) { return apiService.createListing(price, sellerId, poiId); }
+    public Call<MarketListing> createListing(MarketListingRequest marketListingRequest) { return apiService.createListing(marketListingRequest); }
     public Call<MarketListing> updateListing(MarketListing listing) { return apiService.updateListing(listing.getId(), listing); }
     public Call<MarketListing> deleteListing(int id) { return apiService.deleteListing(id); }
 

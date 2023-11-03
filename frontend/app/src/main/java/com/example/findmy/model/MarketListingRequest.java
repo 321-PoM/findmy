@@ -18,7 +18,7 @@ public class MarketListingRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public MarketListingRequest(int id, float price, int sellerId, int poiID, boolean isActive, boolean isDeleted) {
+    public MarketListingRequest(float price, int sellerId, int poiID, boolean isActive, boolean isDeleted) {
         this.price = price;
         this.sellerId = sellerId;
         this.poiID = poiID;
@@ -26,7 +26,7 @@ public class MarketListingRequest {
         this.isDeleted = isDeleted;
     }
 
-    public static MarketListingRequest testListing = new MarketListingRequest(0, 30,  User.testUser.getId(),  POI.testPOI.getId(), true, false);
+    public static MarketListingRequest testListing = new MarketListingRequest(30,  User.testUser.getId(),  POI.testPOI.getId(), true, false);
 
     public float getPrice() {
         return price;
