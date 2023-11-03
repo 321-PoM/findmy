@@ -32,7 +32,8 @@ export const listReviews = async (searchBy, id) => {
 export const getReview = async (id) => {
     return await prisma.Review.findUnique({
         where: {
-            id: Number(id)
+            id: Number(id),
+            isDeleted: false,
         },
         include: {
             userId: true,

@@ -15,7 +15,11 @@ export const createListing = async (price, sellerId, poiId) => {
 
 export const getOne = async (id) => {
     return await prisma.marketListing.findUnique({
-        where: { id: Number(id) },
+        where: { 
+            id: Number(id),
+            isDeleted: false,
+            isActive: true,
+        },
         include: { 
             poi: true,
             seller: true,
@@ -25,7 +29,10 @@ export const getOne = async (id) => {
 
 export const getAll = async () => {
     return await prisma.marketListing.findMany({
-        where: { isDeleted: false },
+        where: { 
+            isDeleted: false, 
+            isActive: true 
+        },
         include: { 
             poi: true,
             seller: true,
@@ -38,6 +45,7 @@ export const getUserListings = async (userId) => {
         where: {
             sellerId: Number(userId),
             isDeleted: false,
+            isActive: true,
         },
         include: { 
             poi: true,
@@ -74,6 +82,7 @@ export const getMarketListingByUser = async (userId) => {
     return await prisma.poi.findMany({
         where: {
             isDeleted: false,
+            isActive: true,
             ownerId: uid,
         },
         include: { 

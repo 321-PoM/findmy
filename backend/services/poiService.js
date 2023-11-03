@@ -14,6 +14,7 @@ export const getPoi = async (poiId) => {
     return await prisma.poi.findUnique({
         where: {
             id: Number(poiId),
+            isDeleted: false,
         },
         include: {
             image: true,
