@@ -84,7 +84,7 @@ model Transaction {
 }
 
 model Review {
-  reviewId         Int      @id
+  reviewId         Int      @id @default(autoincrement())
   userId           Int
   poiId            Int
   reviewer         User     @relation(fields: [userId], references: [id])
