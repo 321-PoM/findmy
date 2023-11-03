@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { isPointWithinRadius } from "geolib";
 import { getUser, updateUserBux, updateUser } from "./userService.js";
-import { deleteListing } from "./marketListingService.js";
+import { getOne, deleteListing } from "./marketListingService.js";
 
 const prisma = new PrismaClient();
 
@@ -60,16 +60,18 @@ export const buyPoi = async (poiId, buyerId) => {
         if(!poiOnSale) throw new Error("Cannot find by poiId");
 
         // get Listing
-        const poiListing = await prisma.marketListing.findFirst({
+        const poiListingId = await prisma.marketListing.findFirst({
             where: {
                 poiId: Number(poiId),
                 sellerId: Number(poiOnSale.ownerId),
             },
             include: {
-                price: true,
                 id: true,
             }
         });
+        const poiListing = await prisma.marketListing.findUnique({
+            where: { id: Number(poiListingId) }
+        })
         if(!poiListing) throw new Error("Cannot find listing");
 
         // get Seller and Buyer
