@@ -65,7 +65,7 @@ public class MyPOIListAdapter extends RecyclerView.Adapter<MyPOIListAdapter.View
         nameText.setText(poi.getDescription());
 
         TextView distanceText = holder.distanceText;
-        distanceText.setText(getDistanceFromUserToPOI(poi, this.userLocation));
+        distanceText.setText(getDistanceFromUserToPOI(poi, this.userLocation) + "m");
 
         Button viewDetailsButton = holder.viewDetailsButton;
         viewDetailsButton.setOnClickListener(new View.OnClickListener() {

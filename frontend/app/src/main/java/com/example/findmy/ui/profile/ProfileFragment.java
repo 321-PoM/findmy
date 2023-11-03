@@ -1,5 +1,8 @@
 package com.example.findmy.ui.profile;
 
+import android.annotation.SuppressLint;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,7 +104,8 @@ public class ProfileFragment extends Fragment {
                         myPOIList.add(p);
                     }
                 }
-                LatLng currentLatLng = new LatLng(0.0, 0.0);
+                @SuppressLint("MissingPermission") Location currentLocation = ((HomeActivity) requireActivity()).locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 setupRecycler(binding, myPOIList, currentLatLng);
             }
 

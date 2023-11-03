@@ -102,4 +102,17 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         String listingPrice = String.valueOf(inputListingPriceText.getText());
         return Integer.parseInt(listingPrice);
     }
+
+    private void checkIfListingExists(Callback<MarketListing> callback) {
+    }
+
+    private void hideLayoutsForExistingListing() {
+        View createListingLayout = binding.createListingLayout;
+        createListingLayout.setVisibility(View.GONE);
+    }
+
+    private void hideLayoutsForNewListing() {
+        View editListingLayout = binding.unlistLayout;
+        editListingLayout.setVisibility(View.GONE);
+    }
 }
