@@ -97,7 +97,6 @@ export const getUserReliabilityScore = async (userId) => {
             }
         });
         if(reviewsByUser.length < 1) return 100;
-        console.log(reviewsByUser);
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
