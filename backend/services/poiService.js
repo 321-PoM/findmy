@@ -67,7 +67,6 @@ export const buyPoi = async (poiId, buyerId) => {
                 isDeleted: false,
             }
         });
-        console.log(poiListing);
         if(!poiListing) throw new Error("Cannot find listing");
 
         // get Seller and Buyer
@@ -77,8 +76,8 @@ export const buyPoi = async (poiId, buyerId) => {
         if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
 
         // Update wallets
-        const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing.price);
-        const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing.price);
+        const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing[0].price);
+        const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing[0].price);
         if(!sellerWalletAfter || !buyerWalletAfter){
             throw {
                 position: 0, 
