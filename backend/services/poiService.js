@@ -36,7 +36,7 @@ export const reportPoi = async (poiId) => {
             data: { reports: { increment: 1 }},
         });
     
-        const numReview = await prisma.Review.count({
+        let numReview = await prisma.Review.count({
             where: { poiId: updatedPoi['id'] }
         });
 
