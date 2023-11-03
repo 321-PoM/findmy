@@ -40,14 +40,9 @@ export const reportPoi = async (poiId) => {
             where: { poiId: updatedPoi['id'] }
         });
 
-        // There's at least one review by default, but just quick sanity check.
-        if (numReview == 0) {
-            // One grace report.
-            if (updatePoi.reports == 1) {
-                return 0;
-            }
-            // Otherwise, POI will be removed.
-            numReview = 1;
+        // Need at least 3 reviews to calculate report - review ratio.
+        if (numReview < 3) {
+            return 0;
         }
 
         return updatedPoi.reports / numReview;

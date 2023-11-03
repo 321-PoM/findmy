@@ -12,7 +12,7 @@ export const getPoi = async (req, res) => {
 export const createPoi = async (req, res) => {
     try {
         const poi = await poiService.createPoi(req.body);
-        res.status(201).json(poi);
+        res.status(200).json(poi);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
