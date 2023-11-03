@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { isPointWithinRadius } from 'geolib';
-import { updateUserBux } from './userService.js';
+import { getUser, updateUserBux, updateUser } from './userService.js';
+import { deleteListing } from './marketListingService.js';
 
 const prisma = new PrismaClient();
 
@@ -55,12 +56,7 @@ export const reportPoi = async (poiId) => {
 export const buyPoi = async (poiId, buyerId) => {
     try{
         // get POI
-        const poiOnSale = await prisma.poi.findFirst({
-            where: { id: Number(poiId) },
-            include: {
-                ownerId: true,
-            }
-        });
+        const poiOnSale = await getPoi(poiId);
         if(!poiOnSale) throw new Error("Cannot find by poiId");
 
         // get Listing
@@ -77,34 +73,14 @@ export const buyPoi = async (poiId, buyerId) => {
         if(!poiListing) throw new Error("Cannot find listing");
 
         // get Seller and Buyer
-        const seller = await prisma.User.findUnique({
-            where: { id: Number(poiOnSale.ownerId) },
-            include: {
-                id: true,
-                mapBux: true,
-            },
-        });
-        const buyer = await prisma.User.findUnique({
-            where: { id: Number(buyerId) },
-            include: {
-                id: true,
-                mapBux: true,
-            }
-        });
+        const seller = await getUser(poiOnSale.ownerId);
+        const buyer = await getUser(buyerId);
         if(!seller || !buyer) throw new Error("Cannot find seller/buyer");
         if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
 
         // Update wallets
-        const sellerWalletAfter = await prisma.User.update({
-            where: { id: Number(seller.id) },
-            data: { mapBux: { increment: Number(poiListing.price) }},
-            include: { mapBux: true },
-        });
-        const buyerWalletAfter = await prisma.User.update({
-            where: { id: Number(buyer.id) },
-            data: { mapBux: { decrement: Number(poiListing.price) }},
-            include: { mapBux: true },
-        });
+        const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing.price);
+        const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing.price);
         if(!sellerWalletAfter || !buyerWalletAfter){
             throw {
                 position: 0, 
@@ -114,11 +90,7 @@ export const buyPoi = async (poiId, buyerId) => {
             };
         }
         // Update poi
-        const poiWithNewOwner = await prisma.poi.update({
-            where: { id: Number(id) },
-            data: { ownerId: Number(buyerId) },
-            include: { ownerId: true },
-        })
+        const poiWithNewOwner = await updatePoi(id, { ownerId: Number(buyerId) });
         if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
             throw {
                 position: 1,
@@ -131,15 +103,8 @@ export const buyPoi = async (poiId, buyerId) => {
         } 
 
         // Delete listing
-        const deleteListing = await prisma.marketListing.update({
-            where: { id: Number(poiListing.id) },
-            data: { 
-                isActive: false,
-                isDeleted: true,
-            },
-            select: { isDeleted: true },
-        });
-        if(!deleteListing || !deleteListing.isDeleted) {
+        const del = await deleteListing(poiListing.id);
+        if(!del || !del.isDeleted) {
             throw {
                 position: 2,
                 listingId: poiListing.id,
@@ -152,31 +117,13 @@ export const buyPoi = async (poiId, buyerId) => {
         if(!err.hasOwnProperty('position')) throw err;
         // Put money back if failed during transaction
         if(err.position == 0 || err.position == 1) {
-            const putBackBuyer = await prisma.User.update({
-                where: { id: Number(err.buyer.id) },
-                data: err.buyer,
-            });
-            const putBackSeller = await prisma.User.update({
-                where: { id: Number(err.seller.id) },
-                data: err.seller,
-            });
+            const putBackBuyer = await updateUser(err.buyer.id, err.buyer);
+            const putBackSeller = await updateUser(err.seller.id, err.seller);
         }
         // Put owner back if failed after owner transfer
-        if(err.position == 1) {
-            const putBackOwner = await prisma.poi.update({
-                where: { id: Number(err.poiId) },
-                data: { ownerId: Number(err.originalOwner) },
-            })
-        }
-        if(err.position == 2) {
-            const deleteListing = await prisma.marketListing.update({
-                where: { id: Number(err.listingId) },
-                data: { 
-                    isActive: false,
-                    isDeleted: true,
-                }
-            });
-        }
+        if(err.position == 1) await updatePoi(err.poiId, { ownerId: Number(err.originalOwner) });
+        // Try delete again if transaction suceeded but listing stays up
+        if(err.position == 2) await deleteListing(err.listingId);
         throw new Error(err.message);
     }
 }
