@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
         retrieveMyPOIsAndUpdateRecycler();
 
         // TODO: update with live location
-        setupUsernameText(binding);
+        setupEmailText(binding);
 
         setupMapBuxText(binding);
 
@@ -128,9 +128,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void setupUsernameText(FragmentProfileBinding binding) {
-        TextView usernameText = binding.usernameText;
-        usernameText.setText(currentUser.getName());
+    private void setupEmailText(FragmentProfileBinding binding) {
+        TextView emailText = binding.emailText;
+        emailText.setText(currentUser.getEmail());
     }
 
 }
