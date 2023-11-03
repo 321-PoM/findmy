@@ -68,10 +68,9 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
         setupPOIName(binding);
         setupSubmitListingButton(binding);
-        setupUnlistButton(binding);
         setupListingPriceInput(binding);
 
-        changeLayoutBasedOnExistingListing();
+        setupBasedOnExistingListing();
 
         return binding.getRoot();
     }
@@ -85,14 +84,27 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         binding.listButton.setOnClickListener(submitListingListener);
     }
 
-    private void setupUnlistButton(ProfilePoiBottomSheetBinding binding) {
+    private void setupUnlistButton(ProfilePoiBottomSheetBinding binding, int listingId) {
         View.OnClickListener unlistListingListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add calls to backend
+                findMyService.deleteListing(listingId).enqueue(new Callback<MarketListing>() {
+                    @Override
+                    public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
+                        if (!response.isSuccessful()) {
+                            findMyService.showErrorToast(requireContext());
+                            return;
+                        }
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<MarketListing> call, Throwable t) {
+                        findMyService.showErrorToast(requireContext());
+                    }
+                });
             }
         };
-
         binding.unlistButton.setOnClickListener(unlistListingListener);
     }
 
@@ -110,7 +122,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         findMyService.getMarketListingsByPoi(id).enqueue(callback);
     }
 
-    private void changeLayoutBasedOnExistingListing() {
+    private void setupBasedOnExistingListing() {
         checkIfListingExists(new Callback<MarketListing[]>() {
             @Override
             public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
@@ -121,11 +133,14 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
                     return;
                 }
 
-                MarketListing[] result = response.body();
-                if (result.length > 0) {
+                MarketListing[] results = response.body();
+                if (results.length > 0) {
                     hideLayoutsForExistingListing();
 
-                    int price = (int) result[0].getPrice();
+                    MarketListing result = results[0];
+
+                    int price = (int) result.getPrice();
+                    setupUnlistButton(binding, result.getId());
                     updateExistingListingPrice(price);
                 } else {
                     hideLayoutsForNewListing();
