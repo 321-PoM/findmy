@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { isPointWithinRadius } from 'geolib';
-import { getUser, updateUserBux, updateUser } from './userService.js';
-import { deleteListing } from './marketListingService.js';
+import { PrismaClient } from "@prisma/client";
+import { isPointWithinRadius } from "geolib";
+import { getUser, updateUserBux, updateUser } from "./userService.js";
+import { deleteListing } from "./marketListingService.js";
 
 const prisma = new PrismaClient();
 
@@ -116,14 +116,14 @@ export const buyPoi = async (poiId, buyerId) => {
     } catch (err) {
         if(!err.hasOwnProperty('position')) throw err;
         // Put money back if failed during transaction
-        if(err.position == 0 || err.position == 1) {
+        if(err.position === 0 || err.position === 1) {
             const putBackBuyer = await updateUser(err.buyer.id, err.buyer);
             const putBackSeller = await updateUser(err.seller.id, err.seller);
         }
         // Put owner back if failed after owner transfer
-        if(err.position == 1) await updatePoi(err.poiId, { ownerId: Number(err.originalOwner) });
+        if(err.position === 1) await updatePoi(err.poiId, { ownerId: Number(err.originalOwner) });
         // Try delete again if transaction suceeded but listing stays up
-        if(err.position == 2) await deleteListing(err.listingId);
+        if(err.position === 2) await deleteListing(err.listingId);
         throw new Error(err.message);
     }
 }
