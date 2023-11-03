@@ -80,7 +80,7 @@ export const transferPoi = async (transactionId) => {
 
 export const deletePoi = async (poiId) => {
     return await prisma.poi.update({
-        where: { id: poiId },
+        where: { id: Number(poiId) },
         data: { isDeleted: true },  // Soft-delete.
     });
 };
