@@ -15,9 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
+import com.example.findmy.model.Review;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
@@ -29,19 +34,50 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
     private View.OnClickListener submitRatingListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: call backend handler
-            inputRatingBar.getRating();
+            int rating = (int) inputRatingBar.getRating();
+
+            findMyService.updateRating(poi.getId(), rating).enqueue(
+                    new Callback<Review>() {
+                        public void onResponse(Call<Review> call, Response<Review> response) {
+                            if (!response.isSuccessful()) {
+                                findMyService.showErrorToast(requireContext());
+                            }
+                            Toast.makeText(MapPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Review> call, Throwable t) {
+                            findMyService.showErrorToast(requireContext());
+                        }
+                    }
+            );
         }
     };
 
-    private View.OnClickListener reportButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener reportButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(requireContext(), "Thank you for reporting", Toast.LENGTH_SHORT)
-                    .show();
+            findMyService.reportPOI(poi.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(!response.isSuccessful()) {
+                        findMyService.showErrorToast(requireContext());
+                        return;
+                    }
+                    Toast.makeText(requireContext(), "Thank you for reporting", Toast.LENGTH_SHORT)
+                            .show();
+                    dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    findMyService.showErrorToast(requireContext());
+                }
+            });
             // TODO: call backend handler
         }
     };
+
     private FindMyService findMyService;
 
     public MapPOIBottomSheet(POI poi) {

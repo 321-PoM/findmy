@@ -59,7 +59,7 @@ public interface NodeApiService {
     Call<POI> updatePOI(@Path("id") int id, @Body POIRequest poi);
 
     @PUT("/poi/{id}/report")
-    Call<POI> reportPOI(@Path("id") int id);
+    Call<Void> reportPOI(@Path("id") int id);
 
     @PUT("/poi/transaction/{transactionId}")
     Call<POI> transferPOI(@Path("transactionId") int id);
