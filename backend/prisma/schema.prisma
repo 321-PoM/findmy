@@ -104,7 +104,7 @@ enum friendshipStatus {
 }
 
 model Friendship {
-  friendshipId Int              @id
+  friendshipId Int              @id @default(autoincrement())
   userIdFrom   Int
   userIdTo     Int
   status       friendshipStatus @default(requested)
