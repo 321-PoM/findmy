@@ -49,13 +49,6 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         }
     };
 
-    private final View.OnClickListener unlistListingListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // TODO: add calls to backend
-        }
-    };
-
     ProfilePoiBottomSheetBinding binding;
 
     private final POI myPOI;
@@ -75,8 +68,9 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
         setupPOIName(binding);
         setupSubmitListingButton(binding);
-        setupUnlistButton(binding);
         setupListingPriceInput(binding);
+
+        setupBasedOnExistingListing();
 
         return binding.getRoot();
     }
@@ -90,7 +84,27 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         binding.listButton.setOnClickListener(submitListingListener);
     }
 
-    private void setupUnlistButton(ProfilePoiBottomSheetBinding binding) {
+    private void setupUnlistButton(ProfilePoiBottomSheetBinding binding, int listingId) {
+        View.OnClickListener unlistListingListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findMyService.deleteListing(listingId).enqueue(new Callback<MarketListing>() {
+                    @Override
+                    public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
+                        if (!response.isSuccessful()) {
+                            findMyService.showErrorToast(requireContext());
+                            return;
+                        }
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<MarketListing> call, Throwable t) {
+                        findMyService.showErrorToast(requireContext());
+                    }
+                });
+            }
+        };
         binding.unlistButton.setOnClickListener(unlistListingListener);
     }
 
@@ -103,7 +117,45 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         return Integer.parseInt(listingPrice);
     }
 
-    private void checkIfListingExists(Callback<MarketListing> callback) {
+    private void checkIfListingExists(Callback<MarketListing[]> callback) {
+        int id = myPOI.getId();
+        findMyService.getMarketListingsByPoi(id).enqueue(callback);
+    }
+
+    private void setupBasedOnExistingListing() {
+        checkIfListingExists(new Callback<MarketListing[]>() {
+            @Override
+            public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
+                if(!response.isSuccessful()) {
+                    findMyService.showErrorToast(requireContext());
+                    hideLayoutsForExistingListing();
+                    hideLayoutsForNewListing();
+                    return;
+                }
+
+                MarketListing[] results = response.body();
+                if (results.length > 0) {
+                    hideLayoutsForExistingListing();
+
+                    MarketListing result = results[0];
+
+                    int price = (int) result.getPrice();
+                    setupUnlistButton(binding, result.getId());
+                    updateExistingListingPrice(price);
+                } else {
+                    hideLayoutsForNewListing();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MarketListing[]> call, Throwable t) {
+                findMyService.showErrorToast(requireContext());
+            }
+        });
+    }
+
+    private void updateExistingListingPrice(int price) {
+        binding.existingListingPriceText.setText(String.valueOf(price));
     }
 
     private void hideLayoutsForExistingListing() {

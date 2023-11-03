@@ -45,7 +45,7 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
         TextView poiNameText = binding.poiName;
         poiNameText.setText(String.valueOf(marketplaceListing.getId()));
 
-        TextView listPriceText = binding.listingPrice;
+        TextView listPriceText = binding.existingListingPriceText;
         listPriceText.setText(String.valueOf(marketplaceListing.getPrice()));
 
         TextView ownerNameText = binding.ownerName ;
