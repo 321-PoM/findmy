@@ -86,6 +86,8 @@ public class FindMyService implements Serializable {
     public Call<MarketListing> updateListing(MarketListing listing) { return apiService.updateListing(listing.getId(), listing); }
     public Call<MarketListing> deleteListing(int id) { return apiService.deleteListing(id); }
 
+    public Call<MarketListing[]> getMarketListingsByPoi(int id) { return apiService.getMarketListingsByPoi(id); }
+
     // Transactions
     public Call<Transaction> getTransaction(int id) { return apiService.getTransaction(id); }
     public Call<Transaction[]> getUserTransactions(int userId) { return apiService.getUserTransactions(userId); }

@@ -100,6 +100,9 @@ public interface NodeApiService {
     @DELETE("/marketListing/{listingId}")
     Call<MarketListing> deleteListing(@Path("listingId") int id);
 
+    @GET("/marketListing/poi/{poiId}")
+    Call<MarketListing[]> getMarketListingsByPoi(@Path("poiId") int id);
+
     // Transactions
     @GET("/transaction/{transactionId}")
     Call<Transaction> getTransaction(@Path("transactionId") int id);

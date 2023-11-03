@@ -40,7 +40,7 @@
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/listingPriceText"
+                android:id="@+id/listingPriceHeaderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -86,7 +86,7 @@
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/listingPrice"
+                android:id="@+id/existingListingPriceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"

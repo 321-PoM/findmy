@@ -49,13 +49,6 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         }
     };
 
-    private final View.OnClickListener unlistListingListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // TODO: add calls to backend
-        }
-    };
-
     ProfilePoiBottomSheetBinding binding;
 
     private final POI myPOI;
@@ -78,6 +71,8 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         setupUnlistButton(binding);
         setupListingPriceInput(binding);
 
+        changeLayoutBasedOnExistingListing();
+
         return binding.getRoot();
     }
 
@@ -91,6 +86,13 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupUnlistButton(ProfilePoiBottomSheetBinding binding) {
+        View.OnClickListener unlistListingListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: add calls to backend
+            }
+        };
+
         binding.unlistButton.setOnClickListener(unlistListingListener);
     }
 
@@ -103,7 +105,42 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         return Integer.parseInt(listingPrice);
     }
 
-    private void checkIfListingExists(Callback<MarketListing> callback) {
+    private void checkIfListingExists(Callback<MarketListing[]> callback) {
+        int id = myPOI.getId();
+        findMyService.getMarketListingsByPoi(id).enqueue(callback);
+    }
+
+    private void changeLayoutBasedOnExistingListing() {
+        checkIfListingExists(new Callback<MarketListing[]>() {
+            @Override
+            public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
+                if(!response.isSuccessful()) {
+                    findMyService.showErrorToast(requireContext());
+                    hideLayoutsForExistingListing();
+                    hideLayoutsForNewListing();
+                    return;
+                }
+
+                MarketListing[] result = response.body();
+                if (result.length > 0) {
+                    hideLayoutsForExistingListing();
+
+                    int price = (int) result[0].getPrice();
+                    updateExistingListingPrice(price);
+                } else {
+                    hideLayoutsForNewListing();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MarketListing[]> call, Throwable t) {
+                findMyService.showErrorToast(requireContext());
+            }
+        });
+    }
+
+    private void updateExistingListingPrice(int price) {
+        binding.existingListingPriceText.setText(String.valueOf(price));
     }
 
     private void hideLayoutsForExistingListing() {
