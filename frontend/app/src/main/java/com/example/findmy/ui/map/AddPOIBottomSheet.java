@@ -21,8 +21,10 @@ import com.example.findmy.R;
 import com.example.findmy.databinding.AddPoiBottomSheetBinding;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
+import com.example.findmy.ui.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import retrofit2.Call;
@@ -44,20 +46,27 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
             String poiName = getInputPOIName();
             String poiType = getNewPOIType();
-            double rating = (double) inputRatingBar.getRating();
+            int rating = (int) inputRatingBar.getRating();
 
-            POIRequest newPOI = new POIRequest(0,currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", "sus spot", 1, 4, 0, false);
+            User currentUser = ((HomeActivity) requireActivity()).currentUser;
+
+            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUser.getId(), rating, 0, false);
 
             findMyService.createPOI(newPOI).enqueue(
                     new Callback<POI>() {
                         @Override
                         public void onResponse(Call<POI> call, Response<POI> response) {
+                            if (!response.isSuccessful()) {
+                                findMyService.showErrorToast(requireContext());
+                                return;
+                            }
                             Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG);
+                            dismiss();
                         }
 
                         @Override
                         public void onFailure(Call<POI> call, Throwable t) {
-                            Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Failed", Toast.LENGTH_LONG);
+                            findMyService.showErrorToast(requireContext());
                         }
                     }
             );

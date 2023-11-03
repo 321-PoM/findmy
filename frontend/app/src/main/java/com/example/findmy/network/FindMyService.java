@@ -108,4 +108,7 @@ public class FindMyService implements Serializable {
         String accept = acceptRequest? "true" : "false";
         return apiService.respondToFriendship(friendshipId, accept);
     }
+    public void showErrorToast(Context context) {
+        Toast.makeText(context, "Failed - Try again later", Toast.LENGTH_LONG).show();
+    }
 }
