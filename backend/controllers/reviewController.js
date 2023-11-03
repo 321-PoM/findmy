@@ -22,6 +22,7 @@ export const getReview = async (req, res) => {
 
 export const createReview = async (req, res) => {
     try {
+        console.log("request");
         console.log(req);
         const review = await reviewService.createReview(req.body.poiId, req.body.userId, req.body.rating, req.body.desc);
         const newRating = await calcPoiRating(req.body.poiId);
