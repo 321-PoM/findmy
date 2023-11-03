@@ -46,6 +46,7 @@ export const reportPoi = async (poiId) => {
             if (updatePoi.reports == 1) {
                 return 0;
             }
+            // Otherwise, POI will be removed.
             numReview = 1;
         }
 
