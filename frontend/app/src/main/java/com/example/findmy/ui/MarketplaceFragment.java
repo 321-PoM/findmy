@@ -1,5 +1,8 @@
 package com.example.findmy.ui;
 
+import android.annotation.SuppressLint;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -90,8 +93,10 @@ public class MarketplaceFragment extends Fragment {
 
         retrieveListings();
 
-        // TODO: update with live location
-        LatLng currentLatLng = new LatLng(0.0, 0.0);
+        LocationManager locationManager = ((HomeActivity) requireActivity()).locationManager;
+        @SuppressLint("MissingPermission") Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        LatLng currentLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         RecyclerView listingsRecylcer = binding.listingsRecylcer;
         marketplaceListingAdapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
