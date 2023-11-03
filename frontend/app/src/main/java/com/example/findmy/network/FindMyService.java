@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
+import com.example.findmy.model.MapBuxRequest;
+import com.example.findmy.model.MapBuxResponse.MapBuxResponse;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;
@@ -49,6 +51,8 @@ public class FindMyService implements Serializable {
     public Call<User> deleteUser(int id) {
         return apiService.deleteUser(id);
     }
+
+    public Call<MapBuxResponse> updateUserMapBux(int id, MapBuxRequest request) { return apiService.updateUserBux(id, request); }
 
     // poi
     public Call<POI[]> getPOIs() {

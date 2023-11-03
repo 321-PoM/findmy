@@ -2,6 +2,8 @@ package com.example.findmy.network;
 
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
+import com.example.findmy.model.MapBuxRequest;
+import com.example.findmy.model.MapBuxResponse.MapBuxResponse;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;
@@ -42,6 +44,9 @@ public interface NodeApiService {
 
     @DELETE("/user/{id}")
     Call<User> deleteUser(@Path("id") int id);
+
+    @PUT("/user/{id}/updateUserBux")
+    Call<MapBuxResponse> updateUserBux(@Path("id") int id, @Body MapBuxRequest request);
 
     // POI
     @GET("/pois")
