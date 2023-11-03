@@ -107,6 +107,7 @@ export const getUserReliabilityScore = async (userId) => {
         }
         let sumDist = reviewsByUser.reduce((sum, dist) => sum += dist, 0);
         let meanDist = (sumDist === 0) ? 0 : parseInt(sumDist / totalReviews);
+        console.log(`meanDist: ${meanDist}`);
         return 100 - meanDist;
     } catch (err) {
         throw err; 
