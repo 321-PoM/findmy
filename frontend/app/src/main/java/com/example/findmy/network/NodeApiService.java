@@ -3,7 +3,7 @@ package com.example.findmy.network;
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.MapBuxRequest;
-import com.example.findmy.model.MapBuxResponse.MapBuxResponse;
+import com.example.findmy.model.MapBuxResponse;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;

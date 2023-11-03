@@ -1,4 +1,4 @@
-package com.example.findmy.model.MapBuxResponse;
+package com.example.findmy.model;
 
 import com.google.gson.annotations.SerializedName;
 
