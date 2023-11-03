@@ -111,7 +111,8 @@ export const getUserReliabilityScore = async (userId) => {
         }
         let sumDist = reviewsByUser.reduce((sum, dist) => sum += dist, 0);
                        
-	console.log(sumDist);
+	    console.log(`sumDist: ${sumDist}`);
+        console.log(`totalReviews: ${totalReviews}`);
         return 100 - sumDist / totalReviews;
     } catch (err) {
         throw err; 
