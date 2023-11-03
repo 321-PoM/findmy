@@ -31,18 +31,24 @@ export const updatePoi = async (poiId, updateData) => {
 
 export const reportPoi = async (poiId) => {
     try{
-        const numReports = await prisma.poi.update({
-            where: { poiId: Number(poiId) },
+        const updatedPoi = await prisma.poi.update({
+            where: { id: Number(poiId) },
             data: { reports: { increment: 1 }},
-            include: { 
-                reports: true,
-            },
         });
     
-        const numReview = prisma.Review.count({
+        const numReview = await prisma.Review.count({
             where: { poiId: numReports['id'] }
         });
-        return numReports / numReview;
+
+        // There's at least one review by default, but just quick sanity check.
+        if (numReview == 0) {
+            throw new Error(
+                "Report POI | Dividing number of reports by number of " +
+                "reviews which is zero."
+            );
+        }
+
+        return update.reports / numReview;
     } catch (err) {
         throw err;
     }
