@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { getDistance } from 'geolib';
 
 const prisma = new PrismaClient();
 
@@ -39,6 +40,28 @@ export const getAll = async () => {
         }
     });
 };
+
+export const getAllListingsSortedByDistance = async(latitude, longitude) => {
+    const listings = await prisma.marketListing.findMany({
+        where: {
+            isDeleted: false,
+            isActive: true
+        },
+        include: {
+            poi: true,
+            seller: true,
+        }
+    })
+
+    let marketListings = listings.map((listing) => 
+    ({listing: listing, distance: getDistance({longitude: Number(longitude), latitude: Number(latitude)}, {longitude: Number(listing.poi.longitudes), latitude: Number(listing.poi.latitude)})}));
+
+    function compareByDistance(a, b) {
+        return a.distance - b.distance;
+      }
+
+    return marketListings.sort(compareByDistance).map((listing) => listing.listing);
+}
 
 export const getUserListings = async (userId) => {
     return await prisma.marketListing.findMany({
