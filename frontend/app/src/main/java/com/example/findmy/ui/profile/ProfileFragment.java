@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.model.MapBuxRequest;
-import com.example.findmy.model.MapBuxResponse.MapBuxResponse;
+import com.example.findmy.model.MapBuxResponse;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
