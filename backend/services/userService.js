@@ -90,6 +90,7 @@ export const listUsers = async () => {
 export const getUserReliabilityScore = async (userId) => {
     try {
         // Query for Pois reviewed by the user
+        console.log(userId)
         const reviewsByUser = await prisma.Review.findMany({
             where: {
                 userId: Number(userId),
@@ -100,6 +101,7 @@ export const getUserReliabilityScore = async (userId) => {
                 rating: true
             }
         });
+        console.log(reviewsByUser);
         if(reviewsByUser.length < 1) return 100;
 
         // iterate through every single poi reviewed by user
