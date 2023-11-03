@@ -23,8 +23,8 @@ export const getReview = async (req, res) => {
 export const createReview = async (req, res) => {
     try {
         const review = await reviewService.createReview(req.body.poiId, req.body.userId, req.body.rating, req.body.desc);
-        const newRating = await calcPoiRating(poiId);
-        const updated = await updatePoi(poiId, {rating: newRating});
+        const newRating = await calcPoiRating(req.body.poiId);
+        const updated = await updatePoi(req.body.poiId, {rating: newRating});
         res.status(200).json(review);
     } catch (error) {
         res.status(500).json({ message: error.message });
