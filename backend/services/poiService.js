@@ -42,10 +42,7 @@ export const reportPoi = async (poiId) => {
 
         // There's at least one review by default, but just quick sanity check.
         if (numReview == 0) {
-            throw new Error(
-                "Report POI | Dividing number of reports by number of " +
-                "reviews which is zero."
-            );
+            numReview = 1;
         }
 
         return update.reports / numReview;
