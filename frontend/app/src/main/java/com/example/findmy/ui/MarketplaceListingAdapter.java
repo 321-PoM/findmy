@@ -89,6 +89,7 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
         float[] results = new float[1];
         Location.distanceBetween(userLocation.latitude, userLocation.longitude, poi.getLatitude(), poi.getLongitude(), results);
         float distanceToPOI = results[0];
+        distanceToPOI = Math.round(distanceToPOI);
         String distanceDisplayText;
         if (distanceToPOI >= maxDistanceToDisplay) {
             distanceDisplayText = "Very Far";
