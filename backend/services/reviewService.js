@@ -47,6 +47,14 @@ export const getReview = async (id) => {
 
 export const createReview = async (poiId, userId, rating, desc) => {
     try{
+        const doesThisExist = await prisma.Review.findFirst({
+            where: {
+                poiId: poiId,
+                userId: userId,
+                isDeleted: false,
+            }
+        });
+        if(doesThisExist) throw new Error("Review already exists");
         let rScore = await getUserReliabilityScore(Number(userId));
         return await prisma.Review.create({
             data: {
