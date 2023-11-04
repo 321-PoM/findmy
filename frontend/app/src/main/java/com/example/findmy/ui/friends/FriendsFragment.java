@@ -23,6 +23,7 @@ import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +35,6 @@ public class FriendsFragment extends Fragment {
     private FragmentFriendsBinding binding;
     private FindMyService findMyService;
     private FriendsAdapter friendsAdapter;
-    private ArrayList<User> friendsArray;
     private Button addButton;
 
     private final View.OnClickListener addFriendListener = new View.OnClickListener() {
@@ -59,11 +59,12 @@ public class FriendsFragment extends Fragment {
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false);
 
-        retrieveFriends();
         setupAddButton(binding);
 
         setupRecycler(binding);
         setupFriendTextField(binding);
+
+        retrieveFriends();
 
         View root = binding.getRoot();
         return root;
@@ -122,14 +123,39 @@ public class FriendsFragment extends Fragment {
 
     private void setupRecycler(FragmentFriendsBinding binding) {
         RecyclerView friendsRecycler = binding.friendsRecycler;
-        friendsAdapter = new FriendsAdapter(requireActivity(), friendsArray);
+        friendsAdapter = new FriendsAdapter(requireActivity(), new ArrayList<>());
 
         friendsRecycler.setAdapter(friendsAdapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     private void retrieveFriends() {
-        friendsArray = new ArrayList<>();
+
+        int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
+
+        ArrayList<User> friendsArray = new ArrayList<>();
+        Call<User[]> call = findMyService.getFriendships(currentUserId);
+
+        call.enqueue(new Callback<User[]>() {
+            @Override
+            public void onResponse(Call<User[]> call, Response<User[]> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Error: Unable to retrieve friends", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                User[] retrievedFriendships = response.body();
+
+                friendsArray.addAll(Arrays.asList(retrievedFriendships));
+                friendsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<User[]> call, Throwable t) {
+                Toast.makeText(requireContext(), "Error: Unable to retrieve friends", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @Override
