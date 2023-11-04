@@ -17,7 +17,7 @@
         android:id="@+id/viewFriendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:text="@string/friends_list_text_button" />
 
 </LinearLayout>
