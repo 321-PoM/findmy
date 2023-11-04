@@ -107,6 +107,7 @@ public class ProfileFragment extends Fragment {
     private void setupElementsRequiringProfile() {
         setupEmailText(binding, currentCachedUser.getEmail());
         setupMapBuxText(binding, currentCachedUser.getMapBux());
+        setupReliabilityScore(binding, currentCachedUser.getReliabilityScore());
 
         Callback<User> callback = new Callback<User>() {
 
@@ -121,6 +122,7 @@ public class ProfileFragment extends Fragment {
 
                 setupEmailText(binding, newCurrentUser.getEmail());
                 setupMapBuxText(binding, newCurrentUser.getMapBux());
+                setupReliabilityScore(binding, newCurrentUser.getReliabilityScore());
             }
 
             @Override
@@ -130,6 +132,11 @@ public class ProfileFragment extends Fragment {
         };
 
         findMyService.getCurrentUser(currentUserId, callback);
+    }
+
+    private void setupReliabilityScore(FragmentProfileBinding binding, int reliabilityScore) {
+        TextView reliabilityScoreText = binding.reliabilityScoreText;
+        reliabilityScoreText.setText(String.valueOf(reliabilityScore));
     }
 
     private void setupMapBuxText(FragmentProfileBinding binding, int mapBux) {
