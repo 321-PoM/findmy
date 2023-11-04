@@ -103,7 +103,7 @@ export const getUserReliabilityScore = async (userId) => {
         let dists = new Array();
         for(const review of reviewsByUser){
             let dist = await distFromSafeZone(review.poiId, review.rating);
-            distOfReview.push(dist);
+            dists.push(dist);
         }
         let sumDist = dists.reduce((sum, dist) => sum += dist, 0);
         console.log(`sumDist: ${sumDist}`);
