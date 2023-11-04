@@ -2,10 +2,12 @@ package com.example.findmy.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -35,9 +37,14 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
         super.onCreate(savedInstanceState);
+
+        Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        if (!isFineLocationGranted) {
+            signOut();
+        }
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         Intent intentFromMain = getIntent();
         currentUser = (User) intentFromMain.getSerializableExtra("CURRENTUSER");
