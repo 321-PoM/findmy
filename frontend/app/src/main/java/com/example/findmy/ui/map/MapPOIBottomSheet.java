@@ -17,6 +17,7 @@ import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.ReviewRequest;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -118,7 +119,34 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         Button reportPOIButton = binding.reportButton;
         reportPOIButton.setOnClickListener(reportButtonListener);
 
+        setupDetails(binding);
+
         View root = binding.getRoot();
         return root;
+    }
+
+    private void setupDetails(PoiBottomSheetBinding binding) {
+        TextView poiTypeText = binding.poiTypeText;
+        poiTypeText.setText(poi.getCategory());
+
+        TextView poiOwnerText = binding.poiOwnerText;
+
+        findMyService.getUser(poi.getOwnderId()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Could not get owner name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                User poiOwner = response.body();
+                poiOwnerText.setText(poiOwner.getName());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(requireContext(), "Could not get owner name!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

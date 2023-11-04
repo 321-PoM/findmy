@@ -22,6 +22,45 @@
         android:textSize="30sp" />
 
     <LinearLayout
+        android:id="@+id/details_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/poi_type_header"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/poi_type_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/placeholder"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/poi_owner_header"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/poi_owner_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/placeholder"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/current_rating_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
