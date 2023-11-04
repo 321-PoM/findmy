@@ -70,6 +70,7 @@ public class HomeActivity extends BaseActivity {
         findMyServiceViewModel.initFindMyService();
     }
 
+    @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
