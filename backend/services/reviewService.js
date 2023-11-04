@@ -45,7 +45,7 @@ export const getReview = async (id) => {
     })
 }
 
-export const createReview = async (poiId, userId, rating, desc) => {
+export const createReview = async (poiId, userId, rating, description) => {
     try{
         const doesThisExist = await prisma.Review.findFirst({
             where: {
@@ -61,7 +61,7 @@ export const createReview = async (poiId, userId, rating, desc) => {
                 poiId: Number(poiId),
                 userId: Number(userId),
                 rating: rating,
-                description: desc,
+                description: description,
                 reliabilityScore: rScore,
             }
         });
