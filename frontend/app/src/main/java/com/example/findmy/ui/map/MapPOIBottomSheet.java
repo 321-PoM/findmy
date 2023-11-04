@@ -126,6 +126,25 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupDetails(PoiBottomSheetBinding binding) {
+        TextView ratingHeaderText = binding.currentRatingHeaderText;
+        String headerText = "Current ";
+        switch(poi.getCategory()) {
+            case "Washroom":
+                headerText += "Cleanliness";
+                break;
+            case "Microwave":
+                headerText += "Cleanliness";
+                break;
+            case "Study Space":
+                headerText += "Busyness";
+                break;
+            default:
+                headerText += "Rating";
+                break;
+        }
+
+        ratingHeaderText.setText(headerText);
+
         TextView poiTypeText = binding.poiTypeText;
         poiTypeText.setText(poi.getCategory());
 
