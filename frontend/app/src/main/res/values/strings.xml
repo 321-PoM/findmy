@@ -45,11 +45,13 @@
     <string name="current_listing_price">Current Listing Price</string>
     <string name="list_on_marketplace">List On Marketplace</string>
     <string name="your_user">Username</string>
-    <string name="add_friend_field">Add a friend</string>
+    <string name="add_friend_field">Add a friend by email</string>
     <string name="add_friend_button_text">Add</string>
     <string name="remove_friend">Remove Friend</string>
     <string name="report_poi">Report POI</string>
     <string name="your_email">Your Email</string>
     <string name="report_friend">Report</string>
     <string name="your_reliability_score">Your Reliability Score</string>
+    <string name="poi_type_header">POI Type</string>
+    <string name="poi_owner_header">Owner</string>
 </resources>
