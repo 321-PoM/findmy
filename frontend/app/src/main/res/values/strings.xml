@@ -15,7 +15,7 @@
         <item>Study Space</item>
         <item>Microwave</item>
         <item>Washroom</item>
-        <item>myPOIs</item>
+        <item>myPOI</item>
     </string-array>
     <string-array name="new_poi_choices">
         <item>Study Space</item>
