@@ -100,12 +100,12 @@ export const getUserReliabilityScore = async (userId) => {
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
-        let distOfReview = new Array();
+        let dists = new Array();
         for(const review of reviewsByUser){
             let dist = await distFromSafeZone(review.poiId, review.rating);
             distOfReview.push(dist);
         }
-        let sumDist = reviewsByUser.reduce((sum, dist) => sum += dist, 0);
+        let sumDist = dists.reduce((sum, dist) => sum += dist, 0);
         console.log(`sumDist: ${sumDist}`);
         let meanDist = (sumDist == 0) ? 0 : parseInt(sumDist / totalReviews);
         console.log(`meanDist: ${meanDist}`);
