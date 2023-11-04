@@ -53,7 +53,7 @@ export const createReview = async (poiId, userId, rating, desc) => {
                 poiId: Number(poiId),
                 userId: Number(userId),
                 rating: rating,
-                description: String(desc),
+                description: desc,
                 reliabilityScore: rScore,
             }
         });

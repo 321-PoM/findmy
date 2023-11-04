@@ -218,13 +218,7 @@ function getBoundingBox(lat, lon, distance) {
 export const calcPoiRating = async (poiId) => {
     try{
         const allRatings = await prisma.review.findMany({
-            where: {
-                poiId: Number(poiId),
-            },
-            include: {
-                rating: true,
-                reliabilityScore: true,
-            }
+            where: { poiId: Number(poiId) }
         });
         if(allRatings.length < 1){
             const poi = await prisma.poi.findUnique({
@@ -238,8 +232,8 @@ export const calcPoiRating = async (poiId) => {
         let totalWeight = 0;
         let weightedSum = 0;
         for(const rating of allRatings){
-            totalWeight += rating['reliabilityScore'];
-            weightedSum += rating['rating'] * rating['reliabilityScore'];
+            totalWeight += rating.reliabilityScore;
+            weightedSum += rating.rating * rating.reliabilityScore;
         }
         return weightedSum / totalWeight;
     } catch (err) {

@@ -94,40 +94,33 @@ export const getUserReliabilityScore = async (userId) => {
             where: {
                 userId: Number(userId),
                 isDeleted: false,
-            },
-            select: {
-                poiId: true,
-                rating: true
             }
         });
         if(reviewsByUser.length < 1) return 100;
 
         // iterate through every single poi reviewed by user
         let totalReviews = reviewsByUser.length;
-        let sumDist = reviewsByUser
-                        .map(review => distFromSafeZone(review))
-                        .reduce((sum, dist) => sum += dist, 0);
-                        
-        return 100 - sumDist / totalReviews;
+        let dists = new Array();
+        for(const review of reviewsByUser){
+            let dist = await distFromSafeZone(review.poiId, review.rating);
+            dists.push(dist);
+        }
+        let sumDist = dists.reduce((sum, dist) => sum += dist, 0);
+        let meanDist = (sumDist == 0) ? 0 : parseInt(sumDist / totalReviews);
+        return 100 - meanDist;
     } catch (err) {
         throw err; 
     }
 };
 
-const distFromSafeZone = async (review) => {
-    let poiId = review['poiId'];
-    let rating = review['rating'];
-
+const distFromSafeZone = async (poiId, rating) => {
     const poiReviews = await prisma.Review.findMany({
         where: {
             poiId: poiId,
             isDeleted: false,
-        },
-        select: {
-            rating: true
         }
     });
-    const poiRatings = poiReviews.map(review => review['rating']);
+    const poiRatings = poiReviews.map(review => review.rating);
     if(poiRatings.length < 4) return 0;
 
     // find mean
@@ -139,8 +132,8 @@ const distFromSafeZone = async (review) => {
     let sumDist = poiRatings.reduce((sum, rating) => sum += Math.pow((rating - mean), 2), 0);
     let stdev = Math.pow((sumDist / numRatings), 0.5);
 
-    let max = mean + 1.5 * stdev;
-    let min = mean - 1.5 * stdev;
+    let max = mean + stdev;
+    let min = mean - stdev;
 
     if(rating > max) return rating - max;
     else if(rating < min) return min - rating;
