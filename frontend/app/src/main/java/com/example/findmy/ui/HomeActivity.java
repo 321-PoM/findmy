@@ -21,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends BaseActivity {
 
-    public User currentUser;
+    private User currentUser;
 
     private static final String TAG = "HomeActivity";
 
@@ -74,4 +74,10 @@ public class HomeActivity extends BaseActivity {
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
+
+    public int getCurrentUserId() { return currentUser.getId(); }
+
+    public User getCachedCurrentUser() { return currentUser; }
+
+    public void setCachedCurrentUser(User currentUser) { this.currentUser = currentUser; }
 }

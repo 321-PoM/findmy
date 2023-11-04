@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.databinding.MarketplaceListingBottomSheetBinding;
 import com.example.findmy.model.MarketListing;
-import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -55,12 +54,12 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupPurchaseButton(MarketplaceListingBottomSheetBinding binding) {
-        User currentUser = ((HomeActivity) requireActivity()).currentUser;
+        int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
         Button purchaseButton = binding.purchaseButton;
         View.OnClickListener purchaseButtonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findMyService.buyPoi(marketplaceListing.getPoi().getId(), currentUser.getId()).enqueue(
+                findMyService.buyPoi(marketplaceListing.getPoi().getId(), currentUserId).enqueue(
                         new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {

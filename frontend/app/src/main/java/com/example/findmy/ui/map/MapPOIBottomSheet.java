@@ -17,7 +17,6 @@ import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.ReviewRequest;
-import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -39,9 +38,9 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         public void onClick(View v) {
             int rating = (int) inputRatingBar.getRating();
 
-            User currentUser = ((HomeActivity) requireActivity()).currentUser;
+            int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
-            ReviewRequest request = new ReviewRequest(currentUser.getId(), poi.getId(), rating);
+            ReviewRequest request = new ReviewRequest(currentUserId, poi.getId(), rating);
 
             findMyService.createReview(request).enqueue(
                     new Callback<Review>() {

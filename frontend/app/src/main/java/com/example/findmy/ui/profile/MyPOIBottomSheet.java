@@ -16,7 +16,6 @@ import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;
 import com.example.findmy.databinding.ProfilePoiBottomSheetBinding;
-import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -30,7 +29,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
     private final View.OnClickListener submitListingListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            User currentUser = ((HomeActivity) requireActivity()).currentUser;
+            int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
             int listingPrice;
             try {
                 listingPrice = getListingPrice();
@@ -38,7 +37,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
                 if(getContext() != null) Toast.makeText(requireContext(), "Invalid Price - Enter a different value", Toast.LENGTH_LONG).show();
                 return;
             }
-            MarketListingRequest request = new MarketListingRequest(listingPrice, currentUser.getId(), myPOI.getId(), true, false);
+            MarketListingRequest request = new MarketListingRequest(listingPrice, currentUserId, myPOI.getId(), true, false);
             findMyService.createListing(request).enqueue(new Callback<MarketListing>() {
                 @Override
                 public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
