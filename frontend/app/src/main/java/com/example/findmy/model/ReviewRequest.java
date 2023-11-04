@@ -25,6 +25,7 @@ public class ReviewRequest {
         this.userId = userId;
         this.poiId = poiId;
         this.rating = rating;
+        this.description = "placeholder";
     }
 
 
