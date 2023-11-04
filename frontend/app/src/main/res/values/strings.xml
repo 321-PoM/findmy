@@ -50,4 +50,5 @@
     <string name="remove_friend">Remove Friend</string>
     <string name="report_poi">Report POI</string>
     <string name="your_email">Your Email</string>
+    <string name="your_reliability_score">Your Reliability Score</string>
 </resources>
