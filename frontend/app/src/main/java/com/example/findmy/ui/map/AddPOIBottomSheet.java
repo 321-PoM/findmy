@@ -100,8 +100,27 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
         setupSpinner(binding);
 
+        changeLayoutBasedOnListingType();
+
         View root = binding.getRoot();
         return root;
+    }
+
+    private void changeLayoutBasedOnListingType() {
+        if (getNewPOIType() == "myPOI") {
+            hideRatingBar();
+        } else {
+            showRatingBar();
+        }
+
+    }
+
+    private void hideRatingBar(){
+
+    }
+
+    private void showRatingBar(){
+
     }
 
     private void setupTextField(AddPoiBottomSheetBinding binding) {
