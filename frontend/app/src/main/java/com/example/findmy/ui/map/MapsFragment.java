@@ -2,7 +2,6 @@ package com.example.findmy.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -98,7 +97,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
         locationManager = ((HomeActivity) requireActivity()).locationManager;
         getLocationPermissions();
-        setupCurrentLocation();
+        //setupCurrentLocation();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -182,16 +181,21 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 //                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
-            ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
+            //ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
         } else {
             // TODO: need to call this somewhere again, if permissions had to be requested
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+            if(!checkLocationPermissions()) {
+                // still not granted goto MainActivity
+                ((HomeActivity) requireActivity()).signOut();
+            }
         }
+
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     @SuppressLint("MissingPermission")
     private void updateMapToCurrentLocation() {
-        // TODO, should use getCurrentLocation or https://stackoverflow.com/questions/64853673/how-to-use-locationmanagergetcurrentlocation-in-android
     }
 
     private void clearMapPins() {

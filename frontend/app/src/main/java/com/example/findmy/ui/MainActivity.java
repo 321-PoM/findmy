@@ -1,8 +1,13 @@
 package com.example.findmy.ui;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +32,8 @@ public class MainActivity extends BaseActivity {
     final static String TAG="MainActivity";
     private SignInButton signInButton;
     private FindMyServiceViewModel findMyServiceViewModel;
+    private static final int LOCATION_PERMISSION_REQUEST = 123;
+    private Intent homeIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,34 @@ public class MainActivity extends BaseActivity {
         if (account != null) {
             attemptUpdateUI(account);
         }
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+        } else {
+            startActivity(homeIntent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);;
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            for(int grant : grantResults) {
+                if (grant != PackageManager.PERMISSION_GRANTED) {
+                    showToast("This app requires location permissions");
+                    return;
+                }
+            }
+            startActivity(homeIntent);
+        }
+    }
+
+    private void showToast(String text){
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(MainActivity.this, text, duration);
+        toast.show();
     }
 
     protected void signIn() {
@@ -106,13 +141,12 @@ public class MainActivity extends BaseActivity {
 
                 Log.d(TAG, "signInResult id: " + account.getId());
 
-                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                homeIntent = new Intent(MainActivity.this, HomeActivity.class);
                 homeIntent.putExtra("ACCOUNT", account);
 
                 User currentUser = response.body();
-
                 homeIntent.putExtra("CURRENTUSER",currentUser);
-                startActivity(homeIntent);
+                checkLocationPermission();
             }
 
             @Override

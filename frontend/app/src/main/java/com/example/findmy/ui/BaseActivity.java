@@ -70,8 +70,8 @@ public class BaseActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG + " - onReceive", "Logout in progress");
 
-                Intent loginIntent = new Intent(BaseActivity.this, MainActivity.class);
-                startActivity(loginIntent);
+                Intent logoutIntent = new Intent(BaseActivity.this, MainActivity.class);
+                startActivity(logoutIntent);
 
                 finish();
             }
