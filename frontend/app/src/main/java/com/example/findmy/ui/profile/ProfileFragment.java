@@ -46,7 +46,8 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ArrayList<POI> myPOIList;
     private MyPOIListAdapter mPOIAdapter;
-    private User currentUser;
+    private int currentUserId;
+    private User currentCachedUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,10 +57,13 @@ public class ProfileFragment extends Fragment {
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
         HomeActivity homeActivity = (HomeActivity) requireActivity();
-        currentUser = homeActivity.currentUser;
+        currentCachedUser = homeActivity.getCachedCurrentUser();
+        currentUserId = homeActivity.getCurrentUserId();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        setupElementsRequiringProfile();
 
         Button signOutButton = binding.profileSignOutButton;
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +76,6 @@ public class ProfileFragment extends Fragment {
         // setup myPOI list
         retrieveMyPOIsAndUpdateRecycler();
 
-        // TODO: update with live location
-        setupEmailText(binding);
-
-        setupMapBuxText(binding);
-
         setupGetMapBuxButton(binding);
 
         return root;
@@ -86,7 +85,7 @@ public class ProfileFragment extends Fragment {
         binding.getMapBuxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findMyService.updateUserMapBux(currentUser.getId(), new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
+                findMyService.updateUserMapBux(currentUserId, new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
                     @Override
                     public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
                        if (!response.isSuccessful()) {
@@ -105,9 +104,37 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void setupMapBuxText(FragmentProfileBinding binding) {
+    private void setupElementsRequiringProfile() {
+        setupEmailText(binding, currentCachedUser.getEmail());
+        setupMapBuxText(binding, currentCachedUser.getMapBux());
+
+        Callback<User> callback = new Callback<User>() {
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG);
+                    return;
+                }
+                User newCurrentUser = response.body();
+                ((HomeActivity) requireActivity()).setCachedCurrentUser(newCurrentUser);
+
+                setupEmailText(binding, newCurrentUser.getEmail());
+                setupMapBuxText(binding, newCurrentUser.getMapBux());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG);
+            }
+        };
+
+        findMyService.getCurrentUser(currentUserId, callback);
+    }
+
+    private void setupMapBuxText(FragmentProfileBinding binding, int mapBux) {
        TextView mapbuxText = binding.mapBuxAmountText;
-       mapbuxText.setText(String.valueOf(currentUser.getMapBux()));
+       mapbuxText.setText(String.valueOf(mapBux));
     }
 
     private void updateMapBuxText(FragmentProfileBinding binding, int amount) {
@@ -117,7 +144,7 @@ public class ProfileFragment extends Fragment {
 
     private void setupRecycler(FragmentProfileBinding binding, List<POI> pois, LatLng currentLatLng) {
         RecyclerView myPOIRecycler = binding.myPOIRecycler;
-        mPOIAdapter = new MyPOIListAdapter(requireActivity(), myPOIList, currentLatLng);
+        mPOIAdapter = new MyPOIListAdapter(requireActivity(), pois, currentLatLng);
 
         myPOIRecycler.setAdapter(mPOIAdapter);
         myPOIRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -133,7 +160,7 @@ public class ProfileFragment extends Fragment {
                 POI[] retrievedPOIs = response.body();
                 for (POI p : retrievedPOIs) {
                     Log.d(TAG, p.getCategory());
-                    if (p.getCategory().equals("myPOI") && p.getOwnderId() == currentUser.getId()) {
+                    if (p.getCategory().equals("myPOI") && p.getOwnderId() == currentUserId) {
                         myPOIList.add(p);
                     }
                 }
@@ -169,9 +196,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void setupEmailText(FragmentProfileBinding binding) {
+    private void setupEmailText(FragmentProfileBinding binding, String email) {
         TextView emailText = binding.emailText;
-        emailText.setText(currentUser.getEmail());
+        emailText.setText(email);
     }
 
 }

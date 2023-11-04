@@ -20,6 +20,7 @@ import com.example.findmy.model.UserRequest;
 import java.io.Serializable;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 
 public class FindMyService implements Serializable {
 
@@ -121,5 +122,8 @@ public class FindMyService implements Serializable {
     }
     public void showErrorToast(Context context) {
         Toast.makeText(context, "Failed - Try again later", Toast.LENGTH_LONG).show();
+    }
+    public void getCurrentUser(int id, Callback<User> onReadyCallback) {
+        getUser(id).enqueue(onReadyCallback);
     }
 }
