@@ -106,9 +106,7 @@ export const getUserReliabilityScore = async (userId) => {
             dists.push(dist);
         }
         let sumDist = dists.reduce((sum, dist) => sum += dist, 0);
-        console.log(`sumDist: ${sumDist}`);
         let meanDist = (sumDist == 0) ? 0 : parseInt(sumDist / totalReviews);
-        console.log(`meanDist: ${meanDist}`);
         return 100 - meanDist;
     } catch (err) {
         throw err; 
