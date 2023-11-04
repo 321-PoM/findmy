@@ -24,6 +24,7 @@ import com.example.findmy.ui.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,8 @@ public class FriendsFragment extends Fragment {
     private FindMyService findMyService;
     private FriendsAdapter friendsAdapter;
     private Button addButton;
+
+    private List<User> friendsArray;
 
     private final View.OnClickListener addFriendListener = new View.OnClickListener() {
         @Override
@@ -122,8 +125,10 @@ public class FriendsFragment extends Fragment {
     }
 
     private void setupRecycler(FragmentFriendsBinding binding) {
+        friendsArray = new ArrayList<>();
+
         RecyclerView friendsRecycler = binding.friendsRecycler;
-        friendsAdapter = new FriendsAdapter(requireActivity(), new ArrayList<>());
+        friendsAdapter = new FriendsAdapter(requireActivity(), friendsArray);
 
         friendsRecycler.setAdapter(friendsAdapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -133,7 +138,6 @@ public class FriendsFragment extends Fragment {
 
         int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
-        ArrayList<User> friendsArray = new ArrayList<>();
         Call<User[]> call = findMyService.getFriendships(currentUserId);
 
         call.enqueue(new Callback<User[]>() {
