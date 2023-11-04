@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ArrayList<POI> myPOIList;
     private MyPOIListAdapter mPOIAdapter;
+    private int currentUserId;
     private User currentUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment {
 
         HomeActivity homeActivity = (HomeActivity) requireActivity();
         currentUser = homeActivity.currentUser;
+        currentUserId = homeActivity.getCurrentUserId();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -86,7 +88,7 @@ public class ProfileFragment extends Fragment {
         binding.getMapBuxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findMyService.updateUserMapBux(currentUser.getId(), new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
+                findMyService.updateUserMapBux(currentUserId, new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
                     @Override
                     public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
                        if (!response.isSuccessful()) {
@@ -133,7 +135,7 @@ public class ProfileFragment extends Fragment {
                 POI[] retrievedPOIs = response.body();
                 for (POI p : retrievedPOIs) {
                     Log.d(TAG, p.getCategory());
-                    if (p.getCategory().equals("myPOI") && p.getOwnderId() == currentUser.getId()) {
+                    if (p.getCategory().equals("myPOI") && p.getOwnderId() == currentUserId) {
                         myPOIList.add(p);
                     }
                 }

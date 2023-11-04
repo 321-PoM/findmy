@@ -16,8 +16,11 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.findmy.model.User;
 import com.example.findmy.R;
 import com.example.findmy.databinding.ActivityHomeBinding;
+import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import retrofit2.Callback;
 
 public class HomeActivity extends BaseActivity {
 
@@ -32,9 +35,12 @@ public class HomeActivity extends BaseActivity {
     private FindMyServiceViewModel findMyServiceViewModel;
 
     public LocationManager locationManager;
+    private FindMyService findMyService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        findMyService = findMyServiceViewModel.getFindMyService();
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         super.onCreate(savedInstanceState);
@@ -70,8 +76,13 @@ public class HomeActivity extends BaseActivity {
         findMyServiceViewModel.initFindMyService();
     }
 
-    @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+    public int getCurrentUserId() { return currentUser.getId(); }
+
+    private void updateCurrentUser(Callback<User> onReadyCallback) {
+        findMyService.getUser(currentUser.getId()).enqueue(onReadyCallback);
     }
 }
