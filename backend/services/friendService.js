@@ -21,7 +21,7 @@ export const listFriends = async (userId) => {
         const friendsFromMe = new Set(friendshipsFromMe.map(friendship => friendship.userIdTo));
         const friendsToMe = new Set(friendshipsToMe.map(friendship => friendship.userIdFrom));
 
-        return friendsFromMe.filter(userId => friendsToMe.has(userId));
+        return [...friendsFromMe].filter(userId => friendsToMe.has(userId));
     } catch (err) {
         throw err;
     }
