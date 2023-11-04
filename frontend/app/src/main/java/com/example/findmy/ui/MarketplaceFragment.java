@@ -132,7 +132,7 @@ public class MarketplaceFragment extends Fragment {
 
             @Override
             public void onFailure(Call<MarketListing[]> call, Throwable t) {
-                Toast.makeText(requireContext(), "Error: Unable to retrieve Marketplace listings", Toast.LENGTH_SHORT)
+                if(getContext() != null) Toast.makeText(requireContext(), "Error: Unable to retrieve Marketplace listings", Toast.LENGTH_SHORT)
                         .show();
             }
         });

@@ -56,17 +56,19 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
                     new Callback<POI>() {
                         @Override
                         public void onResponse(Call<POI> call, Response<POI> response) {
-                            if (!response.isSuccessful()) {
-                                findMyService.showErrorToast(requireContext());
-                                return;
+                            if (getContext() != null){
+                                if (!response.isSuccessful()) {
+                                    findMyService.showErrorToast(requireContext());
+                                    return;
+                                }
+                                Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG);
+                                dismiss();
                             }
-                            Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG);
-                            dismiss();
                         }
 
                         @Override
                         public void onFailure(Call<POI> call, Throwable t) {
-                            findMyService.showErrorToast(requireContext());
+                            if(getContext() != null) findMyService.showErrorToast(requireContext());
                         }
                     }
             );

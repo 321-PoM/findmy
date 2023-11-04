@@ -64,7 +64,7 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
                         new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(!response.isSuccessful()) {
+                                if(!response.isSuccessful() && getContext() != null) {
                                     findMyService.showErrorToast(requireContext());
                                     return;
                                 }
@@ -73,7 +73,7 @@ public class MarketplaceListingBottomSheet extends BottomSheetDialogFragment {
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-                                findMyService.showErrorToast(requireContext());
+                                if(getContext() != null) findMyService.showErrorToast(requireContext());
                             }
                         }
                 );

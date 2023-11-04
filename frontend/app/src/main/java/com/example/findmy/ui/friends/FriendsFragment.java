@@ -41,7 +41,7 @@ public class FriendsFragment extends Fragment {
         @Override
         public void onClick(View v) {
             String text = getFriendTextField();
-            if(text == null || text.isEmpty()) {
+            if((text == null || text.isEmpty()) && getContext() != null){
                 Toast.makeText(requireContext(), "Invalid Input - Enter a different value", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -76,7 +76,7 @@ public class FriendsFragment extends Fragment {
                 new Callback<Friendship>() {
                     @Override
                     public void onResponse(Call<Friendship> call, Response<Friendship> response) {
-                        if(!response.isSuccessful()) {
+                        if(!response.isSuccessful() && getContext() != null) {
                             findMyService.showErrorToast(requireContext());
                         }
                         // TODO: update UI?
@@ -84,7 +84,7 @@ public class FriendsFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<Friendship> call, Throwable t) {
-                        findMyService.showErrorToast(requireContext());
+                        if(getContext() != null) findMyService.showErrorToast(requireContext());
                     }
                 }
         );
@@ -94,7 +94,7 @@ public class FriendsFragment extends Fragment {
         findMyService.getUserByEmail(email).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(!response.isSuccessful()) {
+                if(!response.isSuccessful() && getContext() != null) {
                     findMyService.showErrorToast(requireContext());
                 }
                 addFriendWithID(response.body().getId());
@@ -102,7 +102,7 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                findMyService.showErrorToast(requireContext());
+                if(getContext() != null) findMyService.showErrorToast(requireContext());
             }
         });
     }

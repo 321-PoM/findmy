@@ -46,17 +46,19 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
             findMyService.createReview(request).enqueue(
                     new Callback<Review>() {
                         public void onResponse(Call<Review> call, Response<Review> response) {
-                            if (!response.isSuccessful()) {
-                                findMyService.showErrorToast(requireContext());
-                                return;
+                            if(getContext() != null) {
+                                if (!response.isSuccessful()) {
+                                    findMyService.showErrorToast(requireContext());
+                                    return;
+                                }
+                                Toast.makeText(MapPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
+                                dismiss();
                             }
-                            Toast.makeText(MapPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
-                            dismiss();
                         }
 
                         @Override
                         public void onFailure(Call<Review> call, Throwable t) {
-                            findMyService.showErrorToast(requireContext());
+                            if(getContext() != null)  findMyService.showErrorToast(requireContext());
                         }
                     }
             );
@@ -69,18 +71,20 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
             findMyService.reportPOI(poi.getId()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    if(!response.isSuccessful()) {
-                        findMyService.showErrorToast(requireContext());
-                        return;
+                    if(getContext() != null) {
+                        if (!response.isSuccessful()) {
+                            findMyService.showErrorToast(requireContext());
+                            return;
+                        }
+                        Toast.makeText(requireContext(), "Thank you for reporting", Toast.LENGTH_SHORT)
+                                .show();
+                        dismiss();
                     }
-                    Toast.makeText(requireContext(), "Thank you for reporting", Toast.LENGTH_SHORT)
-                            .show();
-                    dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    findMyService.showErrorToast(requireContext());
+                    if(getContext() != null) findMyService.showErrorToast(requireContext());
                 }
             });
             // TODO: call backend handler

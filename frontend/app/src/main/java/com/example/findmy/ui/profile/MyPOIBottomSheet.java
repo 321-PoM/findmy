@@ -35,7 +35,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
             try {
                 listingPrice = getListingPrice();
             } catch (NumberFormatException e) {
-                Toast.makeText(requireContext(), "Invalid Price - Enter a different value", Toast.LENGTH_LONG).show();
+                if(getContext() != null) Toast.makeText(requireContext(), "Invalid Price - Enter a different value", Toast.LENGTH_LONG).show();
                 return;
             }
             MarketListingRequest request = new MarketListingRequest(listingPrice, currentUser.getId(), myPOI.getId(), true, false);
@@ -43,7 +43,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
                 @Override
                 public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
                     if(!response.isSuccessful()) {
-                        findMyService.showErrorToast(requireContext());
+                        if(getContext() != null) findMyService.showErrorToast(requireContext());
                         return;
                     }
                     dismiss();
@@ -51,7 +51,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
                 @Override
                 public void onFailure(Call<MarketListing> call, Throwable t) {
-                    findMyService.showErrorToast(requireContext());
+                    if(getContext() != null) findMyService.showErrorToast(requireContext());
                 }
             });
         }
@@ -99,7 +99,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
                 findMyService.deleteListing(listingId).enqueue(new Callback<MarketListing>() {
                     @Override
                     public void onResponse(Call<MarketListing> call, Response<MarketListing> response) {
-                        if (!response.isSuccessful()) {
+                        if (!response.isSuccessful() && getContext() != null) {
                             findMyService.showErrorToast(requireContext());
                             return;
                         }
@@ -108,7 +108,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
                     @Override
                     public void onFailure(Call<MarketListing> call, Throwable t) {
-                        findMyService.showErrorToast(requireContext());
+                        if(getContext() != null) findMyService.showErrorToast(requireContext());
                     }
                 });
             }
@@ -134,7 +134,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
         checkIfListingExists(new Callback<MarketListing[]>() {
             @Override
             public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
-                if(!response.isSuccessful()) {
+                if(!response.isSuccessful() && getContext() != null) {
                     findMyService.showErrorToast(requireContext());
                     hideLayoutsForExistingListing();
                     hideLayoutsForNewListing();
@@ -157,7 +157,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
             @Override
             public void onFailure(Call<MarketListing[]> call, Throwable t) {
-                findMyService.showErrorToast(requireContext());
+                if(getContext() != null) findMyService.showErrorToast(requireContext());
             }
         });
     }

@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
                 findMyService.updateUserMapBux(currentUser.getId(), new MapBuxRequest(true, 100)).enqueue(new Callback<MapBuxResponse>() {
                     @Override
                     public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
-                       if (!response.isSuccessful()) {
+                       if (!response.isSuccessful() && getContext() != null) {
                            findMyService.showErrorToast(requireContext());
                            return;
                        }
@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<MapBuxResponse> call, Throwable t) {
-                        findMyService.showErrorToast(requireContext());
+                        if(getContext() != null) findMyService.showErrorToast(requireContext());
                     }
                 });
             }
@@ -148,8 +148,10 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<POI[]> call, Throwable t) {
-                Toast.makeText(requireContext(), "Error: Unable to retrieve myPOIs", Toast.LENGTH_SHORT)
-                        .show();
+                if(getContext() != null && getContext() != null) {
+                    Toast.makeText(requireContext(), "Error: Unable to retrieve myPOIs", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
     }
