@@ -199,7 +199,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     private void updateMapPins(String category) {
         // TODO: Complete with backend
-        if (mMap == null) { return; }
+        if (mMap == null || currentLocation == null) { return; }
         clearMapPins();
         // TODO - lat, lon, and distance, are stubs, please extract it from current location
         double lon = currentLocation.getLongitude();
