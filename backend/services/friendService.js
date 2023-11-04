@@ -3,16 +3,28 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const listFriends = async (userId) => {
-    return await prisma.friendship.findMany({
-        where: {
-            userIdFrom: Number(userId),
-            status: "accepted",
-        },
-        include: {
-            friendshipId: true,
-            userIdTo: true,
-        },
-    });
+    try{
+        const friendshipsFromMe = await prisma.friendship.findMany({
+            where: {
+                userIdFrom: Number(userId),
+                status: "accepted",
+            }
+        });
+
+        const friendshipsToMe = await prisma.friendship.findMany({
+            where: {
+                userIdTo: Number(userId),
+                status: "accepted",
+            }
+        });
+
+        const friendsFromMe = new Set(friendshipsFromMe.map(friendship => friendship.userIdTo));
+        const friendsToMe = new Set(friendshipsToMe.map(friendship => friendship.userIdFrom));
+
+        return friendsFromMe.filter(userId => friendsToMe.has(userId));
+    } catch (err) {
+        throw err;
+    }
 };
 
 export const listRequestsSent = async (userId) => {
