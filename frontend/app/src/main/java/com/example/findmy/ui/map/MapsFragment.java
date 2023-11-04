@@ -98,7 +98,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
         locationManager = ((HomeActivity) requireActivity()).locationManager;
         getLocationPermissions();
-        setupCurrentLocation();
+        //setupCurrentLocation();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -182,10 +182,11 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 //                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
-            ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
+            //ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
         } else {
             // TODO: need to call this somewhere again, if permissions had to be requested
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
     }
 
