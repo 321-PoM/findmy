@@ -33,10 +33,6 @@ export const listRequestsSent = async (userId) => {
             userIdFrom: Number(userId),
             status: "requested",
         },
-        include: {
-            friendshipId: true,
-            userIdTo: true,
-        },
     });
 };
 
@@ -46,10 +42,6 @@ export const listRequestsReceived = async (userId) => {
             userIdTo: Number(userId),
             status: "requested",
         },
-        include: {
-            friendshipId: true,
-            userIdFrom: true,
-        },
     });
 };
 
@@ -57,12 +49,6 @@ export const getFriendship = async (friendshipId) => {
     return await prisma.friendship.findUnique({
         where: {
             friendshipId: Number(friendshipId),
-        },
-        include: {
-            userIdFrom: true,
-            userIdTo: true,
-            status: true,
-            createdAt: true,
         },
     });
 };
@@ -84,11 +70,6 @@ export const handleFriendRequest = async (friendshipId, acceptRequest) => {
             const accepted = await prisma.friendship.update({
                 where: { friendshipId: Number(friendshipId) },
                 data: { status: accept },
-                include: {
-                    userIdFrom: true,
-                    userIdTo: true,
-                    status: true,
-                },
             });
             return await prisma.friendship.create({
                 data: {
@@ -112,10 +93,6 @@ export const deleteFriendship = async (friendshipId) => {
     const del = await prisma.friendship.update({
         where: { friendshipId: Number(friendshipId) },
         data: { isDeleted: true }, // Soft-delete.
-        include: {
-            userIdFrom: true,
-            userIdTo: true,
-        },
     });
     return await prisma.friendship.update({
         where: {
