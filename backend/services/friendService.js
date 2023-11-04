@@ -21,7 +21,15 @@ export const listFriends = async (userId) => {
         const friendsFromMe = new Set(friendshipsFromMe.map(friendship => friendship.userIdTo));
         const friendsToMe = new Set(friendshipsToMe.map(friendship => friendship.userIdFrom));
 
-        return [...friendsFromMe].filter(userId => friendsToMe.has(userId));
+        const trueFriendsIds = [...friendsFromMe].filter(userId => friendsToMe.has(userId));
+        const trueFriends = new Array();
+        for(const friendId of trueFriendsIds){
+            const friend = await prisma.User.findUnique({
+                where: { id: Number(friendId )}
+            });
+            trueFriends.push(friend);
+        }
+        return trueFriends;
     } catch (err) {
         throw err;
     }
