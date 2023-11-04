@@ -21,7 +21,6 @@ import com.example.findmy.R;
 import com.example.findmy.databinding.AddPoiBottomSheetBinding;
 import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
-import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -48,9 +47,9 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
             String poiType = getNewPOIType();
             int rating = (int) inputRatingBar.getRating();
 
-            User currentUser = ((HomeActivity) requireActivity()).currentUser;
+            int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
-            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUser.getId(), rating, 0, false);
+            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating, 0, false);
 
             findMyService.createPOI(newPOI).enqueue(
                     new Callback<POI>() {

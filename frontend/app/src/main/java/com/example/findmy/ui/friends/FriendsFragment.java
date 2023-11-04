@@ -70,8 +70,8 @@ public class FriendsFragment extends Fragment {
     }
 
     private void addFriendWithID(int friendID) {
-        User currentUser = ((HomeActivity) requireActivity()).currentUser;
-        FriendshipRequest request = new FriendshipRequest(currentUser.getId(), friendID);
+        int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
+        FriendshipRequest request = new FriendshipRequest(currentUserId, friendID);
         findMyService.createFriendship(request).enqueue(
                 new Callback<Friendship>() {
                     @Override
