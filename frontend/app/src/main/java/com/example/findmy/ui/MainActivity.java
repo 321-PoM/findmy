@@ -30,7 +30,6 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     final static String TAG="MainActivity";
-    private SignInButton signInButton;
     private FindMyServiceViewModel findMyServiceViewModel;
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private Intent homeIntent;
@@ -41,7 +40,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         // login button
-        signInButton = findViewById(R.id.sign_in_button);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
