@@ -38,10 +38,6 @@ public class MarketplaceFragment extends Fragment {
     private MarketplaceListingAdapter marketplaceListingAdapter;
     private LatLng currentLatLng;
 
-    public MarketplaceFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
