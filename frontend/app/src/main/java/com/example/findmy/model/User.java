@@ -1,6 +1,5 @@
 package com.example.findmy.model;
 
-import com.example.findmy.DateWrapper;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -41,26 +40,6 @@ public class User implements Serializable {
 
     @SerializedName("isDeleted")
     private boolean isDeleted;
-
-    public User(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.mapBux = mapBux;
-        this.avatar = avatar;
-        this.biography = biography;
-        this.reliabilityScore = reliabilityScore;
-        this.premiumStatus = premiumStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.isActive = isActive;
-        this.isDeleted = isDeleted;
-    }
-
-    public static final User testUser = new User(
-            0,
-        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false
-    );
 
     public String getName() {
         return this.name;

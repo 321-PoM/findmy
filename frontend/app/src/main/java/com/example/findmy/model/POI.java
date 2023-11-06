@@ -33,21 +33,6 @@ public class POI {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public POI(int id, double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted) {
-       this.id = id;
-       this.latitude = latitude;
-       this.longitude = longitude;
-       this.category = category;
-       this.status = status;
-       this.description = description;
-       this.ownderId = ownerId;
-       this.rating = rating;
-       this.reports = reports;
-       this.isDeleted = isDeleted;
-    }
-
-    public static final POI testPOI = new POI(0, 0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false);
-
     public int getId() {
         return id;
     }

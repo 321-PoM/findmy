@@ -15,7 +15,7 @@ public class Transaction {
     @SerializedName("listingId")
     private int listingId;
 
-    public Transaction(int id, User buyer, int buyerId, MarketListing listing, int listingId) {
+    public Transaction(int id, User buyer, int buyerId, int listingId) {
         this.id = id;
         this.buyer = buyer;
         this.buyerId = buyerId;
@@ -28,4 +28,6 @@ public class Transaction {
     public void setBuyerId(int buyerId) { this.buyerId = buyerId; }
     public int getListingId() { return listingId; }
     public void setListingId(int listingId) { this.listingId = listingId; }
+
+    public User getBuyer() { return this.buyer; }
 }

@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.findmy.R;
 import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
-import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -30,8 +29,6 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     final static String TAG="MainActivity";
-    private SignInButton signInButton;
-    private FindMyServiceViewModel findMyServiceViewModel;
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private Intent homeIntent;
 
@@ -41,7 +38,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         // login button
-        signInButton = findViewById(R.id.sign_in_button);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,7 +148,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Unable to login!", Toast.LENGTH_LONG).show();
             }
         });
     }

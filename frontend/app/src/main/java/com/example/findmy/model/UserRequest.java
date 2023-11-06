@@ -1,6 +1,5 @@
 package com.example.findmy.model;
 
-import com.example.findmy.DateWrapper;
 import com.google.gson.annotations.SerializedName;
 
 public class UserRequest {
@@ -31,7 +30,11 @@ public class UserRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public UserRequest(int id, String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
+    public static final UserRequest testUserRequest = new UserRequest(
+            "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, true, false
+    );
+
+    public UserRequest(String name, String email, String avatar, String biography, int reliabilityScore, boolean premiumStatus, int mapBux, boolean isActive, boolean isDeleted) {
         this.name = name;
         this.email = email;
         this.mapBux = mapBux;
@@ -42,11 +45,6 @@ public class UserRequest {
         this.isActive = isActive;
         this.isDeleted = isDeleted;
     }
-
-    public static final UserRequest testUserRequest = new UserRequest(
-            0,
-        "test_name", "test@test.com", "noavatar", "my bio", 3, true, 10, DateWrapper.testDate.getISOString(), DateWrapper.testDate.getISOString(), true, false
-    );
 
     public String getName() {
         return this.name;
@@ -99,4 +97,8 @@ public class UserRequest {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    public int getMapBux() { return this.mapBux; }
+
+    public String getEmail() { return this.email; }
 }

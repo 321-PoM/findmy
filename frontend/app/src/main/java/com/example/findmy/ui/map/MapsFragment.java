@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -45,7 +44,6 @@ import retrofit2.Response;
 public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
-    private FloatingActionButton newPOIButton;
 
     private FindMyService findMyService;
 
@@ -70,7 +68,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         public void onMapReady(@NonNull GoogleMap googleMap) {
             try {
                 // customize map
-                boolean success = googleMap.setMapStyle(
+                googleMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
                                 MapsFragment.this.requireContext(), R.raw.gmap_style
                         )
@@ -97,7 +95,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
         locationManager = ((HomeActivity) requireActivity()).locationManager;
         getLocationPermissions();
-        //setupCurrentLocation();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -111,7 +108,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         }
 
         // setup button
-        newPOIButton = view.findViewById(R.id.newPOIButton);
+        FloatingActionButton newPOIButton = view.findViewById(R.id.newPOIButton);
         newPOIButton.setOnClickListener( new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -152,7 +149,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     }
     private boolean checkLocationPermissions() {
         Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        Boolean isCoarseLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
         // TODO: Implement coarse
         return isFineLocationGranted;
     }
@@ -174,14 +170,12 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     @SuppressLint("MissingPermission")
     private void getLocationPermissions() {
-        FragmentActivity parentActivity = requireActivity();
         if (!checkLocationPermissions()) {
             // get permissions
             String[] permissionsRequested = {
 //                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
-            //ActivityCompat.requestPermissions(parentActivity, permissionsRequested, 1);
         } else {
             // TODO: need to call this somewhere again, if permissions had to be requested
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
@@ -191,11 +185,13 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             }
         }
 
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        setupCurrentLocation();
     }
 
     @SuppressLint("MissingPermission")
     private void updateMapToCurrentLocation() {
+        // TODO
+        Log.d(TAG, "Updating map to user location");
     }
 
     private void clearMapPins() {

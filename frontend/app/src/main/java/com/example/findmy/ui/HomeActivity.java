@@ -25,13 +25,11 @@ public class HomeActivity extends BaseActivity {
 
     private User currentUser;
 
-    private static final String TAG = "HomeActivity";
-
-    private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
+
     public NavController navController;
+
     private AppBarConfiguration appBarConfiguration;
-    private FindMyServiceViewModel findMyServiceViewModel;
 
     public LocationManager locationManager;
 
@@ -50,7 +48,7 @@ public class HomeActivity extends BaseActivity {
         currentUser = (User) intentFromMain.getSerializableExtra("CURRENTUSER");
 
         // get account
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // set toolbar
@@ -61,7 +59,6 @@ public class HomeActivity extends BaseActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home,
                 R.id.navigation_marketplace,
                 R.id.navigation_map ,
                 R.id.navigation_friends,
@@ -73,6 +70,7 @@ public class HomeActivity extends BaseActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavView, navController);
 
+        FindMyServiceViewModel findMyServiceViewModel;
         findMyServiceViewModel = new ViewModelProvider(this).get(FindMyServiceViewModel.class);
         findMyServiceViewModel.initFindMyService();
     }

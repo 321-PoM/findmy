@@ -36,7 +36,6 @@ public class FriendsFragment extends Fragment {
     private FragmentFriendsBinding binding;
     private FindMyService findMyService;
     private FriendsAdapter friendsAdapter;
-    private Button addButton;
 
     private List<User> friendsArray;
 
@@ -55,8 +54,6 @@ public class FriendsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FriendsViewModel friendsViewModel =
-                new ViewModelProvider(this).get(FriendsViewModel.class);
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
@@ -120,7 +117,7 @@ public class FriendsFragment extends Fragment {
     }
 
     private void setupAddButton(FragmentFriendsBinding binding) {
-        addButton = binding.addFriendButton;
+        Button addButton = binding.addFriendButton;
         addButton.setOnClickListener(addFriendListener);
     }
 
