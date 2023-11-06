@@ -79,7 +79,6 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     private EditText nameTextField;
     private Button button;
     private String newPOITypeSelection;
-    private AdapterView newPOISpinner;
 
     public AddPOIBottomSheet(Location currLocation) {
         this.currLocation = currLocation;
@@ -114,7 +113,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     }
 
     private void setupSpinner(AddPoiBottomSheetBinding binding) {
-        newPOISpinner = binding.spinner;
+        AdapterView newPOISpinner = binding.spinner;
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.new_poi_choices,
