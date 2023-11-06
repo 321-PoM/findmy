@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.findmy.R;
 import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
-import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -30,7 +29,6 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     final static String TAG="MainActivity";
-    private FindMyServiceViewModel findMyServiceViewModel;
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private Intent homeIntent;
 
