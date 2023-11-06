@@ -20,6 +20,13 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceListingAdapter.ViewHolder> {
+    LatLng userLocation;
+    private List<MarketListing> listings;
+
+    private FragmentActivity parentActivity;
+
+    private static final float maxDistanceToDisplay = (float) 2000.0;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameText;
         public TextView distanceText;
@@ -33,12 +40,6 @@ public class MarketplaceListingAdapter extends RecyclerView.Adapter<MarketplaceL
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewDetailsButton);
         }
     }
-
-    LatLng userLocation;
-    private List<MarketListing> listings;
-
-    private FragmentActivity parentActivity;
-    private static final float maxDistanceToDisplay = (float) 2000.0;
 
     public MarketplaceListingAdapter(FragmentActivity parentActivity, List<MarketListing> listings, LatLng userLocation) {
         this.listings = listings;

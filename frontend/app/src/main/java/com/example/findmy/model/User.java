@@ -1,6 +1,5 @@
 package com.example.findmy.model;
 
-import com.example.findmy.DateWrapper;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
