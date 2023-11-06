@@ -26,8 +26,6 @@ public class MarketListingRequest {
         this.isDeleted = isDeleted;
     }
 
-    public static MarketListingRequest testListing = new MarketListingRequest(30,  User.testUser.getId(),  POI.testPOI.getId(), true, false);
-
     public float getPrice() {
         return price;
     }
