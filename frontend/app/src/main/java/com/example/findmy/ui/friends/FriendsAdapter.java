@@ -17,6 +17,14 @@ import com.example.findmy.model.User;
 import java.util.List;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
+    FragmentActivity parentActivity;
+
+    private List<User> friends;
+    public FriendsAdapter(FragmentActivity parentActivity, List<User> friends) {
+        this.parentActivity = parentActivity;
+        this.friends = friends;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameText;
         public Button viewDetailsButton;
@@ -27,14 +35,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             nameText = (TextView) itemView.findViewById(R.id.friendName);
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewFriendButton);
         }
-    }
-
-    FragmentActivity parentActivity;
-
-    private List<User> friends;
-    public FriendsAdapter(FragmentActivity parentActivity, List<User> friends) {
-        this.parentActivity = parentActivity;
-        this.friends = friends;
     }
 
     @NonNull
