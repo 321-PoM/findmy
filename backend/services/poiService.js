@@ -148,7 +148,7 @@ export const listPois = async () => {
 // ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
 
-    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance));
+    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance, 10));
 
     var bboxPois;
 
@@ -184,7 +184,7 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
     }
 
 
-    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitudes}, parseInt(distance)));
+    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitudes}, parseInt(distance, 10)));
 }
 
 // ChatGPT usage: Partial
@@ -242,7 +242,7 @@ export const calcPoiRating = async (poiId) => {
 }
 
 export const getPoiByUser = async (userId) => {
-    const uid = parseInt(userId);
+    const uid = parseInt(userId, 10);
 
     if (isNaN(uid)) {
         return res.status(400).json({ message: "Error: getUser | user ID is not int." });
