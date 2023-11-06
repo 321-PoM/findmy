@@ -32,8 +32,6 @@ public class BackendHandler {
 
     private static final MediaType JSON = MediaType.parse("application/json, charset=utf-8");
 
-    public BackendHandler() {}
-
     public void makeRequest(Callback callback, String resource, HttpMethod method, JSONObject body) {
         Request.Builder builder = new Request.Builder()
                 .url(BackendHandler.url + resource);
@@ -63,22 +61,14 @@ public class BackendHandler {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                try {
-                    Log.d(TAG, e.toString());
-                    callback.onFailure(call,e );
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                Log.d(TAG, e.toString());
+                callback.onFailure(call,e );
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
-                try {
-                    Log.d(TAG, response.toString());
-                    callback.onResponse(call, response);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                Log.d(TAG, response.toString());
+                callback.onResponse(call, response);
             }
         });
     }
