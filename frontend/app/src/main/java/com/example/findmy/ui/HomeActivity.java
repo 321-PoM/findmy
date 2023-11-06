@@ -25,8 +25,6 @@ public class HomeActivity extends BaseActivity {
 
     private User currentUser;
 
-    private static final String TAG = "HomeActivity";
-
     private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
     public NavController navController;

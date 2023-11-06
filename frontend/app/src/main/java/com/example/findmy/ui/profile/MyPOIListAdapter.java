@@ -19,6 +19,12 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 public class MyPOIListAdapter extends RecyclerView.Adapter<MyPOIListAdapter.ViewHolder> {
+    LatLng userLocation;
+    private List<POI> myPOIList;
+
+    private FragmentActivity parentActivity;
+    private static final float maxDistanceToDisplay = (float) 2000.0;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameText;
         public TextView distanceText;
@@ -32,12 +38,6 @@ public class MyPOIListAdapter extends RecyclerView.Adapter<MyPOIListAdapter.View
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewDetailsButton);
         }
     }
-
-    LatLng userLocation;
-    private List<POI> myPOIList;
-
-    private FragmentActivity parentActivity;
-    private static final float maxDistanceToDisplay = (float) 2000.0;
 
     public MyPOIListAdapter(FragmentActivity parentActivity, List<POI> myPOIList, LatLng userLocation) {
         this.myPOIList = myPOIList;

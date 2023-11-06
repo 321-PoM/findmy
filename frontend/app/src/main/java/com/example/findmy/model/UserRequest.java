@@ -98,4 +98,8 @@ public class UserRequest {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    public int getMapBux() { return this.mapBux; }
+
+    public String getEmail() { return this.email; }
 }
