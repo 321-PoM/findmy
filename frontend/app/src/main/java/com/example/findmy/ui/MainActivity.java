@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Unable to login!", Toast.LENGTH_LONG).show();
             }
         });
     }
