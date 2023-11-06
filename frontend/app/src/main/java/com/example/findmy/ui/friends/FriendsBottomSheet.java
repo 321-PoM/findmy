@@ -24,6 +24,7 @@ public class FriendsBottomSheet extends BottomSheetDialogFragment {
         @Override
         public void onClick(View v) {
             Toast.makeText(requireContext(), "Thanks for reporting!", Toast.LENGTH_SHORT).show();
+            findMyService.getUser(friend.getId());
             dismiss();
         }
     };
