@@ -45,7 +45,6 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private ArrayList<POI> myPOIList;
-    private MyPOIListAdapter mPOIAdapter;
     private int currentUserId;
     private User currentCachedUser;
 
@@ -149,7 +148,8 @@ public class ProfileFragment extends Fragment {
 
     private void setupRecycler(FragmentProfileBinding binding, List<POI> pois, LatLng currentLatLng) {
         RecyclerView myPOIRecycler = binding.myPOIRecycler;
-        mPOIAdapter = new MyPOIListAdapter(requireActivity(), pois, currentLatLng);
+
+        MyPOIListAdapter mPOIAdapter = new MyPOIListAdapter(requireActivity(), pois, currentLatLng);
 
         myPOIRecycler.setAdapter(mPOIAdapter);
         myPOIRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));

@@ -25,7 +25,6 @@ public class HomeActivity extends BaseActivity {
 
     private User currentUser;
 
-    private ActivityHomeBinding binding;
     FragmentManager manager =  getSupportFragmentManager();
     public NavController navController;
     private AppBarConfiguration appBarConfiguration;
@@ -48,7 +47,7 @@ public class HomeActivity extends BaseActivity {
         currentUser = (User) intentFromMain.getSerializableExtra("CURRENTUSER");
 
         // get account
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // set toolbar

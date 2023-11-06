@@ -1,6 +1,7 @@
 package com.example.findmy.ui.friends;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ public class FriendsBottomSheet extends BottomSheetDialogFragment {
 
         Button removeFriendButton = binding.removeFriendButton;
         removeFriendButton.setOnClickListener(removeFriendButtonListener);
+
+        Log.d("FriendsBottomSheet", friend.getName());
 
         return binding.getRoot();
     }

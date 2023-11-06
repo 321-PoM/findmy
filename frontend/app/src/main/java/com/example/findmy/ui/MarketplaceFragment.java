@@ -32,7 +32,6 @@ import retrofit2.Response;
 
 public class MarketplaceFragment extends Fragment {
 
-    private FragmentMarketplaceBinding binding;
     private FindMyService findMyService;
     private ArrayList<MarketListing> listingArray;
     private MarketplaceListingAdapter marketplaceListingAdapter;
@@ -51,7 +50,7 @@ public class MarketplaceFragment extends Fragment {
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
         // Inflate the layout for this fragment
-        binding = FragmentMarketplaceBinding.inflate(inflater, container, false);
+        FragmentMarketplaceBinding binding = FragmentMarketplaceBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         retrieveListings();
