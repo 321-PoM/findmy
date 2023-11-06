@@ -1,4 +1,4 @@
-package com.example.findmy.POI;
+package com.example.findmy.PointOfInterest;
 
 import java.util.Date;
 
