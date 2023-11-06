@@ -96,17 +96,19 @@ export const getUserReliabilityScore = async (userId) => {
                 isDeleted: false,
             }
         });
+
         if(reviewsByUser.length < 1) return 100;
 
-        // iterate through every single poi reviewed by user
-        let totalReviews = reviewsByUser.length;
-        let dists = new Array();
-        for(const review of reviewsByUser){
-            let dist = await distFromSafeZone(review.poiId, review.rating);
-            dists.push(dist);
-        }
-        let sumDist = dists.reduce((sum, dist) => sum += dist, 0);
-        let meanDist = (sumDist == 0) ? 0 : parseInt(sumDist / totalReviews);
+        // Create an array of promises for distFromSafeZone for each review
+        const distPromises = reviewsByUser.map(review => distFromSafeZone(review.poiId, review.rating));
+
+        // Use Promise.all to wait for all distFromSafeZone promises to resolve
+        const dists = await Promise.all(distPromises);
+
+        // Calculate the mean distance from safezone
+        let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
+        let meanDist = (sumDist === 0) ? 0 : parseInt(sumDist / reviewsByUser.length);
+
         return 100 - meanDist;
     } catch (err) {
         throw err; 
