@@ -10,7 +10,7 @@ export const createUser = async (userData) => {
 };
 
 export const getUser = async (userId) => {
-    const uid = parseInt(userId);
+    const uid = parseInt(userId, 10);
 
     if (isNaN(uid)) {
         return res.status(400).json({ message: "Error: getUser | user ID is not int." });
@@ -107,7 +107,7 @@ export const getUserReliabilityScore = async (userId) => {
 
         // Calculate the mean distance from safezone
         let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
-        let meanDist = (sumDist === 0) ? 0 : parseInt(sumDist / reviewsByUser.length);
+        let meanDist = (sumDist === 0) ? 0 : parseInt((sumDist / reviewsByUser.length), 10);
 
         return 100 - meanDist;
     } catch (err) {

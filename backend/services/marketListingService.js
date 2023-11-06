@@ -96,7 +96,7 @@ export const deleteListing = async (id) => {
 };
 
 export const getMarketListingByUser = async (userId) => {
-    const uid = parseInt(userId);
+    const uid = parseInt(userId, 10);
 
     if (isNaN(uid)) {
         return res.status(400).json({ message: "Error: getUser | user ID is not int." });
