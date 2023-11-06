@@ -28,4 +28,6 @@ public class Transaction {
     public void setBuyerId(int buyerId) { this.buyerId = buyerId; }
     public int getListingId() { return listingId; }
     public void setListingId(int listingId) { this.listingId = listingId; }
+
+    public User getBuyer() { return this.buyer; }
 }
