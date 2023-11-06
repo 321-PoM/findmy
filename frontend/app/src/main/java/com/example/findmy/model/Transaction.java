@@ -15,7 +15,7 @@ public class Transaction {
     @SerializedName("listingId")
     private int listingId;
 
-    public Transaction(int id, User buyer, int buyerId, MarketListing listing, int listingId) {
+    public Transaction(int id, User buyer, int buyerId, int listingId) {
         this.id = id;
         this.buyer = buyer;
         this.buyerId = buyerId;
