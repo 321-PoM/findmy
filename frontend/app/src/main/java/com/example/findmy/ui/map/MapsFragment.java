@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -45,7 +44,6 @@ import retrofit2.Response;
 public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
-    private FloatingActionButton newPOIButton;
 
     private FindMyService findMyService;
 
@@ -110,7 +108,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         }
 
         // setup button
-        newPOIButton = view.findViewById(R.id.newPOIButton);
+        FloatingActionButton newPOIButton = view.findViewById(R.id.newPOIButton);
         newPOIButton.setOnClickListener( new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -192,6 +190,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     @SuppressLint("MissingPermission")
     private void updateMapToCurrentLocation() {
+        // TODO
+        Log.d(TAG, "Updating map to user location");
     }
 
     private void clearMapPins() {
