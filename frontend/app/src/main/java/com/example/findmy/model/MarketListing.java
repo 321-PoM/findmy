@@ -33,21 +33,6 @@ public class MarketListing {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public MarketListing(int id, float price, User seller, int sellerId, POI poi, int poiID, String createdAt, String updatedAt, boolean isActive, boolean isDeleted) {
-        this.id = id;
-        this.price = price;
-        this.seller = seller;
-        this.sellerId = sellerId;
-        this.poi = poi;
-        this.poiID = poiID;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.isActive = isActive;
-        this.isDeleted = isDeleted;
-    }
-
-    public static MarketListing testListing = new MarketListing(0, 30, User.testUser, User.testUser.getId(), POI.testPOI, POI.testPOI.getId(), "createdAt", "updatedAt", true, false);
-
     public int getId() {
         return id;
     }
