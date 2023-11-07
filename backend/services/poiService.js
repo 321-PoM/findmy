@@ -47,6 +47,7 @@ export const reportPoi = async (poiId) => {
 }
 
 export const buyPoi = async (poiId, buyerId) => {
+    console.log("");
     try{
         // get POI
         const poiOnSale = await getPoi(poiId);
