@@ -32,25 +32,18 @@ export const updatePoi = async (poiId, updateData) => {
 };
 
 export const reportPoi = async (poiId) => {
-    try{
-        const updatedPoi = await prisma.poi.update({
-            where: { id: Number(poiId) },
-            data: { reports: { increment: 1 }},
-        });
-    
-        let numReview = await prisma.Review.count({
-            where: { poiId: updatedPoi['id'] }
-        });
+    const updatedPoi = await prisma.poi.update({
+        where: { id: Number(poiId) },
+        data: { reports: { increment: 1 }},
+    });
 
-        // Need at least 3 reviews to calculate report - review ratio.
-        if (numReview < 3) {
-            return 0;
-        }
+    let numReview = await prisma.Review.count({
+        where: { poiId: updatedPoi['id'] }
+    });
 
-        return updatedPoi.reports / numReview;
-    } catch (err) {
-        throw err;
-    }
+    // Need at least 3 reviews to calculate report - review ratio.
+    if (numReview < 3) return 0;
+    return updatedPoi.reports / numReview;
 }
 
 export const buyPoi = async (poiId, buyerId) => {
@@ -216,29 +209,25 @@ function getBoundingBox(lat, lon, distance) {
   }
 
 export const calcPoiRating = async (poiId) => {
-    try{
-        const allRatings = await prisma.review.findMany({
-            where: { poiId: Number(poiId) }
+    const allRatings = await prisma.review.findMany({
+        where: { poiId: Number(poiId) }
+    });
+    if(allRatings.length < 1){
+        const poi = await prisma.poi.findUnique({
+            where: { poiId: Number(poiId) },
+            include: { rating: true },
         });
-        if(allRatings.length < 1){
-            const poi = await prisma.poi.findUnique({
-                where: { poiId: Number(poiId) },
-                include: { rating: true },
-            });
-            return poi.rating;
-        }
-        
-        // Calculate new weighted rating
-        let totalWeight = 0;
-        let weightedSum = 0;
-        for(const rating of allRatings){
-            totalWeight += rating.reliabilityScore;
-            weightedSum += rating.rating * rating.reliabilityScore;
-        }
-        return weightedSum / totalWeight;
-    } catch (err) {
-        throw err;
+        return poi.rating;
     }
+    
+    // Calculate new weighted rating
+    let totalWeight = 0;
+    let weightedSum = 0;
+    for(const rating of allRatings){
+        totalWeight += rating.reliabilityScore;
+        weightedSum += rating.rating * rating.reliabilityScore;
+    }
+    return weightedSum / totalWeight;
 }
 
 export const getPoiByUser = async (userId) => {
@@ -247,16 +236,9 @@ export const getPoiByUser = async (userId) => {
     if (isNaN(uid)) {
         return res.status(400).json({ message: "Error: getUser | user ID is not int." });
     }
-
-    try {
-        const allPois = await prisma.poi.findMany({
-            where: {
-                userId: userID,
-            },
-        });
-        return allPois
-    } catch (err) {
-        return err;
-    }
+    const allPois = await prisma.poi.findMany({
+        where: { userId: userId },
+    });
+    return allPois
 }
 

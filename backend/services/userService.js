@@ -26,32 +26,24 @@ export const getUser = async (userId) => {
 };
 
 export const getUserByEmail = async (email) => {
-    try {
-        const user = await prisma.User.findFirst({
-            where: { 
-                email: email,
-                isDeleted: false,
-                isActive: true,
-            },
-        });
+    const user = await prisma.User.findFirst({
+        where: { 
+            email: email,
+            isDeleted: false,
+            isActive: true,
+        },
+    });
+    if (user) return user;
 
-        if (user) return user;
-
-        const createdUser = await prisma.User.create({
-            data: { 
-                name: email,
-                email: email,
-                avatar: 'none',
-                biography: 'none',
-                reliabilityScore: 100,
-            }
-        });
-
-        return createdUser;
-
-    } catch (err) {
-        throw err;
-    }
+    return await prisma.User.create({
+        data: { 
+            name: email,
+            email: email,
+            avatar: 'none',
+            biography: 'none',
+            reliabilityScore: 100,
+        }
+    });
 };
 
 export const updateUser = async (userId, updateData) => {
@@ -88,31 +80,27 @@ export const listUsers = async () => {
 };
 
 export const getUserReliabilityScore = async (userId) => {
-    try {
-        // Query for Pois reviewed by the user
-        const reviewsByUser = await prisma.Review.findMany({
-            where: {
-                userId: Number(userId),
-                isDeleted: false,
-            }
-        });
+    // Query for Pois reviewed by the user
+    const reviewsByUser = await prisma.Review.findMany({
+        where: {
+            userId: Number(userId),
+            isDeleted: false,
+        }
+    });
 
-        if(reviewsByUser.length < 1) return 100;
+    if(reviewsByUser.length < 1) return 100;
 
-        // Create an array of promises for distFromSafeZone for each review
-        const distPromises = reviewsByUser.map(review => distFromSafeZone(review.poiId, review.rating));
+    // Create an array of promises for distFromSafeZone for each review
+    const distPromises = reviewsByUser.map(review => distFromSafeZone(review.poiId, review.rating));
 
-        // Use Promise.all to wait for all distFromSafeZone promises to resolve
-        const dists = await Promise.all(distPromises);
+    // Use Promise.all to wait for all distFromSafeZone promises to resolve
+    const dists = await Promise.all(distPromises);
 
-        // Calculate the mean distance from safezone
-        let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
-        let meanDist = (sumDist === 0) ? 0 : parseInt((sumDist / reviewsByUser.length), 10);
+    // Calculate the mean distance from safezone
+    let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
+    let meanDist = (sumDist === 0) ? 0 : parseInt((sumDist / reviewsByUser.length), 10);
 
-        return 100 - meanDist;
-    } catch (err) {
-        throw err; 
-    }
+    return 100 - meanDist;
 };
 
 const distFromSafeZone = async (poiId, rating) => {

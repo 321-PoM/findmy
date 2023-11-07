@@ -6,27 +6,23 @@ const prisma = new PrismaClient();
 // I think I would prefer to list reviews of user or reviews on a poi through the user/poi module
 // BUt will keep this function here for now
 export const listReviews = async (searchBy, id) => {
-    try{
-        if(searchBy != 'user' || searchBy != 'poi') throw new Error("Invalid or missing input parameter")
+    if(searchBy != 'user' || searchBy != 'poi') throw new Error("Invalid or missing input parameter")
 
-        let inputParams = (searchBy == 'user') ? 
-            {isDeleted: false, userId: id} : 
-            {isDeleted: false, poiId: id};
+    let inputParams = (searchBy == 'user') ? 
+        {isDeleted: false, userId: id} : 
+        {isDeleted: false, poiId: id};
 
-        return await prisma.Review.findMany({
-            where: inputParams,
-            include: {
-                id: true,
-                rating: true,
-                poiId: (searchBy != 'poi'),
-                userId: (searchBy != 'user'),
-                description: true,
-                reliabilityScore: true,
-            },
-        });
-    } catch (err) {
-        throw err
-    }
+    return await prisma.Review.findMany({
+        where: inputParams,
+        include: {
+            id: true,
+            rating: true,
+            poiId: (searchBy != 'poi'),
+            userId: (searchBy != 'user'),
+            description: true,
+            reliabilityScore: true,
+        },
+    });
 };
 
 export const getReview = async (id) => {
@@ -46,28 +42,24 @@ export const getReview = async (id) => {
 }
 
 export const createReview = async (poiId, userId, rating, description) => {
-    try{
-        const doesThisExist = await prisma.Review.findFirst({
-            where: {
-                poiId: poiId,
-                userId: userId,
-                isDeleted: false,
-            }
-        });
-        if(doesThisExist) throw new Error("Review already exists");
-        let rScore = await getUserReliabilityScore(Number(userId));
-        return await prisma.Review.create({
-            data: {
-                poiId: Number(poiId),
-                userId: Number(userId),
-                rating: rating,
-                description: description,
-                reliabilityScore: rScore,
-            }
-        });
-    } catch (err) {
-        throw err;
-    }
+    const doesThisExist = await prisma.Review.findFirst({
+        where: {
+            poiId: poiId,
+            userId: userId,
+            isDeleted: false,
+        }
+    });
+    if(doesThisExist) throw new Error("Review already exists");
+    let rScore = await getUserReliabilityScore(Number(userId));
+    return await prisma.Review.create({
+        data: {
+            poiId: Number(poiId),
+            userId: Number(userId),
+            rating: rating,
+            description: description,
+            reliabilityScore: rScore,
+        }
+    });
 };
 
 export const updateReview = async (id, updateData) => {
