@@ -1,4 +1,4 @@
-import { app } from '../server.js'
+import app from '../server.js'
 
 // interface POST host/transaction
 describe("create transaction", () => {
