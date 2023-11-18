@@ -1,4 +1,4 @@
-import app from '../server.js'
+import app from '../server.js';
 
 // interface GET host/pois
 describe("list pois", () => {

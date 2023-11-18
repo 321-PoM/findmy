@@ -1,4 +1,6 @@
 /node_modules
 process.env
 
+/tests/coverage
+
 .env  # Already added in repo root .gitignore, but just in case.
