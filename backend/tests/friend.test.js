@@ -1,3 +1,5 @@
+import { app } from '../server.js'
+
 // interface GET host/friends/:userId
 describe("List friends of user", () => {
 

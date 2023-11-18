@@ -1,3 +1,5 @@
+import { app } from '../server.js'
+
 // interface POST host/marketlisting
 describe("create market listing", () => {
 
