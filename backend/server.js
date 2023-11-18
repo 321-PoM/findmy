@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const app = express();
+const app = express();
 app.use(express.json());
 
 // API Routers
@@ -41,4 +41,6 @@ http.createServer(app).listen(ports.http);
 https.createServer(server_opt, app).listen(ports.https);
 
 console.log(`Server running at http port:${ports.http}; https port:${ports.https}`);
+
+export default app;
 

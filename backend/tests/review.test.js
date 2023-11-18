@@ -1,4 +1,4 @@
-import app from '../server.js'
+import app from '../server.js';
 
 // interface GET host/reviews/:searchby/:id
 describe("Search reviews by user or by poi", () => {
