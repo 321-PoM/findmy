@@ -18,6 +18,9 @@ jobs:
     - name: Display Current Working Directory
       run: pwd
 
+    - name: List Directories
+      run: ls -la
+
     - name: Change to Backend Directory
       run: cd backend
 
