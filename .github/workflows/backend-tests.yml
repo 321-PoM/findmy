@@ -15,6 +15,9 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    - name: Display Current Working Directory
+      run: pwd
+
     - name: Change to Backend Directory
       run: cd backend
 
