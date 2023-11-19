@@ -3,14 +3,18 @@ name: Run Backend Tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Change to Backend Directory
+      run: cd backend
+
     - uses: actions/checkout@v2
 
     - name: Set up Node.js
