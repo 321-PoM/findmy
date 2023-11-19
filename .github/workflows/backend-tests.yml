@@ -12,10 +12,14 @@ jobs:
 
     steps:
 
+
+    - uses: actions/checkout@v2
+
     - name: Change to Backend Directory
       run: cd backend
 
-    - uses: actions/checkout@v2
+    - name: Display Current Working Directory
+      run: pwd
 
     - name: Set up Node.js
       uses: actions/setup-node@v1
