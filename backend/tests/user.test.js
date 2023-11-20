@@ -1,14 +1,15 @@
-import app from '../server.js';
+import { prismaMock } from '../prisma/singleton';
+import userService from '../services/userService'
 
 // interface GET host/users
 describe("List users", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("", async () => {
-        const res = await app.post();
+    // input: nothing
+    // expected status code: 200
+    // expected behaviour: function query DB, return list of users, return empty array if no users
+    // expected output: [mocked1, mocked2, mocked2, ...]
+    test("success query", async () => {
+        const res = await userService.listUsers();
         expect(res.status).toStrictEqual();
         expect();
     });
