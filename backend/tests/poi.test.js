@@ -1,4 +1,7 @@
-import app from '../server.js';
+import express from 'express';
+import poiRoutes from '../routes/poiRoutes.js';
+const app = express();
+app.use(poiRoutes);
 
 // interface GET host/pois
 describe("list pois", () => {

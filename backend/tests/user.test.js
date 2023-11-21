@@ -1,16 +1,18 @@
+import request from 'supertest';
 import app from '../server.js';
 
 // interface GET host/users
 describe("List users", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
+    // input: nothing
+    // expected status code: 200
+    // expected behaviour: function query DB, return list of users, return empty array if no users
+    // expected output: [user1, user2, user3, ...], each user has a field isActive that is true
+    test("list users", async () => {
+        const res = await request(app).get("/users");
+        expect(res).not.toBeNull();
+        expect(res.statusCode).toStrictEqual(200);
+        res.body.forEach((user) => expect(user.isActive).toBeTruthy());
     });
 });
 
@@ -23,7 +25,7 @@ describe("Get user", () => {
     // expected output
     test("validId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -33,7 +35,7 @@ describe("Get user", () => {
     // expected output
     test("invalidId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -43,353 +45,353 @@ describe("Get user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
 
-// interface GET host/userPoiWithMarketListing/:userId
-describe("Get user's poi with market listing", () => {
+// // interface GET host/userPoiWithMarketListing/:userId
+// describe("Get user's poi with market listing", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("validId", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("validId", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalidId", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalidId", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
 
-// interface GET host/user/email/:email
-describe("Get user by email", () => {
+// // interface GET host/user/email/:email
+// describe("Get user by email", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid email - user exists", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid email - user exists", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid email - user doesn't exist", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid email - user doesn't exist", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("string is not an email", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("string is not an email", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
 
-// interface POST host/user
-describe("create user", () => {
+// // interface POST host/user
+// describe("create user", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid body - all fields exist", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid body - all fields exist", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid body - some fields are empty", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid body - some fields are empty", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid body - duplicate info", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid body - duplicate info", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid body - erroneous fields", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid body - erroneous fields", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
 
-// interface PUT host/user/:id
-describe("update user", () => {
+// // interface PUT host/user/:id
+// describe("update user", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + valid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id + valid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + invalid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id + invalid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id + valid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id + valid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id + invalid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id + invalid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // TODO: probably is more cases for this one
-});
+//     // TODO: probably is more cases for this one
+// });
 
-// interface PUT host/user/:id/updateUserBux
-describe("update user BUX", () => {
+// // interface PUT host/user/:id/updateUserBux
+// describe("update user BUX", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + valid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id + valid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + invalid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id + invalid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id + valid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id + valid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id + invalid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id + invalid body", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // TODO: probably is more cases for this one
-});
+//     // TODO: probably is more cases for this one
+// });
 
-// interface DELETE host/user/:id
-describe("delete user", () => {
+// // interface DELETE host/user/:id
+// describe("delete user", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
 
-// interface DELETE host/user/:id
-describe("delete user", () => {
+// // interface DELETE host/user/:id
+// describe("delete user", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
 
-// interface GET host/rscore/:userId
-describe("get user reliability score", () => {
+// // interface GET host/rscore/:userId
+// describe("get user reliability score", () => {
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("valid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("invalid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("invalid id", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
 
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("empty request", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-});
+//     // input
+//     // expected status code
+//     // expected behaviour
+//     // expected output
+//     test("empty request", async () => {
+//         const res = await app.post();
+//         expect(res.status).toStrictEqual(200);
+//         expect();
+//     });
+// });
