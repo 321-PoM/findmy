@@ -10,7 +10,9 @@ describe("List users", () => {
     // expected output: [mocked1, mocked2, mocked2, ...]
     test("list users", async () => {
         const res = await request(app).get("/users");
-        console.log(res);
+        expect(res).not.toBeNull();
+        expect(res.statusCode).toStrictEqual(200);
+        res.forEach((user) => expect(user.isActive).toBeTruthy());
     });
 });
 
