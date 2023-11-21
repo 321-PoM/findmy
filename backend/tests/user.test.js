@@ -12,7 +12,7 @@ describe("List users", () => {
         const res = await request(app).get("/users");
         expect(res).not.toBeNull();
         expect(res.statusCode).toStrictEqual(200);
-        res.forEach((user) => expect(user.isActive).toBeTruthy());
+        res.body.forEach((user) => expect(user.isActive).toBeTruthy());
     });
 });
 
