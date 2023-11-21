@@ -10,8 +10,8 @@ describe("List users", () => {
     // expected output: [mocked1, mocked2, mocked2, ...]
     test("success query", async () => {
         const res = await userService.listUsers();
-        expect(res.status).toStrictEqual();
-        expect();
+        expect(res.status).toStrictEqual(200);
+        
     });
 });
 
@@ -24,7 +24,7 @@ describe("Get user", () => {
     // expected output
     test("validId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -34,7 +34,7 @@ describe("Get user", () => {
     // expected output
     test("invalidId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -44,7 +44,7 @@ describe("Get user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -58,7 +58,7 @@ describe("Get user's poi with market listing", () => {
     // expected output
     test("validId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -68,7 +68,7 @@ describe("Get user's poi with market listing", () => {
     // expected output
     test("invalidId", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -78,7 +78,7 @@ describe("Get user's poi with market listing", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -92,7 +92,7 @@ describe("Get user by email", () => {
     // expected output
     test("valid email - user exists", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -102,7 +102,7 @@ describe("Get user by email", () => {
     // expected output
     test("valid email - user doesn't exist", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -112,7 +112,7 @@ describe("Get user by email", () => {
     // expected output
     test("string is not an email", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -122,7 +122,7 @@ describe("Get user by email", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -136,7 +136,7 @@ describe("create user", () => {
     // expected output
     test("valid body - all fields exist", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -146,7 +146,7 @@ describe("create user", () => {
     // expected output
     test("valid body - some fields are empty", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -156,7 +156,7 @@ describe("create user", () => {
     // expected output
     test("invalid body - duplicate info", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -166,7 +166,7 @@ describe("create user", () => {
     // expected output
     test("invalid body - erroneous fields", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -176,7 +176,7 @@ describe("create user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -190,7 +190,7 @@ describe("update user", () => {
     // expected output
     test("valid id + valid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -200,7 +200,7 @@ describe("update user", () => {
     // expected output
     test("valid id + invalid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -210,7 +210,7 @@ describe("update user", () => {
     // expected output
     test("invalid id + valid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -220,7 +220,7 @@ describe("update user", () => {
     // expected output
     test("invalid id + invalid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -230,7 +230,7 @@ describe("update user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -246,7 +246,7 @@ describe("update user BUX", () => {
     // expected output
     test("valid id + valid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -256,7 +256,7 @@ describe("update user BUX", () => {
     // expected output
     test("valid id + invalid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -266,7 +266,7 @@ describe("update user BUX", () => {
     // expected output
     test("invalid id + valid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -276,7 +276,7 @@ describe("update user BUX", () => {
     // expected output
     test("invalid id + invalid body", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -286,7 +286,7 @@ describe("update user BUX", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -302,7 +302,7 @@ describe("delete user", () => {
     // expected output
     test("valid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -312,7 +312,7 @@ describe("delete user", () => {
     // expected output
     test("invalid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -322,7 +322,7 @@ describe("delete user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -336,7 +336,7 @@ describe("delete user", () => {
     // expected output
     test("valid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -346,7 +346,7 @@ describe("delete user", () => {
     // expected output
     test("invalid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -356,7 +356,7 @@ describe("delete user", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });
@@ -370,7 +370,7 @@ describe("get user reliability score", () => {
     // expected output
     test("valid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -380,7 +380,7 @@ describe("get user reliability score", () => {
     // expected output
     test("invalid id", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 
@@ -390,7 +390,7 @@ describe("get user reliability score", () => {
     // expected output
     test("empty request", async () => {
         const res = await app.post();
-        expect(res.status).toStrictEqual();
+        expect(res.status).toStrictEqual(200);
         expect();
     });
 });

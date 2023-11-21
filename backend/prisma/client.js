@@ -5,7 +5,7 @@ dotenv.config();
 
 const testprisma = new PrismaClient({
     datasources: { 
-        db: { url: process.env.MOCK_DATABASE_URL }
+        db: { url: process.env.DATABASE_URL }
     }
 })
 export default testprisma
