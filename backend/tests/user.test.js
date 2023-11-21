@@ -7,7 +7,7 @@ describe("List users", () => {
     // input: nothing
     // expected status code: 200
     // expected behaviour: function query DB, return list of users, return empty array if no users
-    // expected output: [mocked1, mocked2, mocked2, ...]
+    // expected output: [user1, user2, user3, ...], each user has a field isActive that is true
     test("list users", async () => {
         const res = await request(app).get("/users");
         expect(res).not.toBeNull();
@@ -16,39 +16,39 @@ describe("List users", () => {
     });
 });
 
-// // interface GET host/user/:id
-// describe("Get user", () => {
+// interface GET host/user/:id
+describe("Get user", () => {
 
-//     // input
-//     // expected status code
-//     // expected behaviour
-//     // expected output
-//     test("validId", async () => {
-//         const res = await app.post();
-//         expect(res.status).toStrictEqual(200);
-//         expect();
-//     });
+    // input
+    // expected status code
+    // expected behaviour
+    // expected output
+    test("validId", async () => {
+        const res = await app.post();
+        expect(res.status).toStrictEqual(200);
+        expect();
+    });
 
-//     // input
-//     // expected status code
-//     // expected behaviour
-//     // expected output
-//     test("invalidId", async () => {
-//         const res = await app.post();
-//         expect(res.status).toStrictEqual(200);
-//         expect();
-//     });
+    // input
+    // expected status code
+    // expected behaviour
+    // expected output
+    test("invalidId", async () => {
+        const res = await app.post();
+        expect(res.status).toStrictEqual(200);
+        expect();
+    });
 
-//     // input
-//     // expected status code
-//     // expected behaviour
-//     // expected output
-//     test("empty request", async () => {
-//         const res = await app.post();
-//         expect(res.status).toStrictEqual(200);
-//         expect();
-//     });
-// });
+    // input
+    // expected status code
+    // expected behaviour
+    // expected output
+    test("empty request", async () => {
+        const res = await app.post();
+        expect(res.status).toStrictEqual(200);
+        expect();
+    });
+});
 
 // // interface GET host/userPoiWithMarketListing/:userId
 // describe("Get user's poi with market listing", () => {
