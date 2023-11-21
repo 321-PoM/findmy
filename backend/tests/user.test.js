@@ -219,7 +219,7 @@ describe("update user", () => {
     // expected output: error message
     test("invalid id", async () => {
         const wrong = "deadbeef"
-        const res = await request(app).put(`/user/${deadbeef}`).send(deadbeef);
+        const res = await request(app).put(`/user/${wrong}`).send(wrong);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
         expect(res.body).toHaveProperty("message");
@@ -258,7 +258,7 @@ describe("update user BUX", () => {
     // expected output: error message
     test("invalid id", async () => {
         const wrong = "deadbeef"
-        const res = await request(app).put(`/user/${wrong}/updateUserBux`).send(deadbeef);
+        const res = await request(app).put(`/user/${wrong}/updateUserBux`).send(wrong);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
         expect(res.body).toHaveProperty("message");
