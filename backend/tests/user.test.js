@@ -1,3 +1,4 @@
+import request from 'supertest';
 import app from '../server.js';
 
 // interface GET host/users
@@ -8,7 +9,7 @@ describe("List users", () => {
     // expected behaviour: function query DB, return list of users, return empty array if no users
     // expected output: [mocked1, mocked2, mocked2, ...]
     test("list users", async () => {
-        const res = await app.get('/users');
+        const res = await request(app).get("/users");
         console.log(res);
     });
 });
