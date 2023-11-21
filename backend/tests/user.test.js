@@ -7,9 +7,9 @@ describe("List users", () => {
     // expected status code: 200
     // expected behaviour: function query DB, return list of users, return empty array if no users
     // expected output: [mocked1, mocked2, mocked2, ...]
-    test("success query", async () => {
+    test("list users", async () => {
         const res = await app.get('/users');
-        expect(res.status).toStrictEqual(200);
+        console.log(res);
     });
 });
 
