@@ -1,6 +1,7 @@
+import request from 'supertest';
 import app from '../server.js';
 
-// interface POST host/marketlisting
+// interface POST host/marketListing
 describe("create market listing", () => {
 
     // input
@@ -8,7 +9,7 @@ describe("create market listing", () => {
     // expected behaviour
     // expected output
     test("valid body", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/marketListing");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -18,7 +19,7 @@ describe("create market listing", () => {
     // expected behaviour
     // expected output
     test("invalid body", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/marketListing");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -32,7 +33,7 @@ describe("get one market listing", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -42,7 +43,7 @@ describe("get one market listing", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -56,7 +57,7 @@ describe("get all market listings", () => {
     // expected behaviour
     // expected output
     test("get all test", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListings");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -70,7 +71,7 @@ describe("get all listings of a user", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -80,7 +81,7 @@ describe("get all listings of a user", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -94,7 +95,7 @@ describe("get all listings of a poi", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/poi/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -104,7 +105,7 @@ describe("get all listings of a poi", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/marketListing/poi/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -118,7 +119,7 @@ describe("update listing", () => {
     // expected behaviour
     // expected output
     test("valid id, valid body", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -127,18 +128,8 @@ describe("update listing", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid id, valid body", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id, invalid body", async () => {
-        const res = await app.post();
+    test("invalid update", async () => {
+        const res = await request(app).put("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -152,7 +143,7 @@ describe("delete listing", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -162,7 +153,7 @@ describe("delete listing", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/marketListing/0");
         expect(res.status).toStrictEqual();
         expect();
     });

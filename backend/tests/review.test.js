@@ -1,3 +1,4 @@
+import request from 'supertest';
 import app from '../server.js';
 
 // interface GET host/reviews/:searchby/:id
@@ -8,7 +9,7 @@ describe("Search reviews by user or by poi", () => {
     // expected behaviour
     // expected output
     test("valid search + valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/reviews/true/10");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -17,18 +18,8 @@ describe("Search reviews by user or by poi", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid search + valid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid search + invalid id", async () => {
-        const res = await app.post();
+    test("invalid search", async () => {
+        const res = await request(app).get("/reviews/true/10");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -42,7 +33,7 @@ describe("Get review", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/review/1");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -52,13 +43,13 @@ describe("Get review", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/review/1");
         expect(res.status).toStrictEqual();
         expect();
     });
 });
 
-// interface POST host/reivew
+// interface POST host/review
 describe("Create review", () => {
 
     // input
@@ -66,7 +57,7 @@ describe("Create review", () => {
     // expected behaviour
     // expected output
     test("valid params", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/review");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -76,7 +67,7 @@ describe("Create review", () => {
     // expected behaviour
     // expected output
     test("invalid params", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/review");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -90,7 +81,7 @@ describe("update review", () => {
     // expected behaviour
     // expected output
     test("valid id + valid params", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/review/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -99,24 +90,14 @@ describe("update review", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid id + valid params", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + invalid params", async () => {
-        const res = await app.post();
+    test("invalid update", async () => {
+        const res = await request(app).put("/review/0");
         expect(res.status).toStrictEqual();
         expect();
     });
 });
 
-// interface PUT host/reivew/:id/rating
+// interface PUT host/review/:id/rating
 describe("update rating", () => {
 
     // input
@@ -124,37 +105,7 @@ describe("update rating", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("big rating", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("tiny rating", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("negative rating", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/review/0/10");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -164,7 +115,7 @@ describe("update rating", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/review/0/10");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -178,7 +129,7 @@ describe("delete rating", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/review/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -188,7 +139,7 @@ describe("delete rating", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/review/0");
         expect(res.status).toStrictEqual();
         expect();
     });

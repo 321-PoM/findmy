@@ -1,3 +1,4 @@
+import request from 'supertest';
 import app from '../server.js';
 
 // interface POST host/transaction
@@ -8,7 +9,7 @@ describe("create transaction", () => {
     // expected behaviour
     // expected output
     test("valid buyer + valid listing", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/transaction");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -18,7 +19,7 @@ describe("create transaction", () => {
     // expected behaviour
     // expected output
     test("invalid buyer + valid listing", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/transaction");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -28,7 +29,7 @@ describe("create transaction", () => {
     // expected behaviour
     // expected output
     test("valid buyer + invalid listing", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/transaction");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -42,7 +43,7 @@ describe("get a transaction", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -52,7 +53,7 @@ describe("get a transaction", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -66,7 +67,7 @@ describe("list transacitons of user", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/buyer/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -76,7 +77,7 @@ describe("list transacitons of user", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/buyer/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -86,7 +87,7 @@ describe("list transacitons of user", () => {
     // expected behaviour
     // expected output
     test("valid id, no transactions", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/buyer/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -100,7 +101,7 @@ describe("list transacitons of listing", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/listing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -110,7 +111,7 @@ describe("list transacitons of listing", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/listing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -120,7 +121,7 @@ describe("list transacitons of listing", () => {
     // expected behaviour
     // expected output
     test("valid id, no transactions", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/transactions/listing/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -134,7 +135,7 @@ describe("update transaction", () => {
     // expected behaviour
     // expected output
     test("valid id + valid data", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -143,18 +144,8 @@ describe("update transaction", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid id + valid data", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + invalid data", async () => {
-        const res = await app.post();
+    test("invalid update", async () => {
+        const res = await request(app).put("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -168,7 +159,7 @@ describe("delete transaction", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -178,7 +169,7 @@ describe("delete transaction", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/transaction/0");
         expect(res.status).toStrictEqual();
         expect();
     });

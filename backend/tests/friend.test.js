@@ -1,3 +1,4 @@
+import request from 'supertest';
 import app from '../server.js';
 
 // interface GET host/friends/:userId
@@ -8,7 +9,7 @@ describe("List friends of user", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/90");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -18,7 +19,7 @@ describe("List friends of user", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -32,7 +33,7 @@ describe("List friend requests received by user", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/90/received");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -42,7 +43,7 @@ describe("List friend requests received by user", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/0/received");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -56,7 +57,7 @@ describe("List friend requests sent by user", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/90/sent");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -66,7 +67,7 @@ describe("List friend requests sent by user", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friends/0/sent");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -80,7 +81,7 @@ describe("get a specific friendship", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friend/0");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -90,13 +91,13 @@ describe("get a specific friendship", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).get("/friend/0");
         expect(res.status).toStrictEqual();
         expect();
     });
 });
 
-// interface POST host/friend/:friendshipId
+// interface POST host/friend
 describe("create friendship", () => {
 
     // input
@@ -104,7 +105,7 @@ describe("create friendship", () => {
     // expected behaviour
     // expected output
     test("valid from + valid to", async () => {
-        const res = await app.post();
+        const res = await request(app).post("/friend");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -113,18 +114,8 @@ describe("create friendship", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid from + valid to", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid from + invalid to", async () => {
-        const res = await app.post();
+    test("invalid combo", async () => {
+        const res = await request(app).post("/friend");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -138,7 +129,7 @@ describe("accept request", () => {
     // expected behaviour
     // expected output
     test("valid id + valid resp", async () => {
-        const res = await app.post();
+        const res = await request(app).put("/friend/0/true");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -147,18 +138,8 @@ describe("accept request", () => {
     // expected status code
     // expected behaviour
     // expected output
-    test("invalid id + valid resp", async () => {
-        const res = await app.post();
-        expect(res.status).toStrictEqual();
-        expect();
-    });
-
-    // input
-    // expected status code
-    // expected behaviour
-    // expected output
-    test("valid id + invalid resp", async () => {
-        const res = await app.post();
+    test("invalid combo", async () => {
+        const res = await request(app).put("/friend/0/true");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -172,7 +153,7 @@ describe("delete friend", () => {
     // expected behaviour
     // expected output
     test("valid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/friend");
         expect(res.status).toStrictEqual();
         expect();
     });
@@ -182,7 +163,7 @@ describe("delete friend", () => {
     // expected behaviour
     // expected output
     test("invalid id", async () => {
-        const res = await app.post();
+        const res = await request(app).delete("/friend");
         expect(res.status).toStrictEqual();
         expect();
     });
