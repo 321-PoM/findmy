@@ -65,7 +65,7 @@ export const handleFriendRequest = async (req, res) => {
 export const deleteFriendship = async (req, res) => {
     console.log("");
     try {
-        const del = await friendService.deleteFriendship(req.body.friendshipId);
+        const del = await friendService.deleteFriendship(req.param.id);
         res.status(200).json(del);
     } catch (err) {
         controllerErrorHandler(err, req, res); 
