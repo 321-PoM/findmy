@@ -30,14 +30,7 @@ export const getReview = async (id) => {
         where: {
             id: Number(id),
             isDeleted: false,
-        },
-        include: {
-            userId: true,
-            poiId: true,
-            rating: true,
-            description: true,
-            reliabilityScore: true,
-        },
+        }
     })
 }
 
