@@ -13,15 +13,7 @@ export const listReviews = async (searchBy, id) => {
         {isDeleted: false, poiId: id};
 
     return await prisma.Review.findMany({
-        where: inputParams,
-        include: {
-            id: true,
-            rating: true,
-            poiId: (searchBy != 'poi'),
-            userId: (searchBy != 'user'),
-            description: true,
-            reliabilityScore: true,
-        },
+        where: inputParams
     });
 };
 

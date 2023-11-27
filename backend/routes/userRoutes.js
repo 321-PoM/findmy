@@ -11,6 +11,7 @@ router.post("/user", userController.createUser);
 router.put("/user/:id", userController.updateUser);
 router.put("/user/:id/updateUserBux", userController.updateUserBux);
 router.delete("/user/:id", userController.deleteUser);
+router.delete("/user/:id/all", userController.deleteUserAndRefs);
 router.get("/rscore/:userId", userController.getReliabilityScore);
 
 export default router;
