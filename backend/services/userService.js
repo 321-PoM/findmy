@@ -54,10 +54,23 @@ export const updateUser = async (userId, updateData) => {
 };
 
 export const updateUserBux = async (userId, polarity, amount) => {
+    const SECONDS = 60;
+    const MILLISECONDS = 1000;
+    const timeCapInMinutes = 2;
+
+    const lastUpdate = await prisma.User.findUnique({
+        where: { id: Number(userId) },
+        select: { mapBuxUpdate: true }
+    });
+    if((Date.now() - lastUpdate) < timeCapInMinutes * SECONDS * MILLISECONDS) {
+        throw new Error(`userbux was updated less than ${timeCapInMinutes} minutes ago`);
+    }
+
     return await prisma.User.update({
         where: { id: Number(userId) },
         data: {
-            mapBux: (polarity) ? { increment: amount } : { decrement: amount }
+            mapBux: (polarity) ? { increment: amount } : { decrement: amount },
+            mapBuxUpdate: Date.now(),
         },
         select: { mapBux: true }
     })
