@@ -70,6 +70,58 @@ export const deleteUser = async (userId) => {
     });
 };
 
+export const deleteAllRefs = async (userId) => {
+    const listings = await prisma.marketListing.findMany({
+        where: {
+            sellerId: userId,
+            isDeleted: false
+        },
+        select: { id: true }
+    });
+    for(const id of listings) {
+        await prisma.transaction.delete({
+            where: { listingId: Number(id) }
+        });
+    }
+
+    const pois = await prisma.poi.findMany({
+        where: { 
+            ownerId: Number(userId),
+            isDeleted: false,
+        },
+        select: { id: true }
+    });
+    for(const id of pois){
+        await prisma.Review.delete({
+            where: { poiId: Number(id) }
+        });
+    }
+    await prisma.poi.delete({
+        where: { ownerId: Number(userId) }
+    });
+
+    await prisma.marketListing.delete({
+        where: { sellerId: Number(userId) }
+    });
+    await prisma.transaction.delete({
+        where: { buyerId: Number(userId) }
+    });
+    await prisma.Review.delete({
+        where: { userId: Number(userId) }
+    });
+    await prisma.friendship.delete({
+        where: {
+            OR: [
+                { userIdFrom: Number(userId) },
+                { userIdTo: Number(userId) }
+            ]
+        }
+    });
+    await prisma.User.delete({
+        where: { id: Number(userId) }
+    });
+}
+
 export const listUsers = async () => {
     return await prisma.User.findMany({
         where: {

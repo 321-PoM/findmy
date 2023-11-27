@@ -73,6 +73,16 @@ export const listUsers = async (req, res) => {
     }
 };
 
+export const deleteUserAndRefs = async (req, res) => {
+    console.log("");
+    try{
+        await userService.deleteAllRefs(req.params.id);
+        res.status(204).send();
+    } catch (error) {
+        controllerErrorHandler(error, req, res);
+    }
+}
+
 export const getReliabilityScore = async (req, res) => {
     console.log("");
     try {
