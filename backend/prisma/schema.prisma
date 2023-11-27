@@ -16,6 +16,7 @@ model User {
   reliabilityScore Int
   premiumStatus    Boolean         @default(false)
   mapBux           Int             @default(0)
+  mapBuxUpdate     DateTime        @default(now())
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   isActive         Boolean         @default(true)
