@@ -9,7 +9,7 @@ public class POI {
     @SerializedName("latitude")
     private double latitude;
 
-    @SerializedName("longitudes")
+    @SerializedName("longitude")
     private double longitude;
 
     @SerializedName("category")

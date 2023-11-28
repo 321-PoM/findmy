@@ -54,7 +54,7 @@ export const getAllListingsSortedByDistance = async(latitude, longitude) => {
     })
 
     let marketListings = listings.map((listing) => 
-    ({listing: listing, distance: getDistance({longitude: Number(longitude), latitude: Number(latitude)}, {longitude: Number(listing.poi.longitudes), latitude: Number(listing.poi.latitude)})}));
+    ({listing: listing, distance: getDistance({longitude: Number(longitude), latitude: Number(latitude)}, {longitude: Number(listing.poi.longitude), latitude: Number(listing.poi.latitude)})}));
 
     function compareByDistance(a, b) {
         return a.distance - b.distance;

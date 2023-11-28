@@ -81,7 +81,7 @@ describe("create poi", () => {
     test("valid body", async () => {
         const poidata = {
             latitude: 20,
-            longitudes: 20,
+            longitude: 20,
             category: 'myPoi',
             status: 'unlisted',
             description: 'unlisted',
