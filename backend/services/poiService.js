@@ -182,7 +182,7 @@ export const filterPois = async (currLong, currLat, poiType, distance) => {
                     gt:coords.latMin,
                     lt:coords.latMax,
                 },
-                longitudes: {
+                longitude: {
                     gt: coords.lonMin,
                     lt: coords.lonMax,
                 }
@@ -197,7 +197,7 @@ export const filterPois = async (currLong, currLat, poiType, distance) => {
                     gt:coords.latMin,
                     lt:coords.latMax,
                 },
-                longitudes: {
+                longitude: {
                     gt: coords.lonMin,
                     lt: coords.lonMax,
                 }
@@ -207,7 +207,7 @@ export const filterPois = async (currLong, currLat, poiType, distance) => {
 
     return bboxPois.filter(poi => 
         isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, 
-                            {latitude: poi.latitude, longitude: poi.longitudes}, 
+                            {latitude: poi.latitude, longitude: poi.longitude}, 
                             parseInt(distance, 10))
     );
 }
