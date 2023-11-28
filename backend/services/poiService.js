@@ -15,7 +15,7 @@ export const createPoi = async (poiData) => {
 
 const createMyPoi = async (poiData) => {
     const minDist = 15;
-    const filteredPois = await filterPois(poiData.latitude, poiData.longitudes, "myPoi", minDist);
+    const filteredPois = await filterPois(poiData.latitude, poiData.longitude, "myPoi", minDist);
     if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (15m radius)");
     return await prisma.poi.create({
         data: poiData,
