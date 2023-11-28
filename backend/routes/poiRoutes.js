@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/pois/:userId', poiController.listPois); 
 router.get('/poi/:id/:userId', poiController.getPoi);
-router.get('/filteredPois/:longitude/:latitude/:poiType/:distance/:userId', poiController.listFilteredPois)
+router.get('/filteredPois/:longitude/:latitude/:poiType/:distance/:userId', poiController.listFilteredPois);
 router.post('/poi', poiController.createPoi);
 router.put('/poi/:id', poiController.updatePoi);
 router.put('/poi/:id/report', poiController.reportPoi);
