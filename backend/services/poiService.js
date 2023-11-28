@@ -7,13 +7,20 @@ import { listFriends } from "./friendService.js";
 const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
-    if(poiData.category != "myPoi") {
-        return await prisma.poi.create({
-            data: poiData,
-        });
-    }
-    
+    if(poiData.category == "myPoi") return createMyPoi(poiData);
+    return await prisma.poi.create({
+        data: poiData,
+    });
 };
+
+const createMyPoi = async (poiData) => {
+    const minDist = 15;
+    const filteredPois = await filterPois(poiData.latitude, poiData.longitudes, "myPoi", minDist);
+    if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (15m radius)");
+    return await prisma.poi.create({
+        data: poiData,
+    });
+}
 
 export const getPoi = async (poiId, userId) => {
     const poi = await prisma.poi.findUnique({
