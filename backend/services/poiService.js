@@ -7,9 +7,12 @@ import { listFriends } from "./friendService.js";
 const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
-    return await prisma.poi.create({
-        data: poiData,
-    });
+    if(poiData.category != "myPoi") {
+        return await prisma.poi.create({
+            data: poiData,
+        });
+    }
+    
 };
 
 export const getPoi = async (poiId, userId) => {
@@ -151,8 +154,21 @@ export const listPois = async (userId) => {
     return pois;
 };
 
-// ChatGPT usage: Partial
 export const listFilteredPois = async (currLong, currLat, poiType, distance, userId) => {
+    const filteredList = filterPois(currLong, currLat, poiType, distance);
+    if(poiType != "myPoi" || poiType != "All") return filteredList;
+    
+    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
+    for(const poi of filteredList) {
+        if(poi.category != "myPoi") continue;
+        if(friendsAndMe.has(poi.ownerId)) continue;
+        poi.description = "locked";
+    }
+    return filteredList;
+}
+
+// ChatGPT usage: Partial
+export const filterPois = async (currLong, currLat, poiType, distance) => {
 
     const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance, 10));
 
@@ -189,24 +205,15 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance, use
         })
     }
 
-    const filteredList = bboxPois.filter(poi => 
+    return bboxPois.filter(poi => 
         isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, 
                             {latitude: poi.latitude, longitude: poi.longitudes}, 
                             parseInt(distance, 10))
     );
-    if(poiType != "myPoi" || poiType != "All") return filteredList;
-    
-    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
-    for(const poi of filteredList) {
-        if(poi.category != "myPoi") continue;
-        if(friendsAndMe.has(poi.ownerId)) continue;
-        poi.description = "locked";
-    }
-    return filteredList;
 }
 
 // ChatGPT usage: Partial
-function getBoundingBox(lat, lon, distance) {
+const getBoundingBox = (lat, lon, distance) => {
     // Radius of the Earth in meters
     const earthRadius = 6371000;
   
