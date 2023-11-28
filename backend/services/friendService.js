@@ -24,7 +24,7 @@ export const listFriends = async (userId) => {
     const trueFriends = new Array();
     for(const friendId of trueFriendsIds){
         const friend = await prisma.User.findUnique({
-            where: { id: Number(friendId )}
+            where: { id: Number(friendId) }
         });
         trueFriends.push(friend);
     }

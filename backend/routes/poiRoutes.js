@@ -3,9 +3,9 @@ import * as poiController from '../controllers/poiController.js';
 
 const router = express.Router();
 
-router.get('/pois', poiController.listPois); 
-router.get('/poi/:id', poiController.getPoi);
-router.get('/filteredPois/:longitude/:latitude/:poiType/:distance', poiController.listFilteredPois)
+router.get('/pois/:userId', poiController.listPois); 
+router.get('/poi/:id/:userId', poiController.getPoi);
+router.get('/filteredPois/:longitude/:latitude/:poiType/:distance/:userId', poiController.listFilteredPois)
 router.post('/poi', poiController.createPoi);
 router.put('/poi/:id', poiController.updatePoi);
 router.put('/poi/:id/report', poiController.reportPoi);

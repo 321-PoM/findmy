@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { isPointWithinRadius } from "geolib";
 import { getUser, updateUserBux, updateUser } from "./userService.js";
 import { getOne, deleteListing } from "./marketListingService.js";
+import { listFriends } from "./friendService.js";
 
 const prisma = new PrismaClient();
 
@@ -11,8 +12,8 @@ export const createPoi = async (poiData) => {
     });
 };
 
-export const getPoi = async (poiId) => {
-    return await prisma.poi.findUnique({
+export const getPoi = async (poiId, userId) => {
+    const poi = await prisma.poi.findUnique({
         where: {
             id: Number(poiId),
             isDeleted: false,
@@ -22,6 +23,13 @@ export const getPoi = async (poiId) => {
             owner: true,
         },
     });
+    if(poi.category != "myPoi") return poi;
+
+    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
+    if(friendsAndMe.has(poi.ownerId)) return poi;
+
+    poi.description = "locked";
+    return poi;
 };
 
 export const updatePoi = async (poiId, updateData) => {
@@ -127,20 +135,24 @@ export const deletePoi = async (poiId) => {
     });
 };
 
-export const listPois = async () => {
-    return await prisma.poi.findMany({
+export const listPois = async (userId) => {
+    const pois = await prisma.poi.findMany({
         where: {
             isDeleted: false,
-        },
-        include: {
-            image: true,
-            owner: true,
-        },
+        }
     });
+
+    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
+    for(const poi of pois) {
+        if(poi.category != "myPoi") continue;
+        if(friendsAndMe.has(poi.ownerId)) continue;
+        poi.description = "locked";
+    }
+    return pois;
 };
 
 // ChatGPT usage: Partial
-export const listFilteredPois = async (currLong, currLat, poiType, distance) => {
+export const listFilteredPois = async (currLong, currLat, poiType, distance, userId) => {
 
     const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance, 10));
 
@@ -177,8 +189,20 @@ export const listFilteredPois = async (currLong, currLat, poiType, distance) => 
         })
     }
 
-
-    return bboxPois.filter(poi => isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, {latitude: poi.latitude, longitude: poi.longitudes}, parseInt(distance, 10)));
+    const filteredList = bboxPois.filter(poi => 
+        isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, 
+                            {latitude: poi.latitude, longitude: poi.longitudes}, 
+                            parseInt(distance, 10))
+    );
+    if(poiType != "myPoi" || poiType != "All") return filteredList;
+    
+    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
+    for(const poi of filteredList) {
+        if(poi.category != "myPoi") continue;
+        if(friendsAndMe.has(poi.ownerId)) continue;
+        poi.description = "locked";
+    }
+    return filteredList;
 }
 
 // ChatGPT usage: Partial

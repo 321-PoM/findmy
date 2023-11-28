@@ -4,7 +4,7 @@ import { controllerErrorHandler } from './controllerErrorHandler.js';
 export const getPoi = async (req, res) => {
     console.log("");
     try {
-        const poi = await poiService.getPoi(req.params.id);
+        const poi = await poiService.getPoi(req.params.id, req.params.userId);
         res.status(200).json(poi);
     } catch (error) {
         controllerErrorHandler(error, req, res);
@@ -67,7 +67,7 @@ export const deletePoi = async (req, res) => {
 export const listPois = async (req, res) => {
     console.log("");
     try {
-        const pois = await poiService.listPois();
+        const pois = await poiService.listPois(req.params.userId);
         res.status(200).json(pois);
     } catch (error) {
         controllerErrorHandler(error, req, res);
@@ -77,7 +77,7 @@ export const listPois = async (req, res) => {
 export const listFilteredPois = async (req, res) => {
     console.log("");
     try {
-        const pois = await poiService.listFilteredPois(req.params.longitude, req.params.latitude, req.params.poiType, req.params.distance);
+        const pois = await poiService.listFilteredPois(req.params.longitude, req.params.latitude, req.params.poiType, req.params.distance, req.params.userId);
         res.status(200).json(pois);
     } catch (error) {
         controllerErrorHandler(error, req, res);
