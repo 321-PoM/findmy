@@ -27,15 +27,6 @@ model User {
   Transaction      Transaction[]
 }
 
-model Image {
-  id    Int    @id @default(autoincrement())
-  url   String
-  poiId Int
-  poi   poi    @relation(fields: [poiId], references: [id])
-
-  @@index([poiId], map: "Image_poiId_fkey")
-}
-
 model poi {
   id            Int             @id @default(autoincrement())
   latitude      Float           
@@ -47,7 +38,7 @@ model poi {
   rating        Int
   reports       Int
   isDeleted     Boolean         @default(false)
-  image         Image[]
+  imageUrl      String          @db.VarChar(255)
   owner         User            @relation(fields: [ownerId], references: [id])
   Review        Review[]
   marketListing marketListing[]

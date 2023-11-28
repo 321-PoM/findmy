@@ -1,5 +1,21 @@
 import * as poiService from '../services/poiService.js';
 import { controllerErrorHandler } from './controllerErrorHandler.js';
+import { BlobServiceClient } from '@azure/storage-blob';
+
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
+
+export const uploadImageToAzure = async (imageBuffer, imageName) => {
+    const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+
+    const blockBlobClient = containerClient.getBlockBlobClient(imageName);
+    await blockBlobClient.upload(imageBuffer, imageBuffer.length);
+
+    const imageUrl = `https://${process.env.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${containerName}/${imageName}`;
+
+    return imageUrl;
+};
 
 export const getPoi = async (req, res) => {
     console.log("");
@@ -12,9 +28,16 @@ export const getPoi = async (req, res) => {
 };
 
 export const createPoi = async (req, res) => {
-    console.log("");
     try {
-        const poi = await poiService.createPoi(req.body);
+        const imageFile = req.file;
+        const imageUrl = await uploadImageToAzure(imageFile.buffer, imageName);
+
+        const poiData = {
+            ...req.body,
+            imageUrl: imageUrl
+        }
+
+        const poi = await poiService.createPoi(poiData);
         res.status(200).json(poi);
     } catch (error) {
         controllerErrorHandler(error, req, res);
