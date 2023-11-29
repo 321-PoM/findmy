@@ -81,9 +81,8 @@ public class FindMyService implements Serializable {
         RequestBody desc = RequestBody.create(poi.getDescription(), MediaType.parse("text/plain"));
         RequestBody ownerId = RequestBody.create(String.valueOf(poi.getOwnderId()), MediaType.parse("text/plain"));
         RequestBody rating = RequestBody.create(String.valueOf(poi.getRating()), MediaType.parse("text/plain"));
-        RequestBody reports = RequestBody.create(String.valueOf(poi.getReports()), MediaType.parse("text/plain"));
 
-        return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, reports, image);
+        return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, image);
     }
     public Call<POI> updatePOI(int id, int userId, POIRequest poi) { return apiService.updatePOI(id, userId, poi); }
     public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }

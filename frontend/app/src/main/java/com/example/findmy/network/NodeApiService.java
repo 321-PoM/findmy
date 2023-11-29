@@ -72,7 +72,6 @@ public interface NodeApiService {
                         @Part("description") RequestBody desc,
                         @Part("ownerId") RequestBody ownerId,
                         @Part("rating") RequestBody rating,
-                        @Part("reports") RequestBody reports,
                         @Part MultipartBody.Part image);
 
     @PUT("/poi/{id}/{userId}")
