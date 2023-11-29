@@ -1,7 +1,14 @@
 package com.example.findmy.ui.map;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +17,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findmy.R;
@@ -35,10 +45,15 @@ import retrofit2.Response;
 
 public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  AdapterView.OnItemSelectedListener {
 
+    private static final int CAMERA_PERMISSION_REQUEST = 0;
     AddPoiBottomSheetBinding binding;
     RatingBar inputRatingBar;
 
     private final String TAG = "AddPOIBottomSheet";
+
+    private final int CAMERA_REQ_CODE = 1000;
+
+    Bitmap myPOIImage = null;
 
     Location currLocation;
 
@@ -85,10 +100,27 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
             Log.d(TAG, "Submitting form: poiName " + poiName + "; poiType " + poiType + "; rating: " + rating);
         }
     };
+
+    private View.OnClickListener addImageListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!checkCameraPermissions()) {
+                Toast.makeText(
+                        requireContext(), "Camera Permissions are Required!", Toast.LENGTH_LONG
+                );
+                requestCameraPermissions();
+            } else {
+                launchCameraIntent();
+            }
+        }
+    };
+
     private FindMyService findMyService;
     private EditText nameTextField;
-    private Button button;
+    private Button submitButton;
     private String newPOITypeSelection;
+    private Button addImageButton;
+    private ImageView poiImage;
 
     public AddPOIBottomSheet(Location currLocation) {
         this.currLocation = currLocation;
@@ -97,6 +129,9 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // get camera permissions
+
+
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
         binding = AddPoiBottomSheetBinding.inflate(inflater, container, false);
@@ -105,7 +140,11 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
         inputRatingBar = binding.ratingBar;
 
-        setupButton(binding);
+        setupPOIImage(binding);
+
+        setupSubmitButton(binding);
+
+        setupAddImageButton(binding);
 
         setupSpinner(binding);
 
@@ -113,13 +152,40 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
         return root;
     }
 
+    private boolean checkCameraPermissions() {
+        return ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCameraPermissions() {
+        ActivityCompat.requestPermissions(
+                requireActivity(),
+                new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+    }
+
     private void setupTextField(AddPoiBottomSheetBinding binding) {
         nameTextField = binding.editTextText;
     }
 
-    private void setupButton(AddPoiBottomSheetBinding binding) {
-        button = binding.button;
-        button.setOnClickListener(submitNewPOIListener);
+    private void setupSubmitButton(AddPoiBottomSheetBinding binding) {
+        submitButton = binding.submitButton;
+        submitButton.setOnClickListener(submitNewPOIListener);
+    }
+
+    private void setupAddImageButton(AddPoiBottomSheetBinding binding) {
+        addImageButton = binding.addImageButton;
+        addImageButton.setOnClickListener(addImageListener);
+    }
+
+    private void setupPOIImage(AddPoiBottomSheetBinding binding) {
+        poiImage = binding.poiImage;
+    }
+
+    private void updatePOIImage() {
+        if (poiImage != null && myPOIImage != null) {
+            poiImage.setImageBitmap(myPOIImage);
+        }
     }
 
     private void setupSpinner(AddPoiBottomSheetBinding binding) {
@@ -152,5 +218,32 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         newPOITypeSelection = null;
+    }
+
+    private void launchCameraIntent() {
+        Intent galleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(galleryIntent, CAMERA_REQ_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST) {
+            if (checkCameraPermissions()) {
+                launchCameraIntent();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode==RESULT_OK) {
+            if (requestCode== CAMERA_REQ_CODE) {
+                myPOIImage = (Bitmap) data.getExtras().get("data");
+                poiImage.setImageBitmap(myPOIImage);
+            }
+        }
     }
 }

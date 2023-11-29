@@ -54,4 +54,6 @@
     <string name="your_reliability_score">Your Reliability Score</string>
     <string name="poi_type_header">POI Type</string>
     <string name="poi_owner_header">Owner</string>
+    <string name="add_image_button">Change Image</string>
+    <string name="add_image_header">POI Image</string>
 </resources>

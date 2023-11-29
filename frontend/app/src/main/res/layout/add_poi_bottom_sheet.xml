@@ -48,8 +48,34 @@
             android:layout_margin="10dp"
             android:numStars="5" />
 
-        <Button
-            android:id="@+id/button"
+    <TextView
+        android:id="@+id/addImageText"
+        android:layout_margin="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_image_header"
+        android:textSize="20sp"
+        />
+
+    <ImageView
+        android:id="@+id/poi_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/poi_placeholder"
+        android:layout_marginStart="20dp"
+        />
+
+    <Button
+        android:id="@+id/addImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/add_image_button" />
+
+    <Button
+            android:id="@+id/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
