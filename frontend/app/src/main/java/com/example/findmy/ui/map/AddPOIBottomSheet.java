@@ -40,7 +40,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +62,13 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     private final View.OnClickListener submitNewPOIListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (myPOIImage == null) {
+                Toast.makeText(
+                        requireContext(), "Error! Please upload an image", Toast.LENGTH_LONG
+                ).show();
+                return;
+            }
 
             String poiName = getInputPOIName();
             String poiType = getNewPOIType();
@@ -125,7 +131,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
             if (!checkCameraPermissions()) {
                 Toast.makeText(
                         requireContext(), "Camera Permissions are Required!", Toast.LENGTH_LONG
-                );
+                ).show();
                 requestCameraPermissions();
             } else {
                 launchCameraIntent();
@@ -200,9 +206,9 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
         poiImage = binding.poiImage;
     }
 
-    private void updatePOIImage() {
-        if (poiImage != null && myPOIImage != null) {
-            poiImage.setImageBitmap(myPOIImage);
+    private void updatePOIImageView(Bitmap img) {
+        if (poiImage != null && img != null) {
+            poiImage.setImageBitmap(img);
         }
     }
 
@@ -260,7 +266,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
         if (resultCode==RESULT_OK) {
             if (requestCode== CAMERA_REQ_CODE) {
                 myPOIImage = (Bitmap) data.getExtras().get("data");
-                poiImage.setImageBitmap(myPOIImage);
+                updatePOIImageView(myPOIImage);
             }
         }
     }

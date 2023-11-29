@@ -1,10 +1,15 @@
 package com.example.findmy.ui.map;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+import com.example.findmy.databinding.PopupPoiImageBinding;
 import com.example.findmy.model.POI;
 import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.model.Review;
@@ -119,10 +126,61 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         Button reportPOIButton = binding.reportButton;
         reportPOIButton.setOnClickListener(reportButtonListener);
 
+        setupImageButton(binding);
+
         setupDetails(binding);
 
         View root = binding.getRoot();
         return root;
+    }
+
+    private void setupImageButton(PoiBottomSheetBinding binding) {
+        Button viewImageButton = binding.viewImageButton;
+        View.OnClickListener viewImageListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate the layout of the popup window
+                LayoutInflater inflater = (LayoutInflater) LayoutInflater.from(requireContext());
+                PopupPoiImageBinding popupBinding = PopupPoiImageBinding.inflate(inflater);
+                View popupView = popupBinding.getRoot();
+
+                ImageView detailsPoiImage = popupBinding.detailsPoiImage;
+
+                Glide
+                        .with(MapPOIBottomSheet.this)
+                        .load(poi.getImageUrl())
+                        .override(675, 1200)
+                        .into(detailsPoiImage);
+
+                detailsPoiImage.requestLayout();
+
+                // refreshes the view such that the size is updated to the image
+//                int visibility = popupView.getVisibility();
+//                popupView.setVisibility(View.GONE);
+//                popupView.setVisibility(visibility);
+
+                // TODO: Error handling such that this isn't always invisible when a error occurs
+//                TextView errorText = popupBinding.detailsPoiImageErrText;
+//                errorText.setVisibility(View.GONE);
+
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+                popupView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        popupWindow.dismiss();
+                        return true;
+                    }
+                });
+            }
+        };
+        viewImageButton.setOnClickListener(viewImageListener);
     }
 
     private void setupDetails(PoiBottomSheetBinding binding) {

@@ -56,4 +56,6 @@
     <string name="poi_owner_header">Owner</string>
     <string name="add_image_button">Change Image</string>
     <string name="add_image_header">POI Image</string>
+    <string name="view_image">View Image</string>
+    <string name="err_no_img">Image could not be fetched</string>
 </resources>
