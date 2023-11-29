@@ -62,10 +62,6 @@ export const updateUserBux = async (userId, polarity, amount) => {
         where: { id: Number(userId) },
         select: { mapBuxUpdate: true }
     });
-    console.log(Date.now());
-    console.log(new Date(lastUpdate.mapBuxUpdate).getTime());
-    console.log(Date.now() - new Date(lastUpdate.mapBuxUpdate).getTime());
-
     if((Date.now() - new Date(lastUpdate.mapBuxUpdate).getTime()) < timeCapInMinutes * SECONDS * MILLISECONDS) {
         throw new Error(`Error: You may only claim MapBux every ${timeCapInMinutes} minutes`);
     }
@@ -95,11 +91,12 @@ export const deleteAllRefs = async (userId) => {
         },
         select: { id: true }
     });
-    for(const id of listings) {
-        await prisma.transaction.delete({
-            where: { listingId: Number(id) }
+    const delTransactions = listings.map((listing) => {
+        prisma.transaction.delete({
+            where: { listingId: Number(listing.id) }
         });
-    }
+    })
+    await Promise.all(delTransactions);
 
     const pois = await prisma.poi.findMany({
         where: { 
@@ -108,11 +105,13 @@ export const deleteAllRefs = async (userId) => {
         },
         select: { id: true }
     });
-    for(const id of pois){
-        await prisma.Review.delete({
-            where: { poiId: Number(id) }
+    const delReviews = pois.map((poi) => {
+        prisma.Review.delete({
+            where: { poiId: Number(poi.id) }
         });
-    }
+    })
+    await Promise.all(delReviews);
+
     await prisma.poi.delete({
         where: { ownerId: Number(userId) }
     });
@@ -137,6 +136,15 @@ export const deleteAllRefs = async (userId) => {
     await prisma.User.delete({
         where: { id: Number(userId) }
     });
+}
+
+export const deleteAllRefsWithEmail = async (email) => {
+    const users = prisma.User.findMany({
+        where: { email: email },
+        select: { id: true }
+    });
+    const delUsers = users.map((user) => deleteAllRefs(user.id));
+    await Promise.all(delUsers);
 }
 
 export const listUsers = async () => {
