@@ -70,7 +70,7 @@ export const updateUserBux = async (userId, polarity, amount) => {
         where: { id: Number(userId) },
         data: {
             mapBux: (polarity) ? { increment: amount } : { decrement: amount },
-            mapBuxUpdate: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            mapBuxUpdate: new Date(),
         },
         select: { mapBux: true }
     })
