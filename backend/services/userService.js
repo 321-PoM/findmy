@@ -62,7 +62,7 @@ export const updateUserBux = async (userId, polarity, amount) => {
         where: { id: Number(userId) },
         select: { mapBuxUpdate: true }
     });
-    if((Date.now() - lastUpdate) < timeCapInMinutes * SECONDS * MILLISECONDS) {
+    if((Date.now() - new Date(lastUpdate).getTime()) < timeCapInMinutes * SECONDS * MILLISECONDS) {
         throw new Error(`userbux was updated less than ${timeCapInMinutes} minutes ago`);
     }
 
