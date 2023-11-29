@@ -2,17 +2,12 @@ package com.example.findmy.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +24,7 @@ import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
+import com.example.findmy.ui.LocationFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsFragment extends Fragment implements LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
+public class MapsFragment extends LocationFragment implements AdapterView.OnItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "Map";
 
@@ -54,8 +50,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     GoogleMap mMap = null;
 
     Spinner filterSpinner;
-
-    Location currentLocation;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -87,7 +81,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             refreshMapPins();
         }
     };
-    private LocationManager locationManager;
     private User currentCachedUser;
     private int currentUserId;
 
@@ -100,7 +93,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
         HomeActivity homeActivity = (HomeActivity) requireActivity();
-        locationManager = homeActivity.locationManager;
+        setupLocationManager(homeActivity.locationManager);
         currentCachedUser = homeActivity.getCachedCurrentUser();
         currentUserId = homeActivity.getCurrentUserId();
         getLocationPermissions();
@@ -143,11 +136,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     }
 
     @Override
-    public void onLocationChanged(@NonNull Location location) {
-        currentLocation = location;
-    }
-
-    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         updateMapPins((String) parent.getItemAtPosition(position));
     }
@@ -155,11 +143,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         updateMapPins("All");
-    }
-    private boolean checkLocationPermissions() {
-        Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        // TODO: Implement coarse
-        return isFineLocationGranted;
     }
 
     @SuppressLint("MissingPermission")
@@ -175,26 +158,6 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             // update to currentLocation if possible
             updateMapToCurrentLocation();
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void getLocationPermissions() {
-        if (!checkLocationPermissions()) {
-            // get permissions
-            String[] permissionsRequested = {
-//                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            };
-        } else {
-            // TODO: need to call this somewhere again, if permissions had to be requested
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-            if(!checkLocationPermissions()) {
-                // still not granted goto MainActivity
-                ((HomeActivity) requireActivity()).signOut();
-            }
-        }
-
-        setupCurrentLocation();
     }
 
     @SuppressLint("MissingPermission")
@@ -269,10 +232,5 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
         mapPoiBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
         return true;
-    }
-
-    @SuppressLint("MissingPermission")
-    private void setupCurrentLocation() {
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 }
