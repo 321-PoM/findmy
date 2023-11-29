@@ -38,7 +38,7 @@ model poi {
   rating        Int
   reports       Int             @default(0)
   isDeleted     Boolean         @default(false)
-  imageUrl      String          @db.VarChar(255)
+  imageUrl      String?         @db.VarChar(255)
   owner         User            @relation(fields: [ownerId], references: [id])
   Review        Review[]
   marketListing marketListing[]
