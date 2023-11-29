@@ -37,7 +37,10 @@ import com.example.findmy.ui.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,10 +71,25 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
             int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
             File poiImageFile;
+            OutputStream poiImageStream;
             try {
                 poiImageFile = File.createTempFile("poi", ".jpeg");
+                poiImageStream = new FileOutputStream(poiImageFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (SecurityException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            if (myPOIImage != null) {
+                myPOIImage.compress(Bitmap.CompressFormat.JPEG, 100 , poiImageStream);
+                try {
+                    poiImageStream.flush();
+                    poiImageStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating,  poiImageFile);
