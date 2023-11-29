@@ -67,7 +67,7 @@ export const updateUserBux = async (userId, polarity, amount) => {
     console.log(Date.now() - new Date(lastUpdate.mapBuxUpdate).getTime());
 
     if((Date.now() - new Date(lastUpdate.mapBuxUpdate).getTime()) < timeCapInMinutes * SECONDS * MILLISECONDS) {
-        throw new Error(`userbux was updated less than ${timeCapInMinutes} minutes ago`);
+        throw new Error(`Error: You may only claim MapBux every ${timeCapInMinutes} minutes`);
     }
 
     return await prisma.User.update({
