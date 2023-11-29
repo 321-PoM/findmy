@@ -45,7 +45,7 @@ export const createPoi = async (req, res) => {
             rating: parseInt(req.body.rating),
             reports: parseInt(req.body.reports),
             ownerId: parseInt(req.body.ownerId),
-            isDeleted: parseBool(req.body.isDeleted),
+            isDeleted: false,
             imageUrl: imageUrl
         }
 

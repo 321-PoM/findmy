@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
     if(poiData.category == "myPoi") return createMyPoi(poiData);
-    poiData.isDeleted = false;
     return await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -24,7 +23,7 @@ export const createPoi = async (poiData) => {
 };
 
 const createMyPoi = async (poiData) => {
-    const minDist = 15;
+    const minDist = 100;
     const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPoi", minDist);
     if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (" + minDist.toString() + "radius)");
     return await prisma.poi.create({
