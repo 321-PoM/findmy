@@ -29,11 +29,14 @@ export const getPoi = async (req, res) => {
 
 export const createPoi = async (req, res) => {
     try {
-        const imageFile = req.file;
-        const imageOriginalName = imageFile.originalname;
-        const imageExtension = imageOriginalName.split('.').pop();
-        const imageName = `${Date.now()}.${imageExtension}`;
-        const imageUrl = await uploadImageToAzure(imageFile.buffer, imageName);
+        let imageUrl = null;
+        if (req.file) {
+            const imageFile = req.file;
+            const imageOriginalName = imageFile.originalname;
+            const imageExtension = imageOriginalName.split('.').pop();
+            const imageName = `${Date.now()}.${imageExtension}`;
+            imageUrl = await uploadImageToAzure(imageFile.buffer, imageName);
+        }
 
         const poiData = {
             ...req.body,
@@ -42,6 +45,7 @@ export const createPoi = async (req, res) => {
             rating: parseInt(req.body.rating),
             reports: parseInt(req.body.reports),
             ownerId: parseInt(req.body.ownerId),
+            isDeleted: parseBool(req.body.isDeleted),
             imageUrl: imageUrl
         }
 
