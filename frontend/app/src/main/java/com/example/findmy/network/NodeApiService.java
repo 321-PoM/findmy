@@ -14,12 +14,16 @@ import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface NodeApiService {
@@ -49,20 +53,31 @@ public interface NodeApiService {
     Call<MapBuxResponse> updateUserBux(@Path("id") int id, @Body MapBuxRequest request);
 
     // POI
-    @GET("/pois")
-    Call<POI[]> getPOIs();
+    @GET("/pois/{userId}")
+    Call<POI[]> getPOIs(@Path("userId") int userId);
 
     @GET("/poi/{id}")
     Call<POI> getPOI(@Path("id") int id);
 
-    @GET("/filteredPois/{longitude}/{latitude}/{poiType}/{distance}")
-    Call<POI[]> getFilteredPOIs(@Path("longitude") double lon, @Path("latitude") double lat, @Path("poiType") String category, @Path("distance") int distance);
+    @GET("/filteredPois/{longitude}/{latitude}/{poiType}/{distance}/{userId}")
+    Call<POI[]> getFilteredPOIs(@Path("longitude") double lon, @Path("latitude") double lat, @Path("poiType") String category, @Path("distance") int distance, @Path("userId") int userId);
 
+    /* There may be better ways to do this... */
+    @Multipart
     @POST("/poi")
-    Call<POI> createPOI(@Body POIRequest poi);
+    Call<POI> createPOI(@Part("latitude") RequestBody lat,
+                        @Part("longitude") RequestBody lon,
+                        @Part("category") RequestBody cat,
+                        @Part("status") RequestBody stat,
+                        @Part("description") RequestBody desc,
+                        @Part("ownerId") RequestBody ownerId,
+                        @Part("rating") RequestBody rating,
+                        @Part("reports") RequestBody reports,
+                        @Part("isDeleted") RequestBody isDel,
+                        @Part MultipartBody.Part image);
 
-    @PUT("/poi/{id}")
-    Call<POI> updatePOI(@Path("id") int id, @Body POIRequest poi);
+    @PUT("/poi/{id}/{userId}")
+    Call<POI> updatePOI(@Path("id") int id, @Path("userId") int userId, @Body POIRequest poi);
 
     @PUT("/poi/{id}/report")
     Call<Void> reportPOI(@Path("id") int id);

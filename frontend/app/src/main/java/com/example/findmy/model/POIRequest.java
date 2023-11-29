@@ -1,6 +1,10 @@
 package com.example.findmy.model;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.io.File;
 
 public class POIRequest {
     @SerializedName("latitude")
@@ -29,10 +33,12 @@ public class POIRequest {
 
     @SerializedName("isDeleted")
     private boolean isDeleted;
+    @SerializedName("imageUrl")
+    private File image;
 
-    public static final POIRequest testPOI = new POIRequest(0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false);
+    //public static final POIRequest testPOI = new POIRequest(0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false, new Bitmap());
 
-    public POIRequest(double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted) {
+    public POIRequest(double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted, File image) {
        this.latitude = latitude;
        this.longitude = longitude;
        this.category = category;
@@ -42,6 +48,15 @@ public class POIRequest {
        this.rating = rating;
        this.reports = reports;
        this.isDeleted = isDeleted;
+       this.image = image;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
     }
 
     public double getLatitude() {

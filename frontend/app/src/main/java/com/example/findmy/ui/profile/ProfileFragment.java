@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment {
 
     private void retrieveMyPOIsAndUpdateRecycler() {
         myPOIList = new ArrayList<POI>();
-        Call<POI[]> call = findMyService.getPOIs();
+        Call<POI[]> call = findMyService.getPOIs(currentUserId);
         call.enqueue(new Callback<POI[]>() {
             @Override
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {

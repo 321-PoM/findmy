@@ -24,6 +24,7 @@ import android.widget.Spinner;
 
 import com.example.findmy.model.POI;
 import com.example.findmy.R;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
@@ -85,6 +86,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         }
     };
     private LocationManager locationManager;
+    private User currentCachedUser;
+    private int currentUserId;
 
     @Nullable
     @Override
@@ -93,7 +96,11 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                              @Nullable Bundle savedInstanceState) {
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
-        locationManager = ((HomeActivity) requireActivity()).locationManager;
+
+        HomeActivity homeActivity = (HomeActivity) requireActivity();
+        locationManager = homeActivity.locationManager;
+        currentCachedUser = homeActivity.getCachedCurrentUser();
+        currentUserId = homeActivity.getCurrentUserId();
         getLocationPermissions();
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -206,7 +213,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         double lon = currentLocation.getLongitude();
         double lat = currentLocation.getLatitude();
         int distance = Integer.MAX_VALUE;
-        Call<POI[]> callFilteredPOIs = findMyService.getFilteredPOIs(lon, lat, category, distance);
+        Call<POI[]> callFilteredPOIs = findMyService.getFilteredPOIs(lon, lat, category, distance, currentUserId);
 
         callFilteredPOIs.enqueue(new Callback<POI[]>() {
             @Override
