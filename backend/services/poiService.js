@@ -25,7 +25,7 @@ export const createPoi = async (poiData) => {
 const createMyPoi = async (poiData) => {
     const minDist = 100;
     const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPOI", minDist);
-    if(filteredPois.length > 0) throw new Error("myPOI already exists in this area (" + minDist.toString() + "radius)");
+    if(filteredPois.length > 0) throw new Error("A myPOI already exists in this area (" + minDist.toString() + "m radius)");
     return await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -273,6 +273,8 @@ export const filterPoisFinely = async (currLong, currLat, poiType, distance) => 
             },
         })
     }
+    
+    return bboxPois;
 }
 
 // ChatGPT usage: Partial
