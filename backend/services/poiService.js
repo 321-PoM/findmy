@@ -18,7 +18,7 @@ export const createPoi = async (poiData) => {
             description: new String(poiData.description),
             ownerId: parseInt(poiData.ownerId, 10),
             rating: parseInt(poiData.rating),
-            imageUrl: new String(poiData.imageUrl),
+            imageUrl: poiData.imageUrl,
         }
     });
 };
@@ -36,7 +36,7 @@ const createMyPoi = async (poiData) => {
             description: new String(poiData.description),
             ownerId: parseInt(poiData.ownerId, 10),
             rating: parseInt(poiData.rating),
-            imageUrl: new String(poiData.imageUrl),
+            imageUrl: poiData.imageUrl,
         }
     });
 }
