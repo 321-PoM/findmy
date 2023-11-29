@@ -1,18 +1,17 @@
 package com.example.findmy.ui;
 
 import android.os.Bundle;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.findmy.model.MarketListing;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.findmy.databinding.FragmentMarketplaceBinding;
+import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.POIComparator;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
@@ -56,9 +55,9 @@ public class MarketplaceFragment extends LocationFragment {
 
         if (checkLocationPermissions()) {
             currentLatLng = new LatLng(getLastLocation().getLatitude(), getLastLocation().getLongitude());
-            currentLatLng = new LatLng(0, 0);
         } else {
             abortToMainActivity();
+            currentLatLng = new LatLng(0, 0);
         }
 
         RecyclerView listingsRecylcer = binding.listingsRecylcer;
