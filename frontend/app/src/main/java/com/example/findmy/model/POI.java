@@ -123,4 +123,17 @@ public class POI {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    public boolean isMyPOI() {
+        return getCategory().equals("myPOI");
+    }
+
+    public double getRadius() {
+        // TODO: this should probably be a field in the backend, its hard coded for now
+        if (isMyPOI()) {
+            return 100;
+        } else {
+            return 0;
+        }
+    }
 }
