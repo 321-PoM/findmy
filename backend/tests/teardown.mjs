@@ -1,9 +1,9 @@
 import http  from 'http';
 import https from 'https';
+import app from '../server.js'
 
 const teardown = async () => {
-    http.Server.close();
-    https.Server.close();
+    app.close();
 }
 
 export default teardown;
