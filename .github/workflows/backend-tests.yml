@@ -25,8 +25,8 @@ jobs:
       run: pwd
 
     - name: set up key and cert files
-      run: echo ${{ secrets.KEY }} > key.pem
-           echo ${{ secrets.CERT }} > cert.pem
+      run: printf ${{ secrets.KEY }} >> key.pem
+           printf ${{ secrets.CERT }} >> cert.pem
 
     - name: Set up Node.js
       uses: actions/setup-node@v1
