@@ -14,7 +14,14 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        android.buildFeatures.buildConfig = true
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("java.util.concurrent.atomic.AtomicBoolean", "IS_TESTING", "new java.util.concurrent.atomic.AtomicBoolean(false)")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -37,6 +44,13 @@ android {
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.tracing:tracing:1.1.0")
+        }
+    }
+
 }
 
 dependencies {
@@ -57,8 +71,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.1.0")
@@ -67,4 +81,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    androidTestImplementation("androidx.tracing:tracing:1.1.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.6.0-alpha01")
+
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
 }

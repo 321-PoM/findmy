@@ -22,6 +22,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +33,25 @@ public class MainActivity extends BaseActivity {
     final static String TAG="MainActivity";
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private Intent homeIntent;
+
+    private static AtomicBoolean isRunningTest;
+
+    public static synchronized boolean isRunningTest () {
+        if (null == isRunningTest) {
+            boolean istest;
+
+            try {
+                Class.forName ("androidx.test.espresso.Espresso");
+                istest = true;
+            } catch (ClassNotFoundException e) {
+                istest = false;
+            }
+
+            isRunningTest = new AtomicBoolean (istest);
+        }
+
+        return isRunningTest.get();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +76,7 @@ public class MainActivity extends BaseActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            attemptUpdateUI(account);
+            attemptUpdateUI(account.getEmail());
         }
     }
 
@@ -88,6 +109,14 @@ public class MainActivity extends BaseActivity {
     }
 
     protected void signIn() {
+        boolean isTest = isRunningTest();
+
+        if (isTest) {
+            Log.d(TAG, "Automated Test Mode Enabled - Using dummy user account");
+            attemptUpdateUI("test_user@gmail.com");
+            return;
+        }
+
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -95,8 +124,11 @@ public class MainActivity extends BaseActivity {
     protected void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            Log.d(TAG, "signInResult id: " + account.getId());
+
             // Signed in successfully, show authenticated UI.
-            attemptUpdateUI(account);
+            attemptUpdateUI(account.getEmail());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -120,11 +152,11 @@ public class MainActivity extends BaseActivity {
             handleSignInResult(task);
         }
     }
-    private void attemptUpdateUI(GoogleSignInAccount account) {
+    private void attemptUpdateUI(String email) {
 
         FindMyService fmyService = new FindMyService();
 
-        Call<User> currentUserCall = fmyService.getUserByEmail(account.getEmail());
+        Call<User> currentUserCall = fmyService.getUserByEmail(email);
 
         currentUserCall.enqueue(new Callback<User>() {
             @Override
@@ -136,10 +168,7 @@ public class MainActivity extends BaseActivity {
                 // goto HomeActivity
                 Log.d(TAG, "Logged in!");
 
-                Log.d(TAG, "signInResult id: " + account.getId());
-
                 homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                homeIntent.putExtra("ACCOUNT", account);
 
                 User currentUser = response.body();
                 homeIntent.putExtra("CURRENTUSER",currentUser);
