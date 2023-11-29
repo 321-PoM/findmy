@@ -25,8 +25,8 @@ export const createPoi = async (poiData) => {
 
 const createMyPoi = async (poiData) => {
     const minDist = 15;
-    const filteredPois = await filterPois(poiData.latitude, poiData.longitude, "myPoi", minDist);
-    if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (15m radius)");
+    const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPoi", minDist);
+    if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (" + minDist.toString() + "radius)");
     return await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -227,6 +227,32 @@ export const filterPois = async (currLong, currLat, poiType, distance) => {
                     gt: coords.lonMin,
                     lt: coords.lonMax,
                 }
+            },
+        })
+    }
+
+    return bboxPois.filter(poi => 
+        isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, 
+                            {latitude: poi.latitude, longitude: poi.longitude}, 
+                            parseInt(distance, 10))
+    );
+}
+
+export const filterPoisFinely = async (currLong, currLat, poiType, distance) => {
+
+    var bboxPois;
+
+    if (poiType == "All") {
+        bboxPois = await prisma.poi.findMany({
+            where: {
+                isDeleted: false,
+            },
+        })
+    } else {
+        bboxPois = await prisma.poi.findMany({
+            where: {
+                isDeleted: false,
+                category: poiType,
             },
         })
     }
