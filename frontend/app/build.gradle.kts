@@ -87,4 +87,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.6.0-alpha01")
 
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
+
+    implementation("com.github.bumptech.glide:glide:4.11.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
 }
