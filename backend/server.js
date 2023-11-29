@@ -35,9 +35,9 @@ var ports = {
     https: 443,
 }
 
-http.createServer(app).listen(ports.http);
-https.createServer(server_opt, app).listen(ports.https);
+const httpServer = http.createServer(app).listen(ports.http);
+const httpsServer = https.createServer(server_opt, app).listen(ports.https);
 
 console.log(`Server running at http port:${ports.http}; https port:${ports.https}`);
 
-export default app;
+export default { httpServer, httpsServer, app };
