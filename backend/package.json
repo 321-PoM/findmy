@@ -25,5 +25,8 @@
     "jest-mock-extended": "^3.0.5",
     "prisma": "^5.5.2",
     "supertest": "^6.3.3"
+  },
+  "jest": {
+    "globalTeardown": "/tests/teardown.js"
   }
 }

@@ -23,8 +23,6 @@ app.use(transactionRoutes);
 app.use(reviewRoutes);
 app.use(friendRoutes);
 
-// Payment
-
 var key_cert_path = process.env.KEY_CERT_PATH
 
 var server_opt = {
