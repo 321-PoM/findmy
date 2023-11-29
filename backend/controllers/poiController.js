@@ -32,7 +32,7 @@ export const createPoi = async (req, res) => {
         const imageFile = req.file;
         const imageOriginalName = imageFile.originalname;
         const imageExtension = imageOriginalName.split('.').pop();
-        const imageName = `${req.body.name}-${Date.now()}.${extension}`;
+        const imageName = `${req.body.description}-${Date.now()}.${imageExtension}`;
         const imageUrl = await uploadImageToAzure(imageFile.buffer, imageName);
 
         const poiData = {
