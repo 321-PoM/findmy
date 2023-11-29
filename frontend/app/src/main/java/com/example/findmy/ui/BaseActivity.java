@@ -46,6 +46,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void signOut() {
+        if (mGoogleSignInClient == null) { return; }
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override

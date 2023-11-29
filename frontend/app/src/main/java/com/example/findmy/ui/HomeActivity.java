@@ -85,4 +85,23 @@ public class HomeActivity extends BaseActivity {
     public User getCachedCurrentUser() { return currentUser; }
 
     public void setCachedCurrentUser(User currentUser) { this.currentUser = currentUser; }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // check location perm
+        Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        if (!isFineLocationGranted) {
+            signOut();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        if (!isFineLocationGranted) {
+            signOut();
+        }
+    }
 }

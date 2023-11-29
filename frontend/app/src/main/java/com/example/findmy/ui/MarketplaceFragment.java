@@ -1,11 +1,7 @@
 package com.example.findmy.ui;
 
-import android.annotation.SuppressLint;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MarketplaceFragment extends Fragment {
+public class MarketplaceFragment extends LocationFragment {
 
     private FindMyService findMyService;
     private ArrayList<MarketListing> listingArray;
@@ -55,10 +51,16 @@ public class MarketplaceFragment extends Fragment {
 
         retrieveListings();
 
-        LocationManager locationManager = ((HomeActivity) requireActivity()).locationManager;
-        @SuppressLint("MissingPermission") Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        setupLocationManager(((HomeActivity) requireActivity()).locationManager);
+        getLocationPermissions();
 
-        currentLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        if (checkLocationPermissions()) {
+            currentLatLng = new LatLng(getLastLocation().getLatitude(), getLastLocation().getLongitude());
+            currentLatLng = new LatLng(0, 0);
+        } else {
+            abortToMainActivity();
+        }
+
         RecyclerView listingsRecylcer = binding.listingsRecylcer;
         marketplaceListingAdapter = new MarketplaceListingAdapter(requireActivity(), listingArray, currentLatLng);
 
