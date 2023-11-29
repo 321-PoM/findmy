@@ -86,7 +86,8 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
                        if (!response.isSuccessful() && getContext() != null) {
-                           findMyService.showErrorToast(requireContext());
+                           String errMsg = findMyService.getErrorMessage(response);
+                           Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG);
                            return;
                        }
                        updateMapBuxText(binding, response.body().getMapBux());
