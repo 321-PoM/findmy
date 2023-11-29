@@ -40,7 +40,7 @@ export const createPoi = async (req, res) => {
             latitude: parseFloat(req.body.latitude),
             longitude: parseFloat(req.body.longitude),
             rating: parseInt(req.body.rating),
-            report: parseInt(req.body.report),
+            reports: parseInt(req.body.reports),
             ownerId: parseInt(req.body.ownerId),
             imageUrl: imageUrl
         }
