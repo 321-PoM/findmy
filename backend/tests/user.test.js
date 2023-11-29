@@ -1,7 +1,5 @@
-import request from 'supertest';
+import { request } from 'supertest';
 import app from '../server.js';
-
-let newUserId;
 
 // interface GET host/users
 describe("List users", () => {

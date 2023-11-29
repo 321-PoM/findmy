@@ -36,7 +36,7 @@ model poi {
   description   String          @db.VarChar(255)
   ownerId       Int
   rating        Int
-  reports       Int
+  reports       Int             @default(0)
   isDeleted     Boolean         @default(false)
   imageUrl      String          @db.VarChar(255)
   owner         User            @relation(fields: [ownerId], references: [id])
