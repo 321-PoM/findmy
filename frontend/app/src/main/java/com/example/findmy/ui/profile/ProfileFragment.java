@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findmy.databinding.FragmentProfileBinding;
 import com.example.findmy.model.MapBuxRequest;
 import com.example.findmy.model.MapBuxResponse;
 import com.example.findmy.model.POI;
@@ -25,7 +26,6 @@ import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
-import com.example.findmy.databinding.FragmentProfileBinding;
 import com.example.findmy.ui.LocationFragment;
 import com.google.android.gms.maps.model.LatLng;
 

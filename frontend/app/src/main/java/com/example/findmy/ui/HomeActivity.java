@@ -15,9 +15,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.findmy.model.User;
 import com.example.findmy.R;
 import com.example.findmy.databinding.ActivityHomeBinding;
+import com.example.findmy.model.User;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

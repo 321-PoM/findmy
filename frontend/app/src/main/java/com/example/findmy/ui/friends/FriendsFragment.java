@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findmy.databinding.FragmentFriendsBinding;
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.User;
-import com.example.findmy.databinding.FragmentFriendsBinding;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;

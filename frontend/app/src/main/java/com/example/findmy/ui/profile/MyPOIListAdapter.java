@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findmy.model.POI;
 import com.example.findmy.R;
+import com.example.findmy.model.POI;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;

@@ -19,9 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.databinding.PopupPoiImageBinding;
 import com.example.findmy.model.POI;
-import com.example.findmy.databinding.PoiBottomSheetBinding;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.ReviewRequest;
 import com.example.findmy.model.User;

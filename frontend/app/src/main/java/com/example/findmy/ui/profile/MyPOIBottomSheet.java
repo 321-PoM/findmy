@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.findmy.databinding.ProfilePoiBottomSheetBinding;
 import com.example.findmy.model.MarketListing;
 import com.example.findmy.model.MarketListingRequest;
 import com.example.findmy.model.POI;
-import com.example.findmy.databinding.ProfilePoiBottomSheetBinding;
 import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
