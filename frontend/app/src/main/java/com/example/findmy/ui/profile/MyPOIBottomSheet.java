@@ -146,7 +146,7 @@ public class MyPOIBottomSheet extends BottomSheetDialogFragment {
 
                     MarketListing result = results[0];
 
-                    int price = (int) result.getPrice();
+                    int price = result.getPrice();
                     setupUnlistButton(binding, result.getId());
                     updateExistingListingPrice(price);
                 } else {

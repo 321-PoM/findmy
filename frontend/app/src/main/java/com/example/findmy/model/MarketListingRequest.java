@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class MarketListingRequest {
     @SerializedName("price")
-    private float price;
+    private int price;
 
     @SerializedName("sellerId")
     private int sellerId;
@@ -18,7 +18,7 @@ public class MarketListingRequest {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
-    public MarketListingRequest(float price, int sellerId, int poiID, boolean isActive, boolean isDeleted) {
+    public MarketListingRequest(int price, int sellerId, int poiID, boolean isActive, boolean isDeleted) {
         this.price = price;
         this.sellerId = sellerId;
         this.poiID = poiID;
@@ -26,11 +26,11 @@ public class MarketListingRequest {
         this.isDeleted = isDeleted;
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

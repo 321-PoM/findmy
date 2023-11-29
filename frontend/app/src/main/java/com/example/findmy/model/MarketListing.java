@@ -7,7 +7,7 @@ public class MarketListing {
     private int id;
 
     @SerializedName("price")
-    private float price;
+    private int price;
 
     @SerializedName("seller")
     private User seller;
@@ -50,11 +50,11 @@ public class MarketListing {
         return this.seller;
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
