@@ -8,8 +8,8 @@ on:
 
 env:
   DATABASE_URL: ${{ secrets.TEST_DB_URL }}
-  KEY_PATH: ""
-  CERT_PATH: ""
+  KEY_PATH: "/home/runner/work/findmy/findmy/backend/key.pem"
+  CERT_PATH: "/home/runner/work/findmy/findmy/backend/cert.pem"
 
 jobs:
   test:
@@ -23,6 +23,10 @@ jobs:
 
     - name: Display Current Working Directory
       run: pwd
+
+    - name: set up key and cert files
+      run: echo ${{ secrets.key }} > key.pem
+      run: echo ${{ secrets.cert }} > cert.pem
 
     - name: Set up Node.js
       uses: actions/setup-node@v1
