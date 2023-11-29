@@ -7,7 +7,7 @@ import { listFriends } from "./friendService.js";
 const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
-    if(poiData.category == "myPoi") return createMyPoi(poiData);
+    if(poiData.category == "myPOI") return createMyPoi(poiData);
     return await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -24,8 +24,8 @@ export const createPoi = async (poiData) => {
 
 const createMyPoi = async (poiData) => {
     const minDist = 100;
-    const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPoi", minDist);
-    if(filteredPois.length > 0) throw new Error("myPoi already exists in this area (" + minDist.toString() + "radius)");
+    const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPOI", minDist);
+    if(filteredPois.length > 0) throw new Error("myPOI already exists in this area (" + minDist.toString() + "radius)");
     return await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -51,7 +51,7 @@ export const getPoi = async (poiId, userId) => {
             owner: true,
         },
     });
-    if(poi.category != "myPoi") return poi;
+    if(poi.category != "myPOI") return poi;
 
     const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
     if(friendsAndMe.has(poi.ownerId)) return poi;
@@ -172,7 +172,7 @@ export const listPois = async (userId) => {
 
     const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
     for(const poi of pois) {
-        if(poi.category != "myPoi") continue;
+        if(poi.category != "myPOI") continue;
         if(friendsAndMe.has(poi.ownerId)) continue;
         poi.description = "locked";
     }
@@ -181,11 +181,11 @@ export const listPois = async (userId) => {
 
 export const listFilteredPois = async (currLong, currLat, poiType, distance, userId) => {
     const filteredList = filterPois(currLong, currLat, poiType, distance);
-    if(poiType != "myPoi" || poiType != "All") return filteredList;
+    if(poiType != "myPOI" || poiType != "All") return filteredList;
     
     const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
     for(const poi of filteredList) {
-        if(poi.category != "myPoi") continue;
+        if(poi.category != "myPOI") continue;
         if(friendsAndMe.has(poi.ownerId)) continue;
         poi.description = "locked";
     }
