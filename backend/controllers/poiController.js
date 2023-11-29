@@ -30,6 +30,7 @@ export const getPoi = async (req, res) => {
 export const createPoi = async (req, res) => {
     try {
         const imageFile = req.file;
+        const imageName = `${req.body.name}-${Date.now()}`;
         const imageUrl = await uploadImageToAzure(imageFile.buffer, imageName);
 
         const poiData = {
