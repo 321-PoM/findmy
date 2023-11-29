@@ -250,8 +250,8 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             CircleOptions circleOptions = new CircleOptions()
                     .center(new LatLng(poi.getLatitude(), poi.getLongitude()))
                     .radius(poi.getRadius())
-                    .strokeColor(Color.RED)
-                    .strokeColor(Color.BLUE);
+                    .fillColor(Color.parseColor("#2271cce7"))
+                    .strokeColor(Color.parseColor("#55717de7"));
 
 
             Circle circle = gMap.addCircle(circleOptions);
