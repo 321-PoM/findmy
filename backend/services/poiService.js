@@ -239,12 +239,22 @@ export const filterPois = async (currLong, currLat, poiType, distance) => {
 
 export const filterPoisFinely = async (currLong, currLat, poiType, distance) => {
 
+    const coords = getBoundingBox(parseFloat(currLat), parseFloat(currLong), parseInt(distance, 10));
+
     var bboxPois;
 
     if (poiType == "All") {
         bboxPois = await prisma.poi.findMany({
             where: {
                 isDeleted: false,
+                latitude: {
+                    gt:coords.lonMax,
+                    lt:coords.lonMin,
+                },
+                longitude: {
+                    gt: coords.latMin,
+                    lt: coords.latMax,
+                }
             },
         })
     } else {
@@ -252,15 +262,17 @@ export const filterPoisFinely = async (currLong, currLat, poiType, distance) => 
             where: {
                 isDeleted: false,
                 category: poiType,
+                latitude: {
+                    gt:coords.lonMax,
+                    lt:coords.lonMin,
+                },
+                longitude: {
+                    gt: coords.latMin,
+                    lt: coords.latMax,
+                }
             },
         })
     }
-
-    return bboxPois.filter(poi => 
-        isPointWithinRadius({latitude: parseFloat(currLat), longitude: parseFloat(currLong)}, 
-                            {latitude: poi.latitude, longitude: poi.longitude}, 
-                            parseInt(distance, 10))
-    );
 }
 
 // ChatGPT usage: Partial
