@@ -84,8 +84,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
             mMap.setOnMarkerClickListener(MapsFragment.this);
             updateMapToUser(googleMap);
 
-            String spinnerSelection = filterSpinner.getSelectedItem().toString();
-            updateMapPins(spinnerSelection);
+            refreshMapPins();
         }
     };
     private LocationManager locationManager;
@@ -124,7 +123,7 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
                  public void onClick(View v) {
                      AddPOIBottomSheet addPOIBottomSheet = new AddPOIBottomSheet(currentLocation);
 
-                     addPOIBottomSheet.show(requireActivity().getSupportFragmentManager(), TAG);
+                     addPOIBottomSheet.show(getChildFragmentManager(), TAG);
                  }
              }
         );
@@ -206,6 +205,11 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
 
     private void clearMapPins() {
         mMap.clear();
+    }
+
+    public void refreshMapPins() {
+        String spinnerSelection = filterSpinner.getSelectedItem().toString();
+        updateMapPins(spinnerSelection);
     }
 
     private void updateMapPins(String category) {

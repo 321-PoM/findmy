@@ -110,6 +110,10 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
                                     return;
                                 }
                                 Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG);
+
+                                MapsFragment mapsFragment = (MapsFragment) requireParentFragment();
+                                mapsFragment.refreshMapPins();
+
                                 dismiss();
                             }
                         }
