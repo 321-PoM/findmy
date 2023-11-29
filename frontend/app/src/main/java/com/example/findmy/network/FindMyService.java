@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
-import com.example.findmy.model.Image;
 import com.example.findmy.model.MapBuxRequest;
 import com.example.findmy.model.MapBuxResponse;
 import com.example.findmy.model.MarketListing;
@@ -18,7 +17,6 @@ import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 
-import java.io.File;
 import java.io.Serializable;
 
 import okhttp3.MediaType;
@@ -84,9 +82,8 @@ public class FindMyService implements Serializable {
         RequestBody ownerId = RequestBody.create(String.valueOf(poi.getOwnderId()), MediaType.parse("text/plain"));
         RequestBody rating = RequestBody.create(String.valueOf(poi.getRating()), MediaType.parse("text/plain"));
         RequestBody reports = RequestBody.create(String.valueOf(poi.getReports()), MediaType.parse("text/plain"));
-        RequestBody isDeleted = RequestBody.create(String.valueOf(poi.isDeleted()), MediaType.parse("text/plain"));
 
-        return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, reports, isDeleted, image);
+        return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, reports, image);
     }
     public Call<POI> updatePOI(int id, int userId, POIRequest poi) { return apiService.updatePOI(id, userId, poi); }
     public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }

@@ -59,7 +59,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
                 throw new RuntimeException(e);
             }
 
-            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating, 0, false, poiImageFile);
+            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating, 0, poiImageFile);
 
             findMyService.createPOI(newPOI).enqueue(
                     new Callback<POI>() {

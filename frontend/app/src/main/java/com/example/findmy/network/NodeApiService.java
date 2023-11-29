@@ -73,7 +73,6 @@ public interface NodeApiService {
                         @Part("ownerId") RequestBody ownerId,
                         @Part("rating") RequestBody rating,
                         @Part("reports") RequestBody reports,
-                        @Part("isDeleted") RequestBody isDel,
                         @Part MultipartBody.Part image);
 
     @PUT("/poi/{id}/{userId}")
