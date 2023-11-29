@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
     if(poiData.category == "myPoi") return createMyPoi(poiData);
+    poiData.isDeleted = false;
     return await prisma.poi.create({
         data: poiData,
     });
