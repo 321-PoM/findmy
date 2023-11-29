@@ -16,6 +16,7 @@ public class LocationFragment extends Fragment implements LocationListener {
 
     protected Location currentLocation;
     protected LocationManager locationManager;
+    protected Location lastLocation;
 
 
     protected void setupLocationManager(LocationManager locationManager) {
@@ -29,13 +30,16 @@ public class LocationFragment extends Fragment implements LocationListener {
 
     protected boolean checkLocationPermissions() {
         Boolean isFineLocationGranted = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        // TODO: Implement coarse
         return isFineLocationGranted;
     }
 
     @SuppressLint("MissingPermission")
     protected void setupCurrentLocation() {
         currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    }
+
+    protected void abortToMainActivity() {
+        ((HomeActivity) requireActivity()).signOut();
     }
 
     @SuppressLint("MissingPermission")
@@ -48,11 +52,20 @@ public class LocationFragment extends Fragment implements LocationListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
             if(!checkLocationPermissions()) {
                 // still not granted goto MainActivity
-                ((HomeActivity) requireActivity()).signOut();
+                abortToMainActivity();
             }
         }
 
         setupCurrentLocation();
+    }
+
+    @SuppressLint("MissingPermission")
+    protected Location getLastLocation() {
+        if (!checkLocationPermissions()) {
+            abortToMainActivity();
+        }
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        return lastLocation;
     }
 
     @Override
@@ -64,6 +77,7 @@ public class LocationFragment extends Fragment implements LocationListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupLocationManager(((HomeActivity) requireActivity()).locationManager);
         if (savedInstanceState != null) {
             getLocationPermissions();
         }

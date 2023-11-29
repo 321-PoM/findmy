@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +26,7 @@ import com.example.findmy.network.FindMyService;
 import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
 import com.example.findmy.databinding.FragmentProfileBinding;
+import com.example.findmy.ui.LocationFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends LocationFragment {
 
     private final String TAG = "ProfileFragment";
 
@@ -50,6 +50,8 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        getLocationPermissions();
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
@@ -170,7 +172,11 @@ public class ProfileFragment extends Fragment {
                         myPOIList.add(p);
                     }
                 }
-                @SuppressLint("MissingPermission") Location currentLocation = ((HomeActivity) requireActivity()).locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (!checkLocationPermissions()) {
+                    abortToMainActivity();
+                    return;
+                }
+                @SuppressLint("MissingPermission") Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
                 // Sort list by distance
