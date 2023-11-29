@@ -106,10 +106,11 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
                         public void onResponse(Call<POI> call, Response<POI> response) {
                             if (getContext() != null){
                                 if (!response.isSuccessful()) {
-                                    findMyService.showErrorToast(requireContext());
+                                    String errMsg = findMyService.getErrorMessage(response);
+                                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
                                     return;
                                 }
-                                Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG);
+                                Toast.makeText(AddPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
 
                                 MapsFragment mapsFragment = (MapsFragment) requireParentFragment();
                                 mapsFragment.refreshMapPins();
