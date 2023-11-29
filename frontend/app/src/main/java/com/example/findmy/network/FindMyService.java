@@ -19,6 +19,9 @@ import com.example.findmy.model.UserRequest;
 
 import java.io.Serializable;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -56,17 +59,32 @@ public class FindMyService implements Serializable {
     public Call<MapBuxResponse> updateUserMapBux(int id, MapBuxRequest request) { return apiService.updateUserBux(id, request); }
 
     // poi
-    public Call<POI[]> getPOIs() {
-        return apiService.getPOIs();
+    public Call<POI[]> getPOIs(int userId) {
+        return apiService.getPOIs(userId);
     }
     public Call<POI> getPOI(int id) {
         return apiService.getPOI(id);
     }
-    public Call<POI[]> getFilteredPOIs(double lon, double lat, String category, int distance) {
-        return apiService.getFilteredPOIs(lon, lat, category, distance);
+    public Call<POI[]> getFilteredPOIs(double lon, double lat, String category, int distance, int userId) {
+        return apiService.getFilteredPOIs(lon, lat, category, distance, userId);
     }
-    public Call<POI> createPOI(POIRequest poi){ return apiService.createPOI(poi); }
-    public Call<POI> updatePOI(int id, POIRequest poi) { return apiService.updatePOI(id, poi); }
+    public Call<POI> createPOI(POIRequest poi){
+
+        // Image URL here is the path at which the user refers to the image to upload
+        RequestBody requestFile = RequestBody.create(poi.getImage(), MediaType.parse("image/*"));
+        MultipartBody.Part image = MultipartBody.Part.createFormData("image", poi.getImage().getName(), requestFile);
+
+        RequestBody lat = RequestBody.create(String.valueOf(poi.getLatitude()), MediaType.parse("text/plain"));
+        RequestBody lon = RequestBody.create(String.valueOf(poi.getLongitude()), MediaType.parse("text/plain"));
+        RequestBody cat = RequestBody.create(poi.getCategory(), MediaType.parse("text/plain"));
+        RequestBody stat = RequestBody.create(poi.getStatus(), MediaType.parse("text/plain"));
+        RequestBody desc = RequestBody.create(poi.getDescription(), MediaType.parse("text/plain"));
+        RequestBody ownerId = RequestBody.create(String.valueOf(poi.getOwnderId()), MediaType.parse("text/plain"));
+        RequestBody rating = RequestBody.create(String.valueOf(poi.getRating()), MediaType.parse("text/plain"));
+
+        return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, image);
+    }
+    public Call<POI> updatePOI(int id, int userId, POIRequest poi) { return apiService.updatePOI(id, userId, poi); }
     public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }
     public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); }
     public Call<POI> deletePOI(int id) { return apiService.deletePOI(id); }

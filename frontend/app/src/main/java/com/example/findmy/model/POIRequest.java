@@ -2,6 +2,8 @@ package com.example.findmy.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.File;
+
 public class POIRequest {
     @SerializedName("latitude")
     private double latitude;
@@ -24,15 +26,12 @@ public class POIRequest {
     @SerializedName("rating")
     private int rating;
 
-    @SerializedName("reports")
-    private int reports;
+    @SerializedName("imageUrl")
+    private File image;
 
-    @SerializedName("isDeleted")
-    private boolean isDeleted;
+    //public static final POIRequest testPOI = new POIRequest(0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false, new Bitmap());
 
-    public static final POIRequest testPOI = new POIRequest(0.0, 0.0, "bathroom", "test status", "Da Bathroom", 0, 3, 3, false);
-
-    public POIRequest(double latitude, double longitude, String category, String status, String description, int ownerId, int rating, int reports, boolean isDeleted) {
+    public POIRequest(double latitude, double longitude, String category, String status, String description, int ownerId, int rating, File image) {
        this.latitude = latitude;
        this.longitude = longitude;
        this.category = category;
@@ -40,8 +39,15 @@ public class POIRequest {
        this.description = description;
        this.ownderId = ownerId;
        this.rating = rating;
-       this.reports = reports;
-       this.isDeleted = isDeleted;
+       this.image = image;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
     }
 
     public double getLatitude() {
@@ -100,19 +106,4 @@ public class POIRequest {
         this.rating = rating;
     }
 
-    public int getReports() {
-        return reports;
-    }
-
-    public void setReports(int reports) {
-        this.reports = reports;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }

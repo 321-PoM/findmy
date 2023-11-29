@@ -227,7 +227,7 @@ public class FindMyServiceTest {
     @Test
     public void testGetPOIs() throws InterruptedException {
         FindMyService findMyService = findMyServiceViewModel.getFindMyService();
-        findMyService.getPOIs().enqueue(new Callback<POI[]>() {
+        findMyService.getPOIs(1).enqueue(new Callback<POI[]>() {
             @Override
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {
                 printPOI(response.body());

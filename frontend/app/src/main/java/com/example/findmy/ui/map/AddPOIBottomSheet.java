@@ -26,6 +26,9 @@ import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.File;
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +42,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
     Location currLocation;
 
-    private View.OnClickListener submitNewPOIListener = new View.OnClickListener() {
+    private final View.OnClickListener submitNewPOIListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -49,7 +52,14 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
             int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
-            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating, 0, false);
+            File poiImageFile;
+            try {
+                poiImageFile = File.createTempFile("poi", ".jpeg");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            POIRequest newPOI = new POIRequest(currLocation.getLatitude(), currLocation.getLongitude(), poiType, "verified", poiName, currentUserId, rating,  poiImageFile);
 
             findMyService.createPOI(newPOI).enqueue(
                     new Callback<POI>() {
