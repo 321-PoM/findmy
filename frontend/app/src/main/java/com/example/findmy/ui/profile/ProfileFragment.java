@@ -87,7 +87,7 @@ public class ProfileFragment extends Fragment {
                     public void onResponse(Call<MapBuxResponse> call, Response<MapBuxResponse> response) {
                        if (!response.isSuccessful() && getContext() != null) {
                            String errMsg = findMyService.getErrorMessage(response);
-                           Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG);
+                           Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
                            return;
                        }
                        updateMapBuxText(binding, response.body().getMapBux());
@@ -112,7 +112,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG);
+                    Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG).show();
                     return;
                 }
                 User newCurrentUser = response.body();
@@ -125,7 +125,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG);
+                Toast.makeText(requireContext(), "Unable to reach servers - using cached data", Toast.LENGTH_LONG).show();
             }
         };
 
