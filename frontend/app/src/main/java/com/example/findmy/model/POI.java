@@ -125,12 +125,13 @@ public class POI {
     }
 
     public boolean isMyPOI() {
-        return getCategory() == "myPOI";
+        return getCategory().equals("myPOI");
     }
 
     public double getRadius() {
+        // TODO: this should probably be a field in the backend, its hard coded for now
         if (isMyPOI()) {
-            return 15;
+            return 100;
         } else {
             return 0;
         }
