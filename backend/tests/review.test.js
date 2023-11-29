@@ -1,4 +1,5 @@
-import request from 'supertest';
+import { PrismaClient } from '@prisma/client';
+import { request } from 'supertest';
 import app from '../server.js';
 
 // interface GET host/reviews/:searchby/:id
