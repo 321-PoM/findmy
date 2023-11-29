@@ -83,6 +83,16 @@ export const deleteUserAndRefs = async (req, res) => {
     }
 }
 
+export const deleteUserAndRefsWithEmail = async (req, res) => {
+    console.log("");
+    try{
+        await userService.deleteAllRefsWithEmail(req.params.email);
+        res.status(204).send();
+    } catch(error) {
+        controllerErrorHandler(error, req, res);
+    }
+}
+
 export const getReliabilityScore = async (req, res) => {
     console.log("");
     try {
