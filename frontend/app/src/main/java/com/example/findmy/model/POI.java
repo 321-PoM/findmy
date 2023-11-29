@@ -123,4 +123,16 @@ public class POI {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    public boolean isMyPOI() {
+        return getCategory() == "myPOI";
+    }
+
+    public double getRadius() {
+        if (isMyPOI()) {
+            return 15;
+        } else {
+            return 0;
+        }
+    }
 }

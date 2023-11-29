@@ -10,6 +10,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,6 +33,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -242,6 +245,17 @@ public class MapsFragment extends Fragment implements LocationListener, AdapterV
         Marker marker = gMap.addMarker(markerOptions);
         // may need to clear tag upon clearing pin
         marker.setTag(poi);
+
+        if (poi.isMyPOI()) {
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(new LatLng(poi.getLatitude(), poi.getLongitude()))
+                    .radius(poi.getRadius())
+                    .strokeColor(Color.RED)
+                    .strokeColor(Color.BLUE);
+
+
+            Circle circle = gMap.addCircle(circleOptions);
+        }
     }
 
     @Override
