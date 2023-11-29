@@ -27,12 +27,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameText;
+
+        public TextView pendingText;
         public Button viewDetailsButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameText = (TextView) itemView.findViewById(R.id.friendName);
+            pendingText = (TextView) itemView.findViewById(R.id.pendingFriendText);
             viewDetailsButton = (Button) itemView.findViewById(R.id.viewFriendButton);
         }
     }
@@ -52,6 +55,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
         Friend friend = friends.get(position);
+
+        // TODO: get confirmed status of friend
+        Boolean confirmed = true;
+
+        TextView pendingTextView = holder.pendingText;
+        if (confirmed) {
+            pendingTextView.setVisibility(TextView.INVISIBLE);
+        }
 
         TextView textView = holder.nameText;
         textView.setText(friend.getName());
