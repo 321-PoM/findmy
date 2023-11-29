@@ -17,13 +17,19 @@ import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FindMyService implements Serializable {
 
@@ -141,6 +147,20 @@ public class FindMyService implements Serializable {
     public void showErrorToast(Context context) {
         Toast.makeText(context, "Failed - Try again later", Toast.LENGTH_LONG).show();
     }
+
+    public String getErrorMessage(Response response) {
+        ResponseBody errBody = response.errorBody();
+        JSONObject errObj = null;
+        String msg;
+        try {
+            errObj = new JSONObject(errBody.string());
+            msg = errObj.getString("message");
+        } catch (JSONException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return msg;
+    }
+
     public void getCurrentUser(int id, Callback<User> onReadyCallback) {
         getUser(id).enqueue(onReadyCallback);
     }
