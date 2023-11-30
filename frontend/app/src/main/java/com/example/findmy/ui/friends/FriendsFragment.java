@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.databinding.FragmentFriendsBinding;
+import com.example.findmy.model.Friend;
 import com.example.findmy.model.Friendship;
 import com.example.findmy.model.FriendshipRequest;
 import com.example.findmy.model.User;
@@ -23,7 +24,6 @@ import com.example.findmy.network.FindMyServiceViewModel;
 import com.example.findmy.ui.HomeActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,7 +37,11 @@ public class FriendsFragment extends Fragment {
     private FindMyService findMyService;
     private FriendsAdapter friendsAdapter;
 
-    private List<User> friendsArray;
+    private List<Friend> friendsAdapterArray;
+
+    private List<Friend> friendsArray;
+
+    private List<Friend> pendingFriendsArray;
 
     private final View.OnClickListener addFriendListener = new View.OnClickListener() {
         @Override
@@ -52,8 +56,12 @@ public class FriendsFragment extends Fragment {
     };
     private EditText friendTextField;
 
+    int currentUserId;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
         findMyService = new ViewModelProvider(requireActivity()).get(FindMyServiceViewModel.class).getFindMyService();
 
@@ -65,6 +73,7 @@ public class FriendsFragment extends Fragment {
         setupFriendTextField(binding);
 
         retrieveFriends();
+        retrievePendingFriends();
 
         View root = binding.getRoot();
         return root;
@@ -122,18 +131,18 @@ public class FriendsFragment extends Fragment {
     }
 
     private void setupRecycler(FragmentFriendsBinding binding) {
+        friendsAdapterArray = new ArrayList<>();
         friendsArray = new ArrayList<>();
+        pendingFriendsArray = new ArrayList<>();
 
         RecyclerView friendsRecycler = binding.friendsRecycler;
-        friendsAdapter = new FriendsAdapter(requireActivity(), friendsArray);
+        friendsAdapter = new FriendsAdapter(requireActivity(), friendsAdapterArray);
 
         friendsRecycler.setAdapter(friendsAdapter);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     private void retrieveFriends() {
-
-        int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
         Call<User[]> call = findMyService.getFriendships(currentUserId);
 
@@ -145,10 +154,17 @@ public class FriendsFragment extends Fragment {
                             .show();
                     return;
                 }
-                User[] retrievedFriendships = response.body();
+                User[] responseList = response.body();
+                List<Friend> retrievedFriends = new ArrayList<>();
 
-                friendsArray.addAll(Arrays.asList(retrievedFriendships));
-                friendsAdapter.notifyDataSetChanged();
+                for (User friend : responseList) {
+                    retrievedFriends.add(new Friend(friend, true));
+                }
+
+                friendsArray.clear();
+                friendsArray.addAll(retrievedFriends);
+
+                refreshFriendsArray();
             }
 
             @Override
@@ -157,6 +173,48 @@ public class FriendsFragment extends Fragment {
                         .show();
             }
         });
+    }
+
+    private void retrievePendingFriends() {
+        Call<User[]> call = findMyService.getSentFriendshipRequests(currentUserId);
+
+        call.enqueue(new Callback<User[]>() {
+            @Override
+            public void onResponse(Call<User[]> call, Response<User[]> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Error: Unable to retrieve friends", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                User[] responseList = response.body();
+
+                List<Friend> retrievedPending = new ArrayList<>();
+
+                for (User pending : responseList) {
+                    retrievedPending.add(new Friend(pending, false));
+                }
+
+                pendingFriendsArray.clear();
+                pendingFriendsArray.addAll(retrievedPending);
+
+                refreshFriendsArray();
+            }
+
+            @Override
+            public void onFailure(Call<User[]> call, Throwable t) {
+                Toast.makeText(requireContext(), "Error: Unable to retrieve pending requests", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+
+    }
+
+    private void refreshFriendsArray() {
+        friendsAdapterArray.clear();
+        friendsAdapterArray.addAll(pendingFriendsArray);
+        friendsAdapterArray.addAll(friendsArray);
+        friendsAdapter.notifyDataSetChanged();
     }
 
     @Override
