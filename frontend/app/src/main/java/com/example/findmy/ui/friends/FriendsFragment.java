@@ -89,7 +89,8 @@ public class FriendsFragment extends Fragment {
                         if(!response.isSuccessful() && getContext() != null) {
                             findMyService.showErrorToast(requireContext());
                         }
-                        // TODO: update UI?
+                        retrieveFriends();
+                        retrievePendingFriends();
                     }
 
                     @Override
@@ -105,7 +106,9 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(!response.isSuccessful() && getContext() != null) {
-                    findMyService.showErrorToast(requireContext());
+                    String errMsg = findMyService.getErrorMessage(response);
+                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                    return;
                 }
                 addFriendWithID(response.body().getId());
             }
