@@ -78,11 +78,22 @@ export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) =
 }
 
 export const deleteFriendship = async (friendshipId) => {
-    return await prisma.friendship.delete({
+    const del = await prisma.friendship.delete({
         where: { friendshipId: Number(friendshipId) },
         select: {
             userIdFrom: true,
             userIdTo: true
         }
+    });
+    const otherDir = await prisma.friendship.findFirst({
+        where: {
+            userIdFrom: del.userIdTo,
+            userIdTo: del.userIdFrom
+        },
+        select: { friendshipId: true }
+    });
+    if(otherDir == null) return del;
+    return await prisma.friendship.delete({
+        where: { friendshipId: otherDir.friendshipId }
     });
 };
