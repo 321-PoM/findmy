@@ -55,7 +55,8 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
                         public void onResponse(Call<Review> call, Response<Review> response) {
                             if(getContext() != null) {
                                 if (!response.isSuccessful()) {
-                                    findMyService.showErrorToast(requireContext());
+                                    String errMsg = findMyService.getErrorMessage(response);
+                                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
                                     return;
                                 }
                                 Toast.makeText(MapPOIBottomSheet.this.requireContext(), "Submitted", Toast.LENGTH_LONG).show();
