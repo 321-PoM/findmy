@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { getUserReliabilityScore } from './userService.js';
+// import { getUserReliabilityScore } from './userService.js';
 import { calcPoiRating } from './poiService.js';
 
 const prisma = new PrismaClient();
