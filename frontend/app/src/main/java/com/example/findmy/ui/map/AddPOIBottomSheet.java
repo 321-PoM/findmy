@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -47,7 +46,7 @@ import retrofit2.Response;
 
 public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  AdapterView.OnItemSelectedListener {
 
-    private static final int CAMERA_PERMISSION_REQUEST = 0;
+    private static final int CAMERA_PERMISSION_REQUEST = 969;
     AddPoiBottomSheetBinding binding;
     RatingBar inputRatingBar;
 
@@ -81,9 +80,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
             try {
                 poiImageFile = File.createTempFile("poi", ".jpeg");
                 poiImageStream = new FileOutputStream(poiImageFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (SecurityException e) {
+            } catch (IOException | SecurityException e) {
                 throw new RuntimeException(e);
             }
 
@@ -134,9 +131,6 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
         @Override
         public void onClick(View v) {
             if (!checkCameraPermissions()) {
-                Toast.makeText(
-                        requireContext(), "Camera Permissions are Required!", Toast.LENGTH_LONG
-                ).show();
                 requestCameraPermissions();
             } else {
                 launchCameraIntent();
@@ -188,8 +182,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     }
 
     private void requestCameraPermissions() {
-        ActivityCompat.requestPermissions(
-                requireActivity(),
+        requestPermissions(
                 new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
     }
 
@@ -260,6 +253,10 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
         if (requestCode == CAMERA_PERMISSION_REQUEST) {
             if (checkCameraPermissions()) {
                 launchCameraIntent();
+            } else {
+                Toast.makeText(
+                        requireContext(), "Camera Permissions are Required!", Toast.LENGTH_LONG
+                ).show();
             }
         }
     }
