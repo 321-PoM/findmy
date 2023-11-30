@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity {
 
         FindMyService fmyService = new FindMyService();
 
-        Call<User> currentUserCall = fmyService.getUserByEmail(email);
+        Call<User> currentUserCall = fmyService.getUserByEmail(email, true);
 
         currentUserCall.enqueue(new Callback<User>() {
             @Override

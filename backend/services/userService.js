@@ -25,7 +25,7 @@ export const getUser = async (userId) => {
     });
 };
 
-export const getUserByEmail = async (email) => {
+export const getUserByEmail = async (email, shouldCreate) => {
     const user = await prisma.User.findFirst({
         where: { 
             email: email,
@@ -35,6 +35,10 @@ export const getUserByEmail = async (email) => {
     });
     if (user) return user;
 
+    if (shouldCreate != "true") {
+        throw new Error("Could not find user with email " + email);
+    }
+    
     return await prisma.User.create({
         data: { 
             name: email,

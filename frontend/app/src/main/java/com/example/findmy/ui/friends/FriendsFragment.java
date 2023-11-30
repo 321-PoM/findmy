@@ -101,7 +101,7 @@ public class FriendsFragment extends Fragment {
     }
 
     private void initiateFriendRequest(String email) {
-        findMyService.getUserByEmail(email).enqueue(new Callback<User>() {
+        findMyService.getUserByEmail(email, false).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(!response.isSuccessful() && getContext() != null) {
