@@ -20,7 +20,7 @@ export const listReviews = async (searchBy, id) => {
 export const getReview = async (id) => {
     return await prisma.Review.findUnique({
         where: {
-            id: Number(id),
+            reviewId: Number(id),
             isDeleted: false,
         }
     })
