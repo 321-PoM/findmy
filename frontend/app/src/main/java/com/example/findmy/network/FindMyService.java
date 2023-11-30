@@ -127,10 +127,10 @@ public class FindMyService implements Serializable {
     public Call<User[]> getFriendships(int userId) {
         return apiService.getFriendships(userId);
     }
-    public Call<Friendship[]> getReceivedFriendshipRequests(int userId) {
+    public Call<User[]> getReceivedFriendshipRequests(int userId) {
         return apiService.getReceivedFriendshipRequests(userId);
     }
-    public Call<Friendship[]> getSentFriendshipRequests(int userId) {
+    public Call<User[]> getSentFriendshipRequests(int userId) {
         return apiService.getSentFriendshipRequests(userId);
     }
     public Call<Friendship> getFriendship(int friendshipId) {

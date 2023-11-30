@@ -137,9 +137,9 @@ public interface NodeApiService {
     @GET("/friends/{userId}")
     Call<User[]> getFriendships(@Path("userId") int userId);
     @GET("/friends/{userId}/received")
-    Call<Friendship[]> getReceivedFriendshipRequests(@Path("userId") int userId);
+    Call<User[]> getReceivedFriendshipRequests(@Path("userId") int userId);
     @GET("/friends/{userId}/sent")
-    Call<Friendship[]> getSentFriendshipRequests(@Path("userId") int id);
+    Call<User[]> getSentFriendshipRequests(@Path("userId") int id);
     @GET("/friend/{friendshipId}")
     Call<Friendship> getFriendship(@Path("friendshipId") int friendshipId);
     @POST("/friend")

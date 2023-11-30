@@ -12,15 +12,15 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmy.R;
-import com.example.findmy.model.User;
+import com.example.findmy.model.Friend;
 
 import java.util.List;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     FragmentActivity parentActivity;
 
-    private List<User> friends;
-    public FriendsAdapter(FragmentActivity parentActivity, List<User> friends) {
+    private List<Friend> friends;
+    public FriendsAdapter(FragmentActivity parentActivity, List<Friend> friends) {
         this.parentActivity = parentActivity;
         this.friends = friends;
     }
@@ -51,10 +51,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
-        User friend = friends.get(position);
+        Friend friend = friends.get(position);
 
         TextView textView = holder.nameText;
         textView.setText(friend.getName());
+
+//        TextView pendingText = holder.
+//
+//        if (friend.isConfirmed()) {
+//
+//        }
 
         // TODO: set button functionality
         Button button = holder.viewDetailsButton;
