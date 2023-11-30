@@ -9,16 +9,7 @@ const prisma = new PrismaClient();
 export const createPoi = async (poiData) => {
     if(poiData.category == "myPOI") return createMyPoi(poiData);
     return await prisma.poi.create({
-        data: {
-            latitude: parseFloat(poiData.latitude),
-            longitude: parseFloat(poiData.longitude),
-            category: poiData.category,
-            status: poiData.status,
-            description: poiData.description,
-            ownerId: parseInt(poiData.ownerId, 10),
-            rating: parseInt(poiData.rating),
-            imageUrl: poiData.imageUrl,
-        }
+        data: poiData
     });
 };
 
@@ -27,16 +18,7 @@ const createMyPoi = async (poiData) => {
     const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPOI", minDist);
     if(filteredPois.length > 0) throw new Error("A myPOI already exists in this area (" + minDist.toString() + "m radius)");
     return await prisma.poi.create({
-        data: {
-            latitude: parseFloat(poiData.latitude),
-            longitude: parseFloat(poiData.longitude),
-            category: poiData.category,
-            status: poiData.status,
-            description: poiData.description,
-            ownerId: parseInt(poiData.ownerId, 10),
-            rating: parseInt(poiData.rating),
-            imageUrl: poiData.imageUrl,
-        }
+        data: poiData
     });
 }
 
@@ -165,12 +147,12 @@ export const deletePoi = async (poiId) => {
 
 export const listPois = async (userId) => {
     const pois = await prisma.poi.findMany({
-        where: {
-            isDeleted: false,
-        }
+        where: { isDeleted: false }
     });
 
-    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
+    const friends = (await listFriends(userId)).map(friend => friend.id);
+    const friendsAndMe = new Set(friends).add(userId);
+    console.log(friendsAndMe);
     for(const poi of pois) {
         if(poi.category != "myPOI") continue;
         if(friendsAndMe.has(poi.ownerId)) continue;
