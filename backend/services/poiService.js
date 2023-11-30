@@ -84,7 +84,13 @@ export const buyPoi = async (poiId, buyerId) => {
     console.log("");
     try{
         // get POI
-        const poiOnSale = await getPoi(poiId);
+        const poiOnSale = await prisma.poi.findUnique({
+            where: {
+                id: Number(poiId),
+                category: "myPOI",
+                isDeleted: false,
+            }
+        });
         if(!poiOnSale) throw new Error("Cannot find by poiId");
 
         // get Listing
