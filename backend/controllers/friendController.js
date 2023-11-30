@@ -55,7 +55,7 @@ export const createFriendship = async (req, res) => {
 export const handleFriendRequest = async (req, res) => {
     console.log("");
     try {
-        const handleRequest = await friendService.handleFriendRequest(req.params.friendshipId, req.params.acceptRequest)
+        const handleRequest = await friendService.handleFriendRequest(req.params.userIdFrom, req.params.userIdTo, req.params.acceptRequest)
         res.status(200).json(handleRequest);
     } catch (err) {
         controllerErrorHandler(err, req, res); 
@@ -65,7 +65,7 @@ export const handleFriendRequest = async (req, res) => {
 export const deleteFriendship = async (req, res) => {
     console.log("");
     try {
-        const del = await friendService.deleteFriendship(req.param.id);
+        const del = await friendService.deleteFriendship(req.params.id);
         res.status(200).json(del);
     } catch (err) {
         controllerErrorHandler(err, req, res); 
