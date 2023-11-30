@@ -150,12 +150,12 @@ export const listPois = async (userId) => {
         where: { isDeleted: false }
     });
 
-    const friends = (await listFriends(userId)).map(friend => friend.id);
-    const friendsAndMe = new Set(friends).add(userId);
+    const friends = (await listFriends(userId)).map(friend => Number(friend.id));
+    const friendsAndMe = new Set(friends).add(Number(userId));
     console.log(friendsAndMe);
     for(const poi of pois) {
         if(poi.category != "myPOI") continue;
-        if(friendsAndMe.has(poi.ownerId)) continue;
+        if(friendsAndMe.has(Number(poi.ownerId))) continue;
         poi.description = "locked";
     }
     return pois;
