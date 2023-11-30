@@ -32,10 +32,16 @@ export const createReview = async (poiId, userId, rating, description) => {
     await adjustPastReviewerRScores(poiId, rating);
 
     const newReview = await prisma.Review.create({
-        userId: Number(userId),
-        poiId: Number(poiId),
-        rating: Number(rating),
-        description: description
+        data: {
+            userId: { 
+                connect: { id: Number(userId) }
+            },
+            poiId: { 
+                connect: { id: Number(poiId) }
+            },
+            rating: Number(rating),
+            description: description
+        }
     });
     const newRating = await calcPoiRating(poiId);
     await prisma.poi.update({
