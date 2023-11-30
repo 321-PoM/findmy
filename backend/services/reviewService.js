@@ -53,19 +53,24 @@ const adjustPastReviewerRScores = async (poiId, rating) => {
         where: { poiId: Number(poiId) }
     });
 
-    const rscoreUpdatePromises = pastReviews.map(review => {
-        // feel like dtime might b a big big number
+    let rscoreUpdatePromises = [];
+    for(const review of pastReviews) {
         const dTime = Math.abs(Date.now() - new Date(review.createdAt).getTime()) / (SECONDS * MILLISECONDS);
         const timeBias = Math.exp(2 * dTime);
 
         const adjustment = (-1 * Math.abs(rating - review.rating)) + 2;
-        return prisma.User.update({
+
+        const userPromise = prisma.User.update({
             where: { id: review.userId }, 
-            data: { 
-                reliabilityScore: { increment: adjustment * timeBias }
-            }
-        })
-    });
+            data: { reliabilityScore: { increment: adjustment * timeBias }}
+        });
+        const reviewPromise = prisma.Review.update({
+            where: { id: Number(review.id) },
+            data: { reliabilityScore: { increment: adjustment * timeBias }}
+        });
+        rscoreUpdatePromises.push(userPromise);
+        rscoreUpdatePromises.push(reviewPromise);
+    }
     await Promise.all(rscoreUpdatePromises);
     return;
 }
