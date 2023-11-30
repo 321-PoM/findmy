@@ -12,9 +12,7 @@ export const createUser = async (userData) => {
 export const getUser = async (userId) => {
     const uid = parseInt(userId, 10);
 
-    if (isNaN(uid)) {
-        return res.status(400).json({ message: "Error: getUser | user ID is not int." });
-    }
+    if (isNaN(uid)) throw new Error("Error: getUser | user ID is not int.");
 
     return await prisma.User.findUnique({
         where: {
