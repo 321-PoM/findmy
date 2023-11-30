@@ -183,8 +183,8 @@ export const listPois = async (userId) => {
 };
 
 export const listFilteredPois = async (currLong, currLat, poiType, distance, userId) => {
-    const filteredList = filterPois(currLong, currLat, poiType, distance);
-    if(poiType != "myPOI" || poiType != "All") return filteredList;
+    const filteredList = await filterPois(currLong, currLat, poiType, distance);
+    if(poiType != "myPOI" && poiType != "All") return filteredList;
     
     const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
     for(const poi of filteredList) {
