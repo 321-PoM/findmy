@@ -100,6 +100,8 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
     private FindMyService findMyService;
 
+    private Button submitRatingButton;
+
     public MapPOIBottomSheet(POI poi) {
         this.poi = poi;
     }
@@ -115,16 +117,20 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
         poiNameText.setText(poi.getDescription());
 
         RatingBar currentRatingBar = binding.currentRatingBar;
-        // TODO: update with POI rating
+
         currentRatingBar.setRating(poi.getRating());
 
         inputRatingBar = binding.editRatingBar;
 
-        Button submitRatingButton = binding.ratingSubmitButton;
+        submitRatingButton = binding.ratingSubmitButton;
         submitRatingButton.setOnClickListener(submitRatingListener);
 
         Button reportPOIButton = binding.reportButton;
         reportPOIButton.setOnClickListener(reportButtonListener);
+
+        if (poi.isMyPOI()) {
+            hideRatingViews();
+        }
 
         setupImageButton(binding);
 
@@ -132,6 +138,16 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
         View root = binding.getRoot();
         return root;
+    }
+
+    private void hideRatingViews() {
+        LinearLayout currentRatingLayout = binding.currentRatingLayout;
+        currentRatingLayout.setVisibility(View.GONE);
+
+        LinearLayout editRatingLayout = binding.editRatingLayout;
+        editRatingLayout.setVisibility(View.GONE);
+
+        submitRatingButton.setVisibility(View.GONE);
     }
 
     private void setupImageButton(PoiBottomSheetBinding binding) {
