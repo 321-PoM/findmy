@@ -41,6 +41,21 @@ public class User implements Serializable {
     @SerializedName("isDeleted")
     private boolean isDeleted;
 
+    User(User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+        this.avatar = user.avatar;
+        this.biography = user.biography;
+        this.reliabilityScore = user.reliabilityScore;
+        this.premiumStatus = user.premiumStatus;
+        this.mapBux = user.mapBux;
+        this.createdAt = user.createdAt;
+        this.updatedAt = user.updatedAt;
+        this.isActive = user.isActive;
+        this.isDeleted = user.isDeleted;
+    }
+
     public String getName() {
         return this.name;
     }
