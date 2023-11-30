@@ -87,7 +87,9 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Friendship> call, Response<Friendship> response) {
                         if(!response.isSuccessful() && getContext() != null) {
-                            findMyService.showErrorToast(requireContext());
+                            String errMsg = findMyService.getErrorMessage(response);
+                            Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                            return;
                         }
                         retrieveFriends();
                         retrievePendingFriends();
