@@ -73,6 +73,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha01")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
+//    androidTestImplementation("androidx.test:core:1.5.0")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("com.android.support:support-annotations:28.0.0")
+//    androidTestImplementation("com.android.support.test:runner:1.0.2")
+//    androidTestImplementation("com.android.support.test:rules:1.0.2")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.1.0")
@@ -90,4 +95,8 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1") {
+//        exclude("com.android.support", "support-annotations")
+    }
 }
