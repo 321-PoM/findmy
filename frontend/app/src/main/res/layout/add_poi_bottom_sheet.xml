@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:layout_height="match_parent"
+<LinearLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -12,31 +13,38 @@
         android:layout_gravity="center_horizontal"
         android:background="@android:color/darker_gray" />
 
-        <EditText
-            android:id="@+id/editTextText"
-            android:layout_width="264dp"
-            android:layout_height="56dp"
-            android:ems="50"
-            android:inputType="text"
-            android:text="@string/poi_name_text"
-            android:layout_margin="10dp"
-            android:textSize="20sp" />
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="264dp"
+        android:layout_height="56dp"
+        android:ems="50"
+        android:inputType="text"
+        android:text="@string/poi_name_text"
+        android:layout_margin="10dp"
+        android:textSize="20sp" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_margin="10dp"
-            android:layout_width="181dp"
-            android:layout_height="59dp"/>
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_margin="10dp"
+        android:layout_width="181dp"
+        android:layout_height="59dp"/>
 
-            <TextView
-                android:id="@+id/ratingBarText"
-                android:layout_margin="15dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rating"
-                android:textSize="20sp"
-                />
+    <LinearLayout
+        android:id="@+id/ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/ratingBarText"
+            android:layout_margin="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating"
+            android:textSize="20sp"
+            />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -48,6 +56,7 @@
             android:layout_margin="10dp"
             android:numStars="5" />
 
+    </LinearLayout>
     <TextView
         android:id="@+id/addImageText"
         android:layout_margin="15dp"
@@ -80,4 +89,4 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/poi_submit_button" />
-    </LinearLayout>
+</LinearLayout>

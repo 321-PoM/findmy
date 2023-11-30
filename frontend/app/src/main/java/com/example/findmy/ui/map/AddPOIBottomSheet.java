@@ -1,6 +1,7 @@
 package com.example.findmy.ui.map;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 
 import android.Manifest;
 import android.content.Intent;
@@ -71,7 +72,13 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
             String poiName = getInputPOIName();
             String poiType = getNewPOIType();
-            int rating = (int) inputRatingBar.getRating();
+            int rating;
+
+            if (poiType.equals("myPOI")) {
+                rating = 0;
+            } else {
+                rating = (int) inputRatingBar.getRating();
+            }
 
             int currentUserId = ((HomeActivity) requireActivity()).getCurrentUserId();
 
@@ -234,6 +241,13 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         newPOITypeSelection = (String) parent.getItemAtPosition(position);
+
+        if (newPOITypeSelection.equals("myPOI")) {
+            binding.ratingLayout.setVisibility(GONE);
+        } else {
+            binding.ratingLayout.setVisibility(View.VISIBLE);
+        }
+
         Log.d(TAG, "New selection: " + newPOITypeSelection);
     }
 
