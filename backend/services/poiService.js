@@ -35,8 +35,9 @@ export const getPoi = async (poiId, userId) => {
     });
     if(poi.category != "myPOI") return poi;
 
-    const friendsAndMe = new Set((await listFriends(userId)).map((friend) => friend.id)).add(userId);
-    if(friendsAndMe.has(poi.ownerId)) return poi;
+    const friends = (await listFriends(userId)).map((friend) => Number(friend.id));
+    const friendsAndMe = new Set(friends).add(Number(userId));
+    if(friendsAndMe.has(Number(poi.ownerId))) return poi;
 
     poi.description = "locked";
     return poi;
@@ -149,10 +150,8 @@ export const listPois = async (userId) => {
     const pois = await prisma.poi.findMany({
         where: { isDeleted: false }
     });
-
     const friends = (await listFriends(userId)).map(friend => Number(friend.id));
     const friendsAndMe = new Set(friends).add(Number(userId));
-    console.log(friendsAndMe);
     for(const poi of pois) {
         if(poi.category != "myPOI") continue;
         if(friendsAndMe.has(Number(poi.ownerId))) continue;
