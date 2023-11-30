@@ -30,6 +30,14 @@ export const getReview = async (id) => {
 export const createReview = async (poiId, userId, rating, description) => {
     await doesReviewAlreadyExist(poiId, userId);
     await adjustPastReviewerRScores(poiId, rating);
+    const userRscore = await prisma.User.findUnique({
+            where: {
+                id: Number(userId),
+            },
+            select: {
+                reliabilityScore: true,
+            }
+        }).reliabilityScore;
 
     const newReview = await prisma.Review.create({
         data: {
@@ -39,6 +47,8 @@ export const createReview = async (poiId, userId, rating, description) => {
             poiId: { 
                 connect: { id: Number(poiId) }
             },
+            // Default reliability score of review is equal to user's reliability score.
+            reliabilityScore: userRscore,
             rating: Number(rating),
             description: description
         }
