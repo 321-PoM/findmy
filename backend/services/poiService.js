@@ -36,6 +36,7 @@ export const getPoi = async (poiId, userId) => {
     if(friendsAndMe.has(Number(poi.ownerId))) return poi;
 
     poi.description = "locked";
+    poi.imageUrl = null;
     return poi;
 };
 
@@ -152,6 +153,7 @@ export const listPois = async (userId) => {
         if(poi.category != "myPOI") continue;
         if(friendsAndMe.has(Number(poi.ownerId))) continue;
         poi.description = "locked";
+        poi.imageUrl = null;
     }
     return pois;
 };
