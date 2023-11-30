@@ -65,7 +65,7 @@ const adjustPastReviewerRScores = async (poiId, rating) => {
             data: { reliabilityScore: { increment: incrementBy }}
         });
         const reviewPromise = prisma.Review.update({
-            where: { reviewId: Number(review.id) },
+            where: { reviewId: Number(review.reviewId) },
             data: { reliabilityScore: { increment: incrementBy }}
         });
         rscoreUpdatePromises.push(userPromise);
