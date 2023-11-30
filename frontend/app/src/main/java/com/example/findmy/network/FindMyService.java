@@ -46,8 +46,9 @@ public class FindMyService implements Serializable {
     public Call<User> getUser(int id) {
         return apiService.getUser(id);
     }
-    public Call<User> getUserByEmail(String email) {
-        return apiService.getUserByEmail(email);
+    public Call<User> getUserByEmail(String email, Boolean shouldCreate) {
+        String create = shouldCreate? "true" : "false";
+        return apiService.getUserByEmail(email, create);
     }
     public Call<Integer> getUserReliabilityScore(int id) {
         return apiService.getUserReliabilityScore(id);

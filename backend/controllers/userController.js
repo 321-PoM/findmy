@@ -16,7 +16,7 @@ export const getUser = async (req, res) => {
 export const getUserByEmail = async (req, res) => {
     console.log("");
     try{
-        const user = await userService.getUserByEmail(req.params.email);
+        const user = await userService.getUserByEmail(req.params.email, req.params.shouldCreate);
         res.status(200).json(user);
     } catch (error) {
         controllerErrorHandler(error, req, res);

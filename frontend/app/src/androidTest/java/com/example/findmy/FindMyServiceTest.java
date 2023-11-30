@@ -112,7 +112,7 @@ public class FindMyServiceTest {
     public void testGetUserByEmail() throws InterruptedException {
         FindMyService findMyService = findMyServiceViewModel.getFindMyService();
 
-        findMyService.getUserByEmail("kk@example.com").enqueue(new Callback<User>() {
+        findMyService.getUserByEmail("kk@example.com", true).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User[] res = {response.body()};
