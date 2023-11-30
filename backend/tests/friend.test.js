@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { request } from 'supertest';
+import request from 'supertest';
 import { app } from '../server.js';
 
 // interface GET host/friends/:userId
