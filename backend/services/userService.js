@@ -36,7 +36,7 @@ export const getUserByEmail = async (email, shouldCreate) => {
     if (user) return user;
 
     if (shouldCreate != "true") {
-        throw new Error("Could not find user with email " + email);
+        throw new Error("Could not find user with email: " + email);
     }
     
     return await prisma.User.create({
