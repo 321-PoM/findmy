@@ -87,9 +87,12 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Friendship> call, Response<Friendship> response) {
                         if(!response.isSuccessful() && getContext() != null) {
-                            findMyService.showErrorToast(requireContext());
+                            String errMsg = findMyService.getErrorMessage(response);
+                            Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                            return;
                         }
-                        // TODO: update UI?
+                        retrieveFriends();
+                        retrievePendingFriends();
                     }
 
                     @Override
@@ -105,7 +108,9 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(!response.isSuccessful() && getContext() != null) {
-                    findMyService.showErrorToast(requireContext());
+                    String errMsg = findMyService.getErrorMessage(response);
+                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                    return;
                 }
                 addFriendWithID(response.body().getId());
             }
@@ -181,7 +186,7 @@ public class FriendsFragment extends Fragment {
         call.enqueue(new Callback<User[]>() {
             @Override
             public void onResponse(Call<User[]> call, Response<User[]> response) {
-                if (!response.isSuccessful()) {
+                if (!response.isSuccessful() && getContext() != null) {
                     Toast.makeText(requireContext(), "Error: Unable to retrieve friends", Toast.LENGTH_SHORT)
                             .show();
                     return;

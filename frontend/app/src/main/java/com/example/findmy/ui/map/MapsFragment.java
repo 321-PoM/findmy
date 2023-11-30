@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -189,6 +190,11 @@ public class MapsFragment extends LocationFragment implements AdapterView.OnItem
         callFilteredPOIs.enqueue(new Callback<POI[]>() {
             @Override
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {
+                if (!response.isSuccessful() && getContext() != null) {
+                    String errMsg = findMyService.getErrorMessage(response);
+                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 POI[] filteredPOIs = response.body();
                 if (filteredPOIs == null) { return; }
                 for (POI poi : filteredPOIs) {
@@ -198,7 +204,7 @@ public class MapsFragment extends LocationFragment implements AdapterView.OnItem
 
             @Override
             public void onFailure(Call<POI[]> call, Throwable t) {
-                //TODO - do something
+                Toast.makeText(requireContext(), "Unable to update POI pins", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -76,6 +76,11 @@ public class MarketplaceFragment extends LocationFragment {
         call.enqueue(new Callback<MarketListing[]>() {
             @Override
             public void onResponse(Call<MarketListing[]> call, Response<MarketListing[]> response) {
+                if (!response.isSuccessful() && getContext() != null) {
+                    String errMsg = findMyService.getErrorMessage(response);
+                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 MarketListing[] retrievedListings = response.body();
                 listingArray.addAll(Arrays.asList(retrievedListings));
 
