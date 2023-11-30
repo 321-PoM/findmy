@@ -6,3 +6,6 @@ You enter a random washroom and you witness a toilet just completely violated. Y
 Lucky for you, you had Find A * downloaded. You open the app and filter by washrooms. You see multiple POIs, but you can easily spot the highly rated-washrooms from the app. You run to the washroom you found, and wow, it is a clean, toilet paper-packed washroom. You thank the developers of the app, and release your stress in joy. 
 
 Ha, life is easier with Find A *.
+
+## Penguins of Madagascar
+We are happy. We are friends. We love CPEN321.
