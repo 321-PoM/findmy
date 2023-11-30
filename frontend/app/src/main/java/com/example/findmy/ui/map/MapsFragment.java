@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -206,12 +207,10 @@ public class MapsFragment extends LocationFragment implements AdapterView.OnItem
 
     private void placePOI(GoogleMap gMap, POI poi) {
         LatLng loc = new LatLng(poi.getLatitude(), poi.getLongitude());
+
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(loc)
                 .title(poi.getDescription());
-        Marker marker = gMap.addMarker(markerOptions);
-        // may need to clear tag upon clearing pin
-        marker.setTag(poi);
 
         if (poi.isMyPOI()) {
             CircleOptions circleOptions = new CircleOptions()
@@ -219,10 +218,14 @@ public class MapsFragment extends LocationFragment implements AdapterView.OnItem
                     .radius(poi.getRadius())
                     .fillColor(Color.parseColor("#2271cce7"))
                     .strokeColor(Color.parseColor("#55717de7"));
-
-
             Circle circle = gMap.addCircle(circleOptions);
+
+            // myPOIs are blue
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         }
+        Marker marker = gMap.addMarker(markerOptions);
+        // may need to clear tag upon clearing pin
+        marker.setTag(poi);
     }
 
     @Override
