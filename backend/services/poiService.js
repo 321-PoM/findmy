@@ -27,11 +27,7 @@ export const getPoi = async (poiId, userId) => {
         where: {
             id: Number(poiId),
             isDeleted: false,
-        },
-        include: {
-            image: true,
-            owner: true,
-        },
+        }
     });
     if(poi.category != "myPOI") return poi;
 
