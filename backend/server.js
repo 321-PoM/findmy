@@ -31,8 +31,8 @@ var server_opt = {
 };
 
 var ports = {
-    http:  80,
-    https: 443,
+    http: process.env.TEST_ENV ? process.env.HTTP_PORT : 80,
+    https: process.env.TEST_ENV ? process.env.HTTPS_PORT : 443,
 }
 
 const httpServer = http.createServer(app).listen(ports.http);
