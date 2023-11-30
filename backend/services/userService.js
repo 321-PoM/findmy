@@ -154,53 +154,53 @@ export const listUsers = async () => {
     });
 };
 
-export const getUserReliabilityScore = async (userId) => {
-    // Query for Pois reviewed by the user
-    const reviewsByUser = await prisma.Review.findMany({
-        where: {
-            userId: Number(userId),
-            isDeleted: false,
-        }
-    });
+// export const getUserReliabilityScore = async (userId) => {
+//     // Query for Pois reviewed by the user
+//     const reviewsByUser = await prisma.Review.findMany({
+//         where: {
+//             userId: Number(userId),
+//             isDeleted: false,
+//         }
+//     });
 
-    if(reviewsByUser.length < 1) return 100;
+//     if(reviewsByUser.length < 1) return 100;
 
-    // Create an array of promises for distFromSafeZone for each review
-    const distPromises = reviewsByUser.map(review => distFromSafeZone(review.poiId, review.rating));
+//     // Create an array of promises for distFromSafeZone for each review
+//     const distPromises = reviewsByUser.map(review => distFromSafeZone(review.poiId, review.rating));
 
-    // Use Promise.all to wait for all distFromSafeZone promises to resolve
-    const dists = await Promise.all(distPromises);
+//     // Use Promise.all to wait for all distFromSafeZone promises to resolve
+//     const dists = await Promise.all(distPromises);
 
-    // Calculate the mean distance from safezone
-    let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
-    let meanDist = (sumDist === 0) ? 0 : parseInt((sumDist / reviewsByUser.length), 10);
+//     // Calculate the mean distance from safezone
+//     let sumDist = dists.reduce((sum, dist) => sum + dist, 0);
+//     let meanDist = (sumDist === 0) ? 0 : parseInt((sumDist / reviewsByUser.length), 10);
 
-    return 100 - meanDist;
-};
+//     return 100 - meanDist;
+// };
 
-const distFromSafeZone = async (poiId, rating) => {
-    const poiReviews = await prisma.Review.findMany({
-        where: {
-            poiId: poiId,
-            isDeleted: false,
-        }
-    });
-    const poiRatings = poiReviews.map(review => review.rating);
-    if(poiRatings.length < 4) return 0;
+// const distFromSafeZone = async (poiId, rating) => {
+//     const poiReviews = await prisma.Review.findMany({
+//         where: {
+//             poiId: poiId,
+//             isDeleted: false,
+//         }
+//     });
+//     const poiRatings = poiReviews.map(review => review.rating);
+//     if(poiRatings.length < 4) return 0;
 
-    // find mean
-    let sumRating = poiRatings.reduce((sum, rating) => sum += rating, 0);
-    let numRatings = poiRatings.length;
-    let mean = sumRating / numRatings;
+//     // find mean
+//     let sumRating = poiRatings.reduce((sum, rating) => sum += rating, 0);
+//     let numRatings = poiRatings.length;
+//     let mean = sumRating / numRatings;
 
-    // find stdev
-    let sumDist = poiRatings.reduce((sum, rating) => sum += Math.pow((rating - mean), 2), 0);
-    let stdev = Math.pow((sumDist / numRatings), 0.5);
+//     // find stdev
+//     let sumDist = poiRatings.reduce((sum, rating) => sum += Math.pow((rating - mean), 2), 0);
+//     let stdev = Math.pow((sumDist / numRatings), 0.5);
 
-    let max = mean + stdev;
-    let min = mean - stdev;
+//     let max = mean + stdev;
+//     let min = mean - stdev;
 
-    if(rating > max) return rating - max;
-    else if(rating < min) return min - rating;
-    return 0;
-}
+//     if(rating > max) return rating - max;
+//     else if(rating < min) return min - rating;
+//     return 0;
+// }

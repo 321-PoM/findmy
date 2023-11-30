@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { isPointWithinRadius } from "geolib";
 import { getUser, updateUserBux, updateUser } from "./userService.js";
-import { getOne, deleteListing } from "./marketListingService.js";
+import { deleteListing } from "./marketListingService.js";
 import { listFriends } from "./friendService.js";
 
 const prisma = new PrismaClient();
@@ -299,13 +299,13 @@ const getBoundingBox = (lat, lon, distance) => {
         lonMin: parseFloat(lonMin),
         lonMax: parseFloat(lonMax),
     };
-  }
+}
 
 export const calcPoiRating = async (poiId) => {
-    const allRatings = await prisma.review.findMany({
+    const allReviews = await prisma.review.findMany({
         where: { poiId: Number(poiId) }
     });
-    if(allRatings.length < 1){
+    if(allReviews.length == 1){
         const poi = await prisma.poi.findUnique({
             where: { poiId: Number(poiId) },
             include: { rating: true },
@@ -316,9 +316,9 @@ export const calcPoiRating = async (poiId) => {
     // Calculate new weighted rating
     let totalWeight = 0;
     let weightedSum = 0;
-    for(const rating of allRatings){
-        totalWeight += rating.reliabilityScore;
-        weightedSum += rating.rating * rating.reliabilityScore;
+    for(const review of allReviews){
+        totalWeight += review.reliabilityScore;
+        weightedSum += review.rating * review.reliabilityScore;
     }
     return weightedSum / totalWeight;
 }
