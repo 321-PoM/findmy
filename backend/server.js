@@ -40,4 +40,4 @@ const httpsServer = https.createServer(server_opt, app).listen(ports.https);
 
 console.log(`Server running at http port:${ports.http}; https port:${ports.https}`);
 
-export default { httpServer, httpsServer, app };
+export { httpServer, httpsServer, app };
