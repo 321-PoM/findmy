@@ -80,83 +80,95 @@ export const reportPoi = async (poiId) => {
 }
 
 export const buyPoi = async (poiId, buyerId) => {
-    console.log("");
-    try{
-        // get POI
-        const poiOnSale = await prisma.poi.findUnique({
-            where: {
-                id: Number(poiId),
-                category: "myPOI",
-                isDeleted: false,
-            }
-        });
-        if(!poiOnSale) throw new Error("Cannot find by poiId");
-
-        // get Listing
-        const listings = await prisma.marketListing.findMany({
-            where: {
-                poiId: Number(poiId),
-                sellerId: Number(poiOnSale.ownerId),
-                isDeleted: false,
-            }
-        });
-        const poiListing = listings[0];
-        if(!poiListing) throw new Error("Cannot find listing");
-
-        // get Seller and Buyer
-        const seller = await getUser(poiOnSale.ownerId);
-        const buyer = await getUser(buyerId);
-        if(!seller || !buyer) throw new Error("Cannot find seller/buyer");
-        if(buyer.mapBux < poiListing.price) throw new Error("Buyer is too broke");
-
-        // Update wallets
-        const sellerWalletAfter = await updateUserBux(seller.id, true, poiListing.price);
-        const buyerWalletAfter = await updateUserBux(buyer.id, false, poiListing.price);
-        if(!sellerWalletAfter || !buyerWalletAfter){
-            throw {
-                position: 0, 
-                buyer: buyer,
-                seller: seller,
-                message: "Transfer mapBux failed, putting funds back"
-            };
+    // get POI
+    const poiOnSale = await prisma.poi.findUnique({
+        where: {
+            id: Number(poiId),
+            category: "myPOI",
+            isDeleted: false,
         }
-        // Update poi
-        const poiWithNewOwner = await updatePoi(poiId, { ownerId: Number(buyerId) });
-        if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyerId){
-            throw {
-                position: 1,
-                buyer: buyer,
-                seller: seller,
-                originalOwner: seller.id,
-                poiId: id,
-                message: "Change poi owner failed, putting funds and owner back now"
-            }
-        } 
+    });
+    if(!poiOnSale) throw new Error("Error: invalid poiId");
 
-        // Delete listing
-        const del = await deleteListing(poiListing.id);
-        if(!del) {
-            throw {
-                position: 2,
-                listingId: poiListing.id,
-                message: "Delete listing failed, transaction was successful"
-            };
-        } 
-
-        return poiWithNewOwner;
-    } catch (err) {
-        if(!err.hasOwnProperty('position')) throw err;
-        // Put money back if failed during transaction
-        if(err.position === 0 || err.position === 1) {
-            const putBackBuyer = await updateUser(err.buyer.id, err.buyer);
-            const putBackSeller = await updateUser(err.seller.id, err.seller);
+    // get Listing
+    const poiListing = await prisma.marketListing.findFirst({
+        where: {
+            poiId: Number(poiId),
+            sellerId: Number(poiOnSale.ownerId),
+            isDeleted: false,
         }
-        // Put owner back if failed after owner transfer
-        if(err.position === 1) await updatePoi(err.poiId, { ownerId: Number(err.originalOwner) });
-        // Try delete again if transaction suceeded but listing stays up
-        if(err.position === 2) await deleteListing(err.listingId);
-        throw new Error(err.message);
+    });
+    if(!poiListing) throw new Error("Error: invalid listingId");
+
+    // get Seller and Buyer
+    const seller = await getUser(poiOnSale.ownerId);
+    const buyer = await getUser(buyerId);
+    if(!seller && !buyer) throw new Error("Error: invalid userIds for seller and buyer");
+    if(!seller) throw new Error("Error: invalid userId for seller");
+    if(!buyer) throw new Error("Error: invalid userId for buyer");
+
+    if(buyer.mapBux < listing.price) throw new Error("Error: buyer does not have enough funds");
+    
+    const updatedPoi = safeTransaction(poiOnSale, poiListing, buyer, seller);
+    return updatedPoi
+}
+
+const safeTransaction = async (poi, listing, buyer, seller) => {
+    const stateBeforeTransaction = {
+        poi: poi,
+        seller: seller,
+        buyer: buyer,
+        listing: listing
     }
+
+    // Update wallets
+    const sellerWalletAfter = await prisma.User.update({
+        where: { id: seller.id },
+        data: { mapBux: { increment: listing.price }}
+    });
+    const buyerWalletAfter = await prisma.User.update({
+        where: { id: buyer.id },
+        data: { mapBux: { increment: -1 * listing.price }}
+    });
+    if(!sellerWalletAfter || !buyerWalletAfter) returnToOriginal(stateBeforeTransaction, 1);
+
+    // Update poi
+    const poiWithNewOwner = await updatePoi(Number(poi.id), { ownerId: Number(buyer.id) });
+    if(!poiWithNewOwner || poiWithNewOwner.ownerId != buyer.id) returnToOriginal(stateBeforeTransaction, 2);
+
+    // Delete listings
+    const listings = await prisma.marketListing.findMany({
+        where: {
+            poiId: original.poi.id,
+            sellerId: original.seller.id
+        }
+    });
+    const deletePromises = listings.map(listing => prisma.marketListing.delete({ where: { id: Number(listing.id)}}));
+    await Promise.all(deletePromises);
+
+    return poiWithNewOwner;
+}
+
+const returnToOriginal = async (original, position) => {
+    await prisma.User.update({
+        where: { id: original.seller.id },
+        data: { mapBux: original.seller.mapBux }
+    });
+    await prisma.User.update({
+        where: { id: original.buyer.id },
+        data: { mapBux: original.buyer.mapBux }
+    });
+    if(position == 2) {
+        await prisma.poi.update({
+            where: { id: original.poi.id },
+            data: { ownerId: original.poi.ownerId }
+        });
+    }
+    switch(position){
+        case 1: throw new Error("Error: transaction unsuccessful, undoing all changes");
+        case 2: throw new Error("Error: failed to exchange poi ownership, undoing all changes");
+    }
+    return;
 }
 
 export const deletePoi = async (poiId) => {
