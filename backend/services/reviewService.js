@@ -38,6 +38,8 @@ export const createReview = async (poiId, userId, rating, description) => {
                 reliabilityScore: true,
             }
         }).reliabilityScore;
+    
+    if (userRscore == null) userRscore = 0;
 
     const newReview = await prisma.Review.create({
         data: {
