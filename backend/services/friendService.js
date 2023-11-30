@@ -38,6 +38,13 @@ export const getFriendship = async (friendshipId) => {
 };
 
 export const createFriendship = async (userIdFrom, userIdTo) => {
+    const from = await prisma.User.findUnique({
+        where: { id: userIdFrom }
+    });
+    const to = await prisma.User.findUnique({
+        where: { id: userIdTo }
+    });
+    if(from == null || to == null) throw new Error("Error: user does not exist");
     const friendship = await prisma.friendship.findFirst({
         where: {
             userIdFrom: userIdFrom,
