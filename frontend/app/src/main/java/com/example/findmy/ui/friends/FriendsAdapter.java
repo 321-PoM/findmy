@@ -1,5 +1,7 @@
 package com.example.findmy.ui.friends;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,22 +58,20 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
         Friend friend = friends.get(position);
 
-        // TODO: get confirmed status of friend
-        Boolean confirmed = true;
 
         TextView pendingTextView = holder.pendingText;
-        if (confirmed) {
+        if (friend.isConfirmed()) {
             pendingTextView.setVisibility(TextView.INVISIBLE);
         }
 
         TextView textView = holder.nameText;
         textView.setText(friend.getName());
 
-//        TextView pendingText = holder.
-//
-//        if (friend.isConfirmed()) {
-//
-//        }
+        TextView pendingText = holder.pendingText;
+
+        if (friend.isConfirmed()) {
+            pendingText.setVisibility(GONE);
+        }
 
         // TODO: set button functionality
         Button button = holder.viewDetailsButton;

@@ -73,6 +73,7 @@ public class FriendsFragment extends Fragment {
         setupFriendTextField(binding);
 
         retrieveFriends();
+        retrievePendingFriends();
 
         View root = binding.getRoot();
         return root;
@@ -189,7 +190,7 @@ public class FriendsFragment extends Fragment {
 
                 List<Friend> retrievedPending = new ArrayList<>();
 
-                for (User pending : retrievedPending) {
+                for (User pending : responseList) {
                     retrievedPending.add(new Friend(pending, false));
                 }
 
