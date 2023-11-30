@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { request } from 'supertest';
-import app from '../server.js';
+import { app } from '../server.js';
 
 // interface POST host/marketListing
 describe("create market listing", () => {
