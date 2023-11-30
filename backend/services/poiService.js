@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { isPointWithinRadius } from "geolib";
 import { getUser, updateUserBux, updateUser } from "./userService.js";
-import { getOne, deleteListing } from "./marketListingService.js";
+import { deleteListing } from "./marketListingService.js";
 import { listFriends } from "./friendService.js";
 
 const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
-    if(poiData.category == "myPOI") return createMyPoi(poiData);
-    return await prisma.poi.create({
+    if(poiData.category == "myPOI") checkIfMyPoiIsValid(poiData);
+    const newPoi = await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
             longitude: parseFloat(poiData.longitude),
@@ -20,24 +20,23 @@ export const createPoi = async (poiData) => {
             imageUrl: poiData.imageUrl,
         }
     });
+    if(poiData.category == "myPOI") return newPoi;
+    await prisma.Review.create({
+        userId: poiData.ownerId,
+        poiId: newPoi.id,
+        rating: poiData.rating,
+        description: poiData.description
+    })
+    return newPoi;
 };
 
-const createMyPoi = async (poiData) => {
+const checkIfMyPoiIsValid = async (poiData) => {
     const minDist = 100;
     const filteredPois = await filterPoisFinely(poiData.latitude, poiData.longitude, "myPOI", minDist);
-    if(filteredPois.length > 0) throw new Error("A myPOI already exists in this area (" + minDist.toString() + "m radius)");
-    return await prisma.poi.create({
-        data: {
-            latitude: parseFloat(poiData.latitude),
-            longitude: parseFloat(poiData.longitude),
-            category: poiData.category,
-            status: poiData.status,
-            description: poiData.description,
-            ownerId: parseInt(poiData.ownerId, 10),
-            rating: parseInt(poiData.rating, 10),
-            imageUrl: poiData.imageUrl,
-        }
-    });
+    if(filteredPois.length > 0) {
+        throw new Error("A myPOI already exists in this area (" + minDist.toString() + "m radius)");
+    }
+    return;
 }
 
 export const getPoi = async (poiId, userId) => {
@@ -306,13 +305,13 @@ const getBoundingBox = (lat, lon, distance) => {
         lonMin: parseFloat(lonMin),
         lonMax: parseFloat(lonMax),
     };
-  }
+}
 
 export const calcPoiRating = async (poiId) => {
-    const allRatings = await prisma.review.findMany({
+    const allReviews = await prisma.review.findMany({
         where: { poiId: Number(poiId) }
     });
-    if(allRatings.length < 1){
+    if(allReviews.length == 1){
         const poi = await prisma.poi.findUnique({
             where: { poiId: Number(poiId) },
             include: { rating: true },
@@ -323,9 +322,9 @@ export const calcPoiRating = async (poiId) => {
     // Calculate new weighted rating
     let totalWeight = 0;
     let weightedSum = 0;
-    for(const rating of allRatings){
-        totalWeight += rating.reliabilityScore;
-        weightedSum += rating.rating * rating.reliabilityScore;
+    for(const review of allReviews){
+        totalWeight += review.reliabilityScore;
+        weightedSum += review.rating * review.reliabilityScore;
     }
     return weightedSum / totalWeight;
 }
