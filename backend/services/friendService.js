@@ -44,23 +44,15 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
             userIdTo: userIdTo
         }
     });
-    if(friendship == null) {
-        return await prisma.friendship.create({
-            data: {
-                userIdFrom: userIdFrom,
-                userIdTo: userIdTo,
-                status: "accepted",
-            },
-            select: { friendshipId: true },
-        });
-    }
-    if(friendship.isDeleted) {
-        return await prisma.friendship.update({
-            where: { friendshipId: friendship.id },
-            data: { isDeleted: false }
-        });
-    }
-    throw new Error("Error: this friendship already exists");
+    if(friendship != null) throw new Error("Error: this friendship already exists");
+    return await prisma.friendship.create({
+        data: {
+            userIdFrom: userIdFrom,
+            userIdTo: userIdTo,
+            status: "accepted",
+        },
+        select: { friendshipId: true },
+    });
 };
 
 export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) => {
@@ -86,19 +78,17 @@ export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) =
 }
 
 export const deleteFriendship = async (friendshipId) => {
-    const del = await prisma.friendship.update({
+    const del = await prisma.friendship.delete({
         where: { friendshipId: Number(friendshipId) },
-        data: { isDeleted: true }, // Soft-delete.
         select: {
             userIdFrom: true,
             userIdTo: true
         }
     });
-    return await prisma.friendship.update({
+    return await prisma.friendship.delete({
         where: {
             userIdFrom: del.userIdTo,
             userIdTo: del.userIdFrom,
-        },
-        data: { isDeleted: true },
+        }
     });
 };
