@@ -27,8 +27,17 @@ const filterFriendships = async (direction, userId) => {
     else if(direction == "toward") userIdList = [...userIdOfSenders].filter(userId => !userIdOfRecipients.has(userId));
     else throw new Error("Error: invalid input (direction)");
 
-    const userPromises = userIdList.map(userId => { prisma.User.findUnique({ where: { id: Number(userId) }})});
+    // let friends = [];
+    console.log(userIdList);
+    const userPromises = userIdList.map((userId) => prisma.User.findUnique({where: {id: Number(userId)}}));
     return await Promise.all(userPromises);
+    // for(const userId of userIdList) {
+    //     const user = await prisma.User.findUnique({ 
+    //         where: { id: Number(userId) }
+    //     });
+    //     friends.push(user);
+    // }
+    // return friends;
 }
 
 export const getFriendship = async (friendshipId) => {
