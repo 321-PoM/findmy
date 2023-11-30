@@ -34,7 +34,7 @@ export const createReview = async (poiId, userId, rating, description) => {
             isDeleted: false,
         }
     });
-    if(doesThisExist) throw new Error("Review already exists");
+    if(doesThisExist != null) throw new Error("Error: You already left a review for this poi");
     let rScore = await getUserReliabilityScore(Number(userId));
     return await prisma.Review.create({
         data: {
