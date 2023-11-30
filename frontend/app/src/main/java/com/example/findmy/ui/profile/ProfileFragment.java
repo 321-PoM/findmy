@@ -165,6 +165,11 @@ public class ProfileFragment extends LocationFragment {
         call.enqueue(new Callback<POI[]>() {
             @Override
             public void onResponse(Call<POI[]> call, Response<POI[]> response) {
+                if (!response.isSuccessful() && getContext() != null) {
+                    String errMsg = findMyService.getErrorMessage(response);
+                    Toast.makeText(requireContext(), errMsg, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 POI[] retrievedPOIs = response.body();
                 for (POI p : retrievedPOIs) {
                     Log.d(TAG, p.getCategory());
