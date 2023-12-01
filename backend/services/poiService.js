@@ -332,7 +332,7 @@ export const calcPoiRating = async (poiId) => {
     });
     if(allReviews.length == 1){
         const poi = await prisma.poi.findUnique({
-            where: { poiId: Number(poiId) },
+            where: { id: Number(poiId) },
             select: { rating: true }
         });
         return poi.rating;
