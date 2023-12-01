@@ -5,6 +5,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 // Tests for User related API endpoints
 describe('User API tests', () => {
+    let createdUserId;
+
     beforeAll(async () => {
         // If we need to init before all tests, we can do it here.
     });

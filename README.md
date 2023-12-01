@@ -9,5 +9,3 @@ Ha, life is easier with Find A *.
 
 ## Penguins of Madagascar
 We are happy. We are friends. We love CPEN321.
-
-Go test
