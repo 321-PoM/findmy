@@ -12,9 +12,9 @@ describe('User API tests', () => {
     });
 
     afterAll(async () => {
-        // Post-test cleanup
-        await prisma.user.deleteMany();
-        await prisma.$disconnect();
+        // // Post-test cleanup
+        // await prisma.user.deleteMany();
+        // await prisma.$disconnect();
     });
 
     // Test for POST /user endpoint

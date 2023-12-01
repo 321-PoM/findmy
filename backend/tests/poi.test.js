@@ -37,14 +37,14 @@ describe('POI API tests', () => {
 
     // Cleanup after all tests have run
     afterAll(async () => {
-        // Delete the created POI and user to clean up the test environment
-        if (createdPoiId) {
-            await prisma.poi.delete({ where: { id: createdPoiId } });
-        }
-        if (testUserId) {
-            await prisma.user.delete({ where: { id: testUserId } });
-        }
-        await prisma.$disconnect(); // Disconnect the Prisma client
+        // // Delete the created POI and user to clean up the test environment
+        // if (createdPoiId) {
+        //     await prisma.poi.delete({ where: { id: createdPoiId } });
+        // }
+        // if (testUserId) {
+        //     await prisma.user.delete({ where: { id: testUserId } });
+        // }
+        // await prisma.$disconnect(); // Disconnect the Prisma client
     });
 
     // Test for POST /poi endpoint
