@@ -59,7 +59,7 @@ describe('User API tests', () => {
 
     // Test for GET /user/:id endpoint
     // input: invalid user ID
-    // expected status code: 500
+    // expected status code: 201
     // expected behavior: Fails to retrieves a specific user based on ID
     // expected output: Null response
     test('Get user with invalid user ID', async () => {
@@ -70,5 +70,17 @@ describe('User API tests', () => {
         expect(response.text).toBe("null");
     });
 
+    // Test for GET /user/:id endpoint
+    // input: Not a number user ID
+    // expected status code: 500
+    // expected behavior: Server side error occurs
+    // expected output: 500 response
+    test('Get user with invalid user ID', async () => {
+        const notANumUserID = "I am not a number";
+        const response = await request(app)
+            .get(`/user/${invalidUserID}`);
+
+        expect(response.statusCode).toBe(500);
+    });
     // TODO: Add more tests here.
 });
