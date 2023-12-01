@@ -78,7 +78,7 @@ describe('User API tests', () => {
     test('Get user with invalid user ID', async () => {
         const notANumUserID = "I am not a number";
         const response = await request(app)
-            .get(`/user/${invalidUserID}`);
+            .get(`/user/${notANumUserID}`);
 
         expect(response.statusCode).toBe(500);
     });
