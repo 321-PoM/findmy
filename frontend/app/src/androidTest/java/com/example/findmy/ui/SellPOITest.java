@@ -28,6 +28,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.example.findmy.R;
 import com.example.findmy.model.POI;
+import com.example.findmy.model.User;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -57,10 +58,12 @@ public class SellPOITest {
 
     private POI testMyPOI;
     private final String testPrice = "100";
+    private User testUser;
 
     @Before
     public void before() throws IOException {
-        testMyPOI = FindMyTest.createMyPOI();
+        testUser = FindMyTest.createTestUser(FindMyTest.testEmail);
+        testMyPOI = FindMyTest.createMyPOI(testUser);
     }
 
     @After

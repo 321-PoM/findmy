@@ -81,7 +81,7 @@ public class AddPOITest {
     public void before() throws IOException {
         Intents.init();
 
-        testUser = FindMyTest.createTestUser();
+        testUser = FindMyTest.createTestUser(FindMyTest.testEmail);
     }
 
     @After
