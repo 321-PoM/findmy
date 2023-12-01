@@ -65,43 +65,43 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
     });
 };
 
-export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) => {
-    const request = await prisma.friendship.findFirst({
-        where: {
-            userIdFrom: userIdFrom,
-            userIdTo: userIdTo
-        }
-    });
-    if(request == null) throw new Error("Error: friend request does not exist for this combination of userIds");
+// export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) => {
+//     const request = await prisma.friendship.findFirst({
+//         where: {
+//             userIdFrom: userIdFrom,
+//             userIdTo: userIdTo
+//         }
+//     });
+//     if(request == null) throw new Error("Error: friend request does not exist for this combination of userIds");
     
-    const reply = await prisma.friendship.findFirst({
-        where: {
-            userIdFrom: userIdTo,
-            userIdTo: userIdFrom
-        }
-    });
-    if(reply != null) throw new Error("Error: both directions of this friendship already exists");
+//     const reply = await prisma.friendship.findFirst({
+//         where: {
+//             userIdFrom: userIdTo,
+//             userIdTo: userIdFrom
+//         }
+//     });
+//     if(reply != null) throw new Error("Error: both directions of this friendship already exists");
 
-    if(acceptRequest) {
-        // this creates the corresponding friendship in the opposite direction
-        return await prisma.friendship.create({
-            data: {
-                userIdFrom: userIdTo,
-                userIdTo: userIdFrom,
-                status: "accepted"
-            }
-        });
-    }
-    else {
-        // if not accept, delete the request
-        return await prisma.friendship.delete({
-            where: {
-                userIdFrom: userIdFrom,
-                userIdTo: userIdTo
-            }
-        });
-    }
-}
+//     if(acceptRequest) {
+//         // this creates the corresponding friendship in the opposite direction
+//         return await prisma.friendship.create({
+//             data: {
+//                 userIdFrom: userIdTo,
+//                 userIdTo: userIdFrom,
+//                 status: "accepted"
+//             }
+//         });
+//     }
+//     else {
+//         // if not accept, delete the request
+//         return await prisma.friendship.delete({
+//             where: {
+//                 userIdFrom: userIdFrom,
+//                 userIdTo: userIdTo
+//             }
+//         });
+//     }
+// }
 
 export const deleteFriendship = async (friendshipId) => {
     if(isNaN(friendshipId)) throw new Error("Error: the friendshipId entered is not a number");

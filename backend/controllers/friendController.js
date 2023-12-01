@@ -52,15 +52,15 @@ export const createFriendship = async (req, res) => {
     }
 };
 
-export const handleFriendRequest = async (req, res) => {
-    // console.log("");
-    try {
-        const handleRequest = await friendService.handleFriendRequest(req.params.userIdFrom, req.params.userIdTo, req.params.acceptRequest)
-        res.status(200).json(handleRequest);
-    } catch (err) {
-        controllerErrorHandler(err, req, res); 
-    }
-};
+// export const handleFriendRequest = async (req, res) => {
+//     // console.log("");
+//     try {
+//         const handleRequest = await friendService.handleFriendRequest(req.params.userIdFrom, req.params.userIdTo, req.params.acceptRequest)
+//         res.status(200).json(handleRequest);
+//     } catch (err) {
+//         controllerErrorHandler(err, req, res); 
+//     }
+// };
 
 export const deleteFriendship = async (req, res) => {
     // console.log("");
