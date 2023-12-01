@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myPOIRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp" >
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/myPOINameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:text="@string/placeholder" />
 
     <TextView
         android:id="@+id/myPOIDistance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/placeholder"
-        />
+        android:text="@string/placeholder" />
 
     <Button
         android:id="@+id/viewDetailsButton"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="12sp"
-        android:text="@string/marketplaceDetails" />
+        android:text="@string/marketplaceDetails"
+        android:textSize="12sp" />
 
 </LinearLayout>
