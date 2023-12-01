@@ -28,18 +28,46 @@ export const getReview = async (id) => {
 }
 
 export const createReview = async (poiId, userId, rating, description) => {
-    await doesReviewAlreadyExist(poiId, userId);
-    await adjustPastReviewerRScores(poiId, rating);
+    const uid = Number(userId);
+    const pid = Number(poiId);
+
+    /* Logger */
+    console.log("Given userId (type:", typeof userId, "):", userId);
+    console.log("userId (type:", typeof uid, "):", userId);
+    console.log("poiId (type:", typeof poiId, "):", poiId);
+
+    await doesReviewAlreadyExist(pid, uid);
+    await adjustPastReviewerRScores(pid, rating);
+
+    let author = await prisma.User.findUnique({
+            where: {
+                id: uid,
+            },
+            select: {
+                reliabilityScore: true,
+            }
+        });
+    
+    const userRscore = author ? Number(author.reliabilityScore) : 0;
+
+    /* Logger */
+    console.log("userRscore:", userRscore);
+    console.log("rating:", rating);
+    console.log("description:", description);
 
     const newReview = await prisma.Review.create({
-        userId: Number(userId),
-        poiId: Number(poiId),
-        rating: Number(rating),
-        description: description
+        data: {
+            userId: uid,
+            poiId: pid,
+            reliabilityScore: userRscore,
+            rating: Number(rating),
+            description: description
+        }
     });
-    const newRating = await calcPoiRating(poiId);
+
+    const newRating = await calcPoiRating(pid);
     await prisma.poi.update({
-        where: { id: Number(poiId) },
+        where: { id: Number(pid) },
         data: { rating: Number(newRating) }
     });
     return newReview;
@@ -56,17 +84,17 @@ const adjustPastReviewerRScores = async (poiId, rating) => {
     let rscoreUpdatePromises = [];
     for(const review of pastReviews) {
         const dTime = Math.abs(Date.now() - new Date(review.createdAt).getTime()) / (SECONDS * MILLISECONDS);
-        const timeBias = Math.exp(2 * dTime);
+        const timeBias = Math.exp(-2 * dTime);  // Should be exponential decay.
 
         const adjustment = (-1 * Math.abs(rating - review.rating)) + 2;
-
+        const incrementBy = Math.round(adjustment * timeBias); // Must be integer.
         const userPromise = prisma.User.update({
             where: { id: review.userId }, 
-            data: { reliabilityScore: { increment: adjustment * timeBias }}
+            data: { reliabilityScore: { increment: incrementBy }}
         });
         const reviewPromise = prisma.Review.update({
-            where: { id: Number(review.id) },
-            data: { reliabilityScore: { increment: adjustment * timeBias }}
+            where: { reviewId: Number(review.reviewId) },
+            data: { reliabilityScore: { increment: incrementBy }}
         });
         rscoreUpdatePromises.push(userPromise);
         rscoreUpdatePromises.push(reviewPromise);

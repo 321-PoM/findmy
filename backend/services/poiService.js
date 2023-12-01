@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
     if(poiData.category == "myPOI") checkIfMyPoiIsValid(poiData);
+
     const newPoi = await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -20,13 +21,19 @@ export const createPoi = async (poiData) => {
             imageUrl: poiData.imageUrl,
         }
     });
+
     if(poiData.category == "myPOI") return newPoi;
+
     await prisma.Review.create({
-        userId: poiData.ownerId,
-        poiId: newPoi.id,
-        rating: poiData.rating,
-        description: poiData.description
-    })
+        data: {
+            userId: parseInt(poiData.ownerId, 10),
+            poiId: newPoi.id,
+            rating: parseInt(poiData.rating, 10),
+            description: poiData.description,
+            reliabilityScore: 0 // Or any default value you want to set
+        }
+    });
+
     return newPoi;
 };
 
@@ -325,8 +332,8 @@ export const calcPoiRating = async (poiId) => {
     });
     if(allReviews.length == 1){
         const poi = await prisma.poi.findUnique({
-            where: { poiId: Number(poiId) },
-            include: { rating: true },
+            where: { id: Number(poiId) },
+            select: { rating: true }
         });
         return poi.rating;
     }

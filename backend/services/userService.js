@@ -85,69 +85,70 @@ export const deleteUser = async (userId) => {
     });
 };
 
-export const deleteAllRefs = async (userId) => {
-    const listings = await prisma.marketListing.findMany({
-        where: {
-            sellerId: userId,
-            isDeleted: false
-        },
-        select: { id: true }
-    });
-    const delTransactions = listings.map((listing) => {
-        prisma.transaction.delete({
-            where: { listingId: Number(listing.id) }
-        });
-    })
-    await Promise.all(delTransactions);
+// TODO: deal with this deletion 
+// export const deleteAllRefs = async (userId) => {
+//     const listings = await prisma.marketListing.findMany({
+//         where: {
+//             sellerId: userId,
+//             isDeleted: false
+//         },
+//         select: { id: true }
+//     });
+//     const delTransactions = listings.map((listing) => {
+//         prisma.transaction.delete({
+//             where: { listingId: Number(listing.id) }
+//         });
+//     })
+//     await Promise.all(delTransactions);
 
-    const pois = await prisma.poi.findMany({
-        where: { 
-            ownerId: Number(userId),
-            isDeleted: false,
-        },
-        select: { id: true }
-    });
-    const delReviews = pois.map((poi) => {
-        prisma.Review.delete({
-            where: { poiId: Number(poi.id) }
-        });
-    })
-    await Promise.all(delReviews);
+//     const pois = await prisma.poi.findMany({
+//         where: { 
+//             ownerId: Number(userId),
+//             isDeleted: false,
+//         },
+//         select: { id: true }
+//     });
+//     const delReviews = pois.map((poi) => {
+//         prisma.Review.delete({
+//             where: { poiId: Number(poi.id) }
+//         });
+//     })
+//     await Promise.all(delReviews);
 
-    await prisma.poi.delete({
-        where: { ownerId: Number(userId) }
-    });
+//     await prisma.poi.delete({
+//         where: { ownerId: Number(userId) }
+//     });
 
-    await prisma.marketListing.delete({
-        where: { sellerId: Number(userId) }
-    });
-    await prisma.transaction.delete({
-        where: { buyerId: Number(userId) }
-    });
-    await prisma.Review.delete({
-        where: { userId: Number(userId) }
-    });
-    await prisma.friendship.delete({
-        where: {
-            OR: [
-                { userIdFrom: Number(userId) },
-                { userIdTo: Number(userId) }
-            ]
-        }
-    });
-    await prisma.User.delete({
-        where: { id: Number(userId) }
-    });
-}
+//     await prisma.marketListing.delete({
+//         where: { sellerId: Number(userId) }
+//     });
+//     await prisma.transaction.delete({
+//         where: { buyerId: Number(userId) }
+//     });
+//     await prisma.Review.delete({
+//         where: { userId: Number(userId) }
+//     });
+//     await prisma.friendship.delete({
+//         where: {
+//             OR: [
+//                 { userIdFrom: Number(userId) },
+//                 { userIdTo: Number(userId) }
+//             ]
+//         }
+//     });
+//     await prisma.User.delete({
+//         where: { id: Number(userId) }
+//     });
+// }
 
-export const deleteAllRefsWithEmail = async (email) => {
-    const users = prisma.User.findMany({
-        where: { email: email },
-        select: { id: true }
-    });
-    const delUsers = users.map((user) => deleteAllRefs(user.id));
-    await Promise.all(delUsers);
-}
+// export const deleteAllRefsWithEmail = async (email) => {
+//     const users = prisma.User.findMany({
+//         where: { email: email },
+//         select: { id: true }
+//     });
+//     const delUsers = users.map((user) => deleteAllRefs(user.id));
+//     await Promise.all(delUsers);
+// }
 
 export const listUsers = async () => {
     return await prisma.User.findMany({

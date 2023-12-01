@@ -29,8 +29,8 @@ model User {
 
 model poi {
   id            Int             @id @default(autoincrement())
-  latitude      Float           
-  longitude     Float           
+  latitude      Float
+  longitude     Float
   category      String          @db.VarChar(255)
   status        PoiStatus
   description   String          @db.VarChar(255)
@@ -79,14 +79,14 @@ model Review {
   reviewId         Int      @id @default(autoincrement())
   userId           Int
   poiId            Int
-  reviewer         User     @relation(fields: [userId], references: [id])
-  poi              poi      @relation(fields: [poiId], references: [id])
   rating           Int
   description      String   @db.VarChar(255)
   reliabilityScore Int
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   isDeleted        Boolean  @default(false)
+  User             User     @relation(fields: [userId], references: [id])
+  poi              poi      @relation(fields: [poiId], references: [id])
 }
 
 enum friendshipStatus {
