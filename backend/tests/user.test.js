@@ -41,8 +41,6 @@ describe('User API tests', () => {
 
         expect(response.statusCode).toBe(201);
         expect(response.body).toHaveProperty('id');
-        // Store created user ID for further tests
-        console.log(response.body);
         createdUserId = response.body.id;
     });
 
@@ -57,6 +55,19 @@ describe('User API tests', () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('id', createdUserId);
+    });
+
+    // Test for GET /user/:id endpoint
+    // input: invalid user ID
+    // expected status code: 500
+    // expected behavior: Fails to retrieves a specific user based on ID
+    // expected output: 500 response
+    test('Get user', async () => {
+        const invalidUserID = -1;
+        const response = await request(app)
+            .get(`/user/${invalidUserID}`);
+
+        expect(response.statusCode).toBe(500);
     });
 
     // TODO: Add more tests here.
