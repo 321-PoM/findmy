@@ -174,7 +174,7 @@ describe("get a specific friendship", () => {
             }
         });
         
-        const res = await request(app).get(`/friend/${fs.id}`);
+        const res = await request(app).get(`/friend/${fs.friendshipId}`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(200);
         expect(res.body).toHaveProperty("userIdFrom");
