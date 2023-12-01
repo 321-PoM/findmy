@@ -29,13 +29,14 @@ export const getReview = async (id) => {
 
 export const createReview = async (poiId, userId, rating, description) => {
     const uid = Number(userId);
+    const pid = Number(poiId);
 
     /* Logger */
     console.log("Given userId (type:", typeof userId, "):", userId);
     console.log("userId (type:", typeof uid, "):", userId);
     console.log("poiId (type:", typeof poiId, "):", poiId);
-    await doesReviewAlreadyExist(poiId, userId);
-    await adjustPastReviewerRScores(poiId, rating);
+    await doesReviewAlreadyExist(pid, userId);
+    await adjustPastReviewerRScores(pid, rating);
     let author = await prisma.User.findUnique({
             where: {
                 id: uid,
@@ -54,21 +55,21 @@ export const createReview = async (poiId, userId, rating, description) => {
 
     const newReview = await prisma.Review.create({
         data: {
-            userId: { 
+            user: { 
                 connect: { id: uid }
             },
-            poiId: { 
-                connect: { id: Number(poiId) }
+            poi: { 
+                connect: { id: pid }
             },
-            // Default reliability score of review is equal to user's reliability score.
             reliabilityScore: userRscore,
             rating: Number(rating),
             description: description
         }
     });
-    const newRating = await calcPoiRating(poiId);
+
+    const newRating = await calcPoiRating(pid);
     await prisma.poi.update({
-        where: { id: Number(poiId) },
+        where: { id: Number(pid) },
         data: { rating: Number(newRating) }
     });
     return newReview;
