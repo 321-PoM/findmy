@@ -29,6 +29,10 @@ export const getReview = async (id) => {
 
 export const createReview = async (poiId, userId, rating, description) => {
     const uid = new Number(userId);
+
+    /* Logger */
+    console.log("userId (type:", typeof uid, "):", userId);
+    console.log("poiId (type:", typeof poiId, "):", poiId);
     await doesReviewAlreadyExist(poiId, userId);
     await adjustPastReviewerRScores(poiId, rating);
     let author = await prisma.User.findUnique({
@@ -43,8 +47,6 @@ export const createReview = async (poiId, userId, rating, description) => {
     const userRscore = author ? Number(author.reliabilityScore) : 0;
 
     /* Logger */
-    console.log("userId (type:", typeof userId, "):", userId);
-    console.log("poiId (type:", typeof poiId, "):", poiId);
     console.log("userRscore:", userRscore);
     console.log("rating:", rating);
     console.log("description:", description);
