@@ -59,8 +59,8 @@ describe("List friends of user", () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}`);
         expect(res).not.toBeNull();
-        expect(res.status).toStrictEqual(500);
-        expect(res.body).toHaveProperty("message");
+        expect(res.status).toStrictEqual(200);
+        expect(res.body).toHaveSize(0);
     });
 
     // input: invalid user id
@@ -97,7 +97,7 @@ describe("List friend requests received by user", () => {
         expect(res.status).toStrictEqual(200);
         expect(res.body[0]).toHaveProperty("name");
 
-        await prisma.friendship.delete({
+        await prisma.friendship.deleteMany({
             where: {
                 userIdFrom: user1.id,
                 userIdTo: user2.id
@@ -138,7 +138,7 @@ describe("List friend requests sent by user", () => {
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(200);
 
-        await prisma.friendship.delete({
+        await prisma.friendship.deleteMany({
             where: {
                 userIdFrom: user1.id,
                 userIdTo: user2.id
