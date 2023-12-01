@@ -225,6 +225,9 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
         TextView poiOwnerText = binding.poiOwnerText;
 
+        TextView poiIdText = binding.poiIdText;
+        poiIdText.setText(String.valueOf(poi.getId()));
+
         findMyService.getUser(poi.getOwnderId()).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
