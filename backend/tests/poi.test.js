@@ -61,6 +61,7 @@ describe('POI API tests', () => {
             ownerId: testUserId,
             rating: 5,
             reports: 0,
+            status: 'verified',
         };
 
         const response = await request(app)
