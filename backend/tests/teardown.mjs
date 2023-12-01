@@ -11,13 +11,13 @@ const tableNames = [
     "poi"
 ]
 
-const teardown = async (globalConfig, projectConfig) => {
-    const prisma = new PrismaClient();
-    const deletion = tableNames.map((table) => prisma.$queryRawUnsafe(`Truncate "${table}" restart identity cascade;`));
-    await Promise.all(deletion);
+// const teardown = async (globalConfig, projectConfig) => {
+//     const prisma = new PrismaClient();
+//     const deletion = tableNames.map((table) => prisma.$queryRawUnsafe(`Truncate "${table}" restart identity cascade;`));
+//     await Promise.all(deletion);
 
-    httpServer.close();
-    httpsServer.close();
-}
+//     httpServer.close();
+//     httpsServer.close();
+// }
 
 export default teardown;
