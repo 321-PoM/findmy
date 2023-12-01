@@ -71,6 +71,7 @@ describe('POI API tests', () => {
         expect(response.statusCode).toBe(200); // Check if the status code is 200
         expect(response.body).toHaveProperty('id'); // Verify the POI object has an ID
         createdPoiId = response.body.id; // Store the ID of the created POI for further tests
+        console.log("Created POI ID: " + createdPoiId);
     });
 
     // Test for GET /poi/:id endpoint
@@ -80,7 +81,7 @@ describe('POI API tests', () => {
     // expected output: POI object with the same ID
     test('Get POI', async () => {
         const response = await request(app)
-            .get(`/poi/${createdPoiId}`);
+            .get(`/poi/${createdPoiId}/${testUserId}`);
 
         expect(response.statusCode).toBe(200); // Check if the status code is 200
         expect(response.body).toHaveProperty('id', createdPoiId); // Verify the retrieved POI has the correct ID

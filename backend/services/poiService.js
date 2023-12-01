@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { isPointWithinRadius } from "geolib";
-import { getUser, updateUserBux, updateUser } from "./userService.js";
-import { deleteListing } from "./marketListingService.js";
+import { getUser, /* updateUserBux, updateUser */} from "./userService.js";
+// import { deleteListing } from "./marketListingService.js";
 import { listFriends } from "./friendService.js";
 
 const prisma = new PrismaClient();
