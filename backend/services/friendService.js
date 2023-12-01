@@ -15,6 +15,7 @@ export const listRequestsReceived = async (userId) => {
 };
 
 const filterFriendships = async (direction, userId) => {
+    console.log(Number(userId));
     const friendshipsFromMe = await prisma.friendship.findMany({ where: { userIdFrom: Number(userId) }});
     const userIdOfRecipients = new Set(friendshipsFromMe.map((friendship) => friendship.userIdTo));
 
