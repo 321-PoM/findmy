@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createUser = async (userData) => {
-    const cooldown = new Date().setFullYear(2000);
-    userData["mapBuxUpdate"] = cooldown;
+    // Use toISOString() directly for compatibility with Prisma DateTime
+    userData["mapBuxUpdate"] = new Date().toISOString();
     console.log(userData);
     return await prisma.User.create({
-        data: userData
+        data: userData,
     });
 };
 

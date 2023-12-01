@@ -41,7 +41,7 @@ describe('User API tests', () => {
 
         expect(response.statusCode).toBe(201);
         expect(response.body).toHaveProperty('id');
-        createdUserId = response.body.id;
+        createdUserId = parseInt(response.body.id, 10);
     });
 
     // Test for GET /user/:id endpoint
@@ -67,7 +67,7 @@ describe('User API tests', () => {
         const response = await request(app)
             .get(`/user/${invalidUserID}`);
 
-        expect(response).toBeNull();
+        expect(response.text).toBe("null");
     });
 
     // TODO: Add more tests here.
