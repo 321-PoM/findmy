@@ -39,9 +39,10 @@ describe('User API tests', () => {
             .post('/user')
             .send(newUser);
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(201);
         expect(response.body).toHaveProperty('id');
         // Store created user ID for further tests
+        console.log(response.body);
         createdUserId = response.body.id;
     });
 
