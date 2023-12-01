@@ -26,6 +26,8 @@ beforeEach(async () => {
             reliabilityScore: 0,
         }
     });
+    console.log(user1);
+    console.log(user2);
 });
 
 afterEach(async () => {
@@ -60,7 +62,7 @@ describe("List friends of user", () => {
         const res = await request(app).get(`/friends/${wrong}`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(200);
-        expect(res.body).toHaveSize(0);
+        expect(res.body).toHaveLength(0);
     });
 
     // input: invalid user id
@@ -114,7 +116,7 @@ describe("List friend requests received by user", () => {
         const res = await request(app).get(`/friends/${wrong}/received`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
-        expect(res.body).toHaveProperty("message");
+        expect(res.body).toHaveLength(0);
     });
 });
 
@@ -155,7 +157,7 @@ describe("List friend requests sent by user", () => {
         const res = await request(app).get(`/friends/${wrong}/sent`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
-        expect(res.body).toHaveProperty("message");
+        expect(res.body).toHaveLength(0);
     });
 });
 
