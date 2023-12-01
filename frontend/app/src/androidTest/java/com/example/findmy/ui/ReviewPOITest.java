@@ -7,6 +7,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.findmy.ui.FindMyTest.createBathroomPOI;
+import static com.example.findmy.ui.FindMyTest.createTestUser;
+import static com.example.findmy.ui.FindMyTest.deleteMyPOI;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -26,13 +29,19 @@ import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 
 import com.example.findmy.R;
+import com.example.findmy.model.POI;
+import com.example.findmy.model.User;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -47,6 +56,20 @@ public class ReviewPOITest {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION",
                     "android.permission.ACCESS_COARSE_LOCATION");
+    private User testUser;
+    private POI testPOI;
+
+    @Before
+    public void before() throws IOException {
+        testUser = createTestUser("asdf@asdf.com");
+
+        testPOI = createBathroomPOI(testUser);
+    }
+
+    @After
+    public void after() throws IOException {
+        deleteMyPOI(testPOI.getId());
+    }
 
     @Test
     public void reviewPOITest() throws UiObjectNotFoundException {
@@ -62,7 +85,7 @@ public class ReviewPOITest {
         fx.perform(click());
 
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        UiObject poiMarker = device.findObject(new UiSelector().descriptionContains("mcleod"));
+        UiObject poiMarker = device.findObject(new UiSelector().descriptionContains("test"));
 
         poiMarker.click();
 
