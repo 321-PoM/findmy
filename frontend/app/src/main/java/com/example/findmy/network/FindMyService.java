@@ -1,6 +1,7 @@
 package com.example.findmy.network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.findmy.model.Friendship;
@@ -13,7 +14,6 @@ import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.ReviewRequest;
-import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 
@@ -91,52 +91,52 @@ public class FindMyService implements Serializable {
 
         return apiService.createPOI(lat, lon, cat, stat, desc, ownerId, rating, image);
     }
-    public Call<POI> updatePOI(int id, int userId, POIRequest poi) { return apiService.updatePOI(id, userId, poi); }
+//    public Call<POI> updatePOI(int id, int userId, POIRequest poi) { return apiService.updatePOI(id, userId, poi); }
     public Call<Void> reportPOI(int id) { return apiService.reportPOI(id); }
-    public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); }
+//    public Call<POI> transferPOI(int transactionId) { return apiService.transferPOI(transactionId); }
     public Call<POI> deletePOI(int id) { return apiService.deletePOI(id); }
     public Call<Void> buyPoi(int poiId, int buyerId) { return apiService.buyPoi(poiId, buyerId); }
 
     // Review
-    public Call<Review[]> listReviews(String searchBy, int id) { return apiService.listReviews(searchBy, id); }
-    public Call<Review> getReview(int id) { return apiService.getReview(id); }
+//    public Call<Review[]> listReviews(String searchBy, int id) { return apiService.listReviews(searchBy, id); }
+//    public Call<Review> getReview(int id) { return apiService.getReview(id); }
     public Call<Review> createReview(ReviewRequest review) { return apiService.createReview(review); }
-    public Call<Review> updateReview(int id, ReviewRequest review) { return apiService.updateReview(id, review); }
-    public Call<Review> updateRating(int id, int rating) { return apiService.updateRating(id, rating); }
-    public Call<Review> deleteReview(int id) { return apiService.deleteReview(id); }
+//    public Call<Review> updateReview(int id, ReviewRequest review) { return apiService.updateReview(id, review); }
+//    public Call<Review> updateRating(int id, int rating) { return apiService.updateRating(id, rating); }
+//    public Call<Review> deleteReview(int id) { return apiService.deleteReview(id); }
 
     // MarketListings
     public Call<MarketListing[]> getListings() { return apiService.getListings(); }
-    public Call<MarketListing> getListing(int id) { return apiService.getListing(id); }
-    public Call<MarketListing[]> getUserListings(int userId) { return apiService.getUserListings(userId); }
+//    public Call<MarketListing> getListing(int id) { return apiService.getListing(id); }
+//    public Call<MarketListing[]> getUserListings(int userId) { return apiService.getUserListings(userId); }
     public Call<MarketListing> createListing(MarketListingRequest marketListingRequest) { return apiService.createListing(marketListingRequest); }
-    public Call<MarketListing> updateListing(MarketListing listing) { return apiService.updateListing(listing.getId(), listing); }
+//    public Call<MarketListing> updateListing(MarketListing listing) { return apiService.updateListing(listing.getId(), listing); }
     public Call<MarketListing> deleteListing(int id) { return apiService.deleteListing(id); }
 
     public Call<MarketListing[]> getMarketListingsByPoi(int id) { return apiService.getMarketListingsByPoi(id); }
 
     // Transactions
-    public Call<Transaction> getTransaction(int id) { return apiService.getTransaction(id); }
-    public Call<Transaction[]> getUserTransactions(int userId) { return apiService.getUserTransactions(userId); }
-    public Call<Transaction[]> getListingTransactions(int listingId) { return apiService.getListingTransactions(listingId); }
-    public Call<Transaction> createTransaction(int buyerId, int listingId) { return apiService.createTransaction(buyerId, listingId); }
-    public Call<Transaction> updateTransaction(Transaction transaction) { return apiService.updateTransaction(transaction.getTransactionId(), transaction); }
-    public Call<Transaction> deleteTransaction(int id) { return apiService.deleteTransaction(id); }
+//    public Call<Transaction> getTransaction(int id) { return apiService.getTransaction(id); }
+//    public Call<Transaction[]> getUserTransactions(int userId) { return apiService.getUserTransactions(userId); }
+//    public Call<Transaction[]> getListingTransactions(int listingId) { return apiService.getListingTransactions(listingId); }
+//    public Call<Transaction> createTransaction(int buyerId, int listingId) { return apiService.createTransaction(buyerId, listingId); }
+//    public Call<Transaction> updateTransaction(Transaction transaction) { return apiService.updateTransaction(transaction.getTransactionId(), transaction); }
+//    public Call<Transaction> deleteTransaction(int id) { return apiService.deleteTransaction(id); }
 
     // Friendship
 
     public Call<User[]> getFriendships(int userId) {
         return apiService.getFriendships(userId);
     }
-    public Call<User[]> getReceivedFriendshipRequests(int userId) {
-        return apiService.getReceivedFriendshipRequests(userId);
-    }
+//    public Call<User[]> getReceivedFriendshipRequests(int userId) {
+//        return apiService.getReceivedFriendshipRequests(userId);
+//    }
     public Call<User[]> getSentFriendshipRequests(int userId) {
         return apiService.getSentFriendshipRequests(userId);
     }
-    public Call<Friendship> getFriendship(int friendshipId) {
-        return apiService.getFriendship(friendshipId);
-    }
+//    public Call<Friendship> getFriendship(int friendshipId) {
+//        return apiService.getFriendship(friendshipId);
+//    }
     public Call<Friendship> createFriendship(FriendshipRequest friendshipRequest) {
         return apiService.createFriendship(friendshipRequest);
     }
@@ -157,7 +157,8 @@ public class FindMyService implements Serializable {
             errObj = new JSONObject(errBody.string());
             msg = errObj.getString("message");
         } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
+            Log.d("TEST", e.toString());
+            return e.toString();
         }
         return msg;
     }

@@ -65,7 +65,7 @@ public class AddPOIBottomSheet extends BottomSheetDialogFragment implements  Ada
 
             if (myPOIImage == null) {
                 Toast.makeText(
-                        requireContext(), "Error! Please upload an image", Toast.LENGTH_LONG
+                        requireContext(), R.string.err_missing_img, Toast.LENGTH_LONG
                 ).show();
                 return;
             }
