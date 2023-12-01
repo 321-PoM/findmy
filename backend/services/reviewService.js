@@ -35,8 +35,10 @@ export const createReview = async (poiId, userId, rating, description) => {
     console.log("Given userId (type:", typeof userId, "):", userId);
     console.log("userId (type:", typeof uid, "):", userId);
     console.log("poiId (type:", typeof poiId, "):", poiId);
-    await doesReviewAlreadyExist(pid, userId);
+
+    await doesReviewAlreadyExist(pid, uid);
     await adjustPastReviewerRScores(pid, rating);
+
     let author = await prisma.User.findUnique({
             where: {
                 id: uid,
@@ -55,12 +57,8 @@ export const createReview = async (poiId, userId, rating, description) => {
 
     const newReview = await prisma.Review.create({
         data: {
-            user: { 
-                connect: { id: uid }
-            },
-            poi: { 
-                connect: { id: pid }
-            },
+            userId: uid,
+            poiId: pid,
             reliabilityScore: userRscore,
             rating: Number(rating),
             description: description

@@ -79,8 +79,6 @@ model Review {
   reviewId         Int      @id @default(autoincrement())
   userId           Int
   poiId            Int
-  reviewer         User     @relation(fields: [userId], references: [id])
-  poi              poi      @relation(fields: [poiId], references: [id])
   rating           Int
   description      String   @db.VarChar(255)
   reliabilityScore Int
