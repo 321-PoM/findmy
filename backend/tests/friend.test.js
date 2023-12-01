@@ -357,29 +357,48 @@ describe("create friendship", () => {
 //     });
 // });
 
-// // interface DELETE host/friend/:id
-// describe("delete friend", () => {
+// interface DELETE host/friend/:id
+describe("delete friend", () => {
 
-//     // input: valid id to delete
-//     // expected status code: 200
-//     // expected behaviour: successful delete from database
-//     // expected output: success
-//     test("valid id", async () => {
-//         const id = 20;
-//         const res = await request(app).delete(`/friend/${id}`);
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(200);
-//     });
+    // input: valid id to delete
+    // expected status code: 200
+    // expected behaviour: successful delete from database
+    // expected output: success
+    test("valid id", async () => {
+        const fs = await prisma.friendship.create({
+            data: {
+                userIdFrom: user1.id,
+                userIdTo: user2.id,
+                status: "accepted"
+            }
+        });
+        
+        const res = await request(app).delete(`/friend/${fs.friendshipId}`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(200);
+    });
 
-//     // input: invalid id to delete
-//     // expected status code: 500
-//     // expected behaviour: can't delete what doesn't exist
-//     // expected output: error message
-//     test("invalid id", async () => {
-//         const wrong = -1;
-//         const res = await request(app).delete(`/friend/${wrong}`);
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(500);
-//         expect(res.body).toHaveProperty("message");
-//     });
-// });
+    // input: invalid id to delete
+    // expected status code: 500
+    // expected behaviour: can't delete what doesn't exist
+    // expected output: error message
+    test("valid id, not real user", async () => {
+        const wrong = -1;
+        const res = await request(app).delete(`/friend/${wrong}`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(500);
+        expect(res.body).toHaveProperty("message");
+    });
+
+    // input: invalid id to delete
+    // expected status code: 500
+    // expected behaviour: can't delete what doesn't exist
+    // expected output: error message
+    test("valid id, not real user", async () => {
+        const wrong = "deadbeef";
+        const res = await request(app).delete(`/friend/${wrong}`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(500);
+        expect(res.body).toHaveProperty("message");
+    });
+});

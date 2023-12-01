@@ -104,6 +104,7 @@ export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) =
 }
 
 export const deleteFriendship = async (friendshipId) => {
+    if(isNaN(friendshipId)) throw new Error("Error: the friendshipId entered is not a number");
     const del = await prisma.friendship.delete({
         where: { friendshipId: Number(friendshipId) },
         select: {
@@ -120,6 +121,6 @@ export const deleteFriendship = async (friendshipId) => {
     });
     if(otherDir == null) return del;
     return await prisma.friendship.delete({
-        where: { friendshipId: otherDir.friendshipId }
+        where: { friendshipId: Number(otherDir.friendshipId) }
     });
 };
