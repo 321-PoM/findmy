@@ -74,8 +74,8 @@ describe('POI API tests', () => {
         console.log("Created POI ID: " + createdPoiId);
     });
 
-    // Test for GET /poi/:id endpoint
-    // input: valid POI ID
+    // Test for GET /poi/:poiId/:userId endpoint
+    // input: valid POI ID and user ID
     // expected status code: 200
     // expected behavior: Retrieves a specific POI based on ID
     // expected output: POI object with the same ID
@@ -87,4 +87,15 @@ describe('POI API tests', () => {
         expect(response.body).toHaveProperty('id', createdPoiId); // Verify the retrieved POI has the correct ID
     });
 
+    // Test for GET /pois/:userId/ endpoint
+    // input: valid POI ID and user ID
+    // expected status code: 200
+    // expected behavior: Retrieves a specific POI based on user ID
+    // expected output: More than one POI object
+    test('Get POI', async () => {
+        const response = await request(app)
+            .get(`/poi/${testUserId}`);
+
+        expect(response.statusCode).toBe(200); // Check if the status code is 200
+    });
 });
