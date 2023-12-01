@@ -3,9 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createUser = async (userData) => {
+    const cooldown = new Date().setFullYear(2000);
+    userData["mapBuxUpdate"] = cooldown;
     console.log(userData);
     return await prisma.User.create({
-        data: userData,
+        data: userData
     });
 };
 
@@ -64,6 +66,7 @@ export const updateUserBux = async (userId, polarity, amount) => {
         where: { id: Number(userId) },
         select: { mapBuxUpdate: true }
     });
+    console.log(lastUpdate);
     if((Date.now() - new Date(lastUpdate.mapBuxUpdate).getTime()) < timeCapInMinutes * SECONDS * MILLISECONDS) {
         throw new Error(`Error: You may only claim MapBux every ${timeCapInMinutes} minutes`);
     }
