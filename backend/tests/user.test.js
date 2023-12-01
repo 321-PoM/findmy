@@ -67,6 +67,8 @@ describe('User API tests', () => {
         const response = await request(app)
             .get(`/user/${invalidUserID}`);
 
+        console.log("Response body of get user with invalid user ID\n")
+        console.log(response.body);
         expect(response.statusCode).toBe(500);
     });
 
