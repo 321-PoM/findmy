@@ -94,7 +94,7 @@ describe('POI API tests', () => {
     // expected output: More than one POI object
     test('Get POI', async () => {
         const response = await request(app)
-            .get(`/poi/${testUserId}`);
+            .get(`/pois/${testUserId}`);
 
         expect(response.statusCode).toBe(200); // Check if the status code is 200
     });
