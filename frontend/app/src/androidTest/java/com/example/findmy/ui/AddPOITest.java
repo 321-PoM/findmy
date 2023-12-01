@@ -3,6 +3,9 @@ package com.example.findmy.ui;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -12,6 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -27,9 +31,15 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiSelector;
 
 import com.example.findmy.R;
+import com.example.findmy.model.User;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -39,6 +49,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -57,19 +73,24 @@ public class AddPOITest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule;
+    private User testUser;
+    private int poiId;
 
     @Before
-    public void before() {
+    public void before() throws IOException {
         Intents.init();
+
+        testUser = FindMyTest.createTestUser();
     }
 
     @After
-    public void after() {
+    public void after() throws IOException {
         Intents.release();
+        FindMyTest.deleteMyPOI(poiId);
     }
 
     @Test
-    public void addPOITest() {
+    public void addPOITest() throws UiObjectNotFoundException {
         // Setup test bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap placeholder = Bitmap.createBitmap(1, 1, conf);
@@ -104,30 +125,17 @@ public class AddPOITest {
                         isDisplayed()));
         floatingActionButton.perform(click());
 
-//        ViewInteraction appCompatSpinner = onView(
-//                allOf(withId(R.id.spinner),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withId(com.google.android.material.R.id.design_bottom_sheet),
-//                                        0),
-//                                2),
-//                        isDisplayed()));
-//        appCompatSpinner.perform(click());
-//
-//        DataInteraction materialTextView = onData(anything())
-//                .inAdapterView(childAtPosition(
-//                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-//                        0))
-//                .atPosition(3);
-//        materialTextView.perform(click());
+        ViewInteraction nameText = onView(
+                allOf(
+                        withId(R.id.editTextText),
+                        isDisplayed()
+                )
+        );
+
+        nameText.perform(replaceText(FindMyTest.testPOIDescription), closeSoftKeyboard(), pressImeActionButton());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.addImageButton), withText("Change Image"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.design_bottom_sheet),
-                                        0),
-                                6),
                         isDisplayed()));
         materialButton.perform(click());
 
@@ -135,6 +143,19 @@ public class AddPOITest {
                 allOf(withId(R.id.submit_button),
                         isDisplayed()));
         materialButton2.perform(click());
+
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        UiObject poiMarker = device.findObject(new UiSelector().descriptionContains(FindMyTest.testPOIDescription));
+
+        poiMarker.click();
+
+        String idText = FindMyTest.getText(allOf(
+                        withId(R.id.poi_id_text),
+                        isDisplayed()
+                )
+        );
+
+        poiId = Integer.parseInt(idText);
     }
 
     private static Matcher<View> childAtPosition(
@@ -154,5 +175,30 @@ public class AddPOITest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    public void resetTestUser() throws IOException {
+        URL url = new URL("https://findastar.westus2.cloudapp.azure.com/user/email/zhao1939@gmail.com/all");
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("DELETE");
+
+        int responseCode = connection.getResponseCode();
+
+        assertEquals(204, responseCode);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+
+        reader.close();
+        connection.disconnect();
+
+        System.out.println("Response: " + response.toString());
     }
 }
