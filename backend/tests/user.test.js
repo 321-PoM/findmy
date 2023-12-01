@@ -62,7 +62,7 @@ describe('User API tests', () => {
     // expected status code: 500
     // expected behavior: Fails to retrieves a specific user based on ID
     // expected output: 500 response
-    test('Get user', async () => {
+    test('Get user with invalid user ID', async () => {
         const invalidUserID = -1;
         const response = await request(app)
             .get(`/user/${invalidUserID}`);
