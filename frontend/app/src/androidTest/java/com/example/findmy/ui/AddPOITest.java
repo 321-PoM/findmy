@@ -6,6 +6,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -115,6 +116,7 @@ public class AddPOITest {
                         isDisplayed()));
         fx.perform(click());
 
+        // Check and click Add Button
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.newPOIButton), withContentDescription("Add POI"),
                         childAtPosition(
@@ -123,8 +125,19 @@ public class AddPOITest {
                                         0),
                                 1),
                         isDisplayed()));
+        floatingActionButton.check(matches(isDisplayed()));
         floatingActionButton.perform(click());
 
+        ViewInteraction bottomSheet = onView(
+                allOf(
+                        withId(R.id.add_poi_bottom_sheet),
+                        isDisplayed()
+                )
+        );
+
+//        bottomSheet.check(matches(isDisplayed()));
+
+        // Check POI name editText exists and replace text
         ViewInteraction nameText = onView(
                 allOf(
                         withId(R.id.editTextText),
@@ -132,18 +145,24 @@ public class AddPOITest {
                 )
         );
 
+        nameText.check(matches(isDisplayed()));
         nameText.perform(replaceText(FindMyTest.testPOIDescription), closeSoftKeyboard(), pressImeActionButton());
 
+        // Check change photo button exists
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.addImageButton), withText("Change Image"),
                         isDisplayed()));
         materialButton.perform(click());
+        materialButton.perform(click());
 
+        // check submit button exists and click
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.submit_button),
                         isDisplayed()));
+        materialButton2.check(matches(isDisplayed()));
         materialButton2.perform(click());
 
+        // Check new POI marker exists
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         UiObject poiMarker = device.findObject(new UiSelector().descriptionContains(FindMyTest.testPOIDescription));
 
