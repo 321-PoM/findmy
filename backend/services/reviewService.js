@@ -28,7 +28,7 @@ export const getReview = async (id) => {
 }
 
 export const createReview = async (poiId, userId, rating, description) => {
-    const uid = new Number(userId);
+    const uid = Number(userId);
 
     /* Logger */
     console.log("userId (type:", typeof uid, "):", userId);
