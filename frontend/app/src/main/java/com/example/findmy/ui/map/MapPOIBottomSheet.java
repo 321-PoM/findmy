@@ -171,15 +171,6 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
                 detailsPoiImage.requestLayout();
 
-                // refreshes the view such that the size is updated to the image
-//                int visibility = popupView.getVisibility();
-//                popupView.setVisibility(View.GONE);
-//                popupView.setVisibility(visibility);
-
-                // TODO: Error handling such that this isn't always invisible when a error occurs
-//                TextView errorText = popupBinding.detailsPoiImageErrText;
-//                errorText.setVisibility(View.GONE);
-
                 int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                 int height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true;
