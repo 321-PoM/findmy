@@ -15,6 +15,7 @@ export const listRequestsReceived = async (userId) => {
 };
 
 const filterFriendships = async (direction, userId) => {
+    if(isNaN(userId)) throw new Error("Error: userId is not a number");
     const friendshipsFromMe = await prisma.friendship.findMany({ where: { userIdFrom: Number(userId) }});
     const userIdOfRecipients = new Set(friendshipsFromMe.map((friendship) => friendship.userIdTo));
 
@@ -32,12 +33,14 @@ const filterFriendships = async (direction, userId) => {
 }
 
 export const getFriendship = async (friendshipId) => {
+    if(isNaN(friendshipId)) throw new Error("Error: friendshipId is not a number");
     return await prisma.friendship.findUnique({
         where: { friendshipId: Number(friendshipId) }
     });
 };
 
 export const createFriendship = async (userIdFrom, userIdTo) => {
+    if(isNaN(userIdFrom) || isNaN(userIdTo)) throw new Error("Error: one or two invalid userId(s) - not a number");
     const from = await prisma.User.findUnique({
         where: { id: userIdFrom }
     });
@@ -62,45 +65,46 @@ export const createFriendship = async (userIdFrom, userIdTo) => {
     });
 };
 
-export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) => {
-    const request = await prisma.friendship.findFirst({
-        where: {
-            userIdFrom: userIdFrom,
-            userIdTo: userIdTo
-        }
-    });
-    if(request == null) throw new Error("Error: friend request does not exist for this combination of userIds");
+// export const handleFriendRequest = async (userIdFrom, userIdTo, acceptRequest) => {
+//     const request = await prisma.friendship.findFirst({
+//         where: {
+//             userIdFrom: userIdFrom,
+//             userIdTo: userIdTo
+//         }
+//     });
+//     if(request == null) throw new Error("Error: friend request does not exist for this combination of userIds");
     
-    const reply = await prisma.friendship.findFirst({
-        where: {
-            userIdFrom: userIdTo,
-            userIdTo: userIdFrom
-        }
-    });
-    if(reply != null) throw new Error("Error: both directions of this friendship already exists");
+//     const reply = await prisma.friendship.findFirst({
+//         where: {
+//             userIdFrom: userIdTo,
+//             userIdTo: userIdFrom
+//         }
+//     });
+//     if(reply != null) throw new Error("Error: both directions of this friendship already exists");
 
-    if(acceptRequest) {
-        // this creates the corresponding friendship in the opposite direction
-        return await prisma.friendship.create({
-            data: {
-                userIdFrom: userIdTo,
-                userIdTo: userIdFrom,
-                status: "accepted"
-            }
-        });
-    }
-    else {
-        // if not accept, delete the request
-        return await prisma.friendship.delete({
-            where: {
-                userIdFrom: userIdFrom,
-                userIdTo: userIdTo
-            }
-        });
-    }
-}
+//     if(acceptRequest) {
+//         // this creates the corresponding friendship in the opposite direction
+//         return await prisma.friendship.create({
+//             data: {
+//                 userIdFrom: userIdTo,
+//                 userIdTo: userIdFrom,
+//                 status: "accepted"
+//             }
+//         });
+//     }
+//     else {
+//         // if not accept, delete the request
+//         return await prisma.friendship.delete({
+//             where: {
+//                 userIdFrom: userIdFrom,
+//                 userIdTo: userIdTo
+//             }
+//         });
+//     }
+// }
 
 export const deleteFriendship = async (friendshipId) => {
+    if(isNaN(friendshipId)) throw new Error("Error: the friendshipId entered is not a number");
     const del = await prisma.friendship.delete({
         where: { friendshipId: Number(friendshipId) },
         select: {
@@ -117,6 +121,6 @@ export const deleteFriendship = async (friendshipId) => {
     });
     if(otherDir == null) return del;
     return await prisma.friendship.delete({
-        where: { friendshipId: otherDir.friendshipId }
+        where: { friendshipId: Number(otherDir.friendshipId) }
     });
 };
