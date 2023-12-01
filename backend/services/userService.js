@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createUser = async (userData) => {
-    console.log(userData);
+    const cooldown = Date.now() - 2 * 60 * 1000;
+    userData["mapBuxUpdate"] = cooldown;
     return await prisma.User.create({
         data: userData,
     });
