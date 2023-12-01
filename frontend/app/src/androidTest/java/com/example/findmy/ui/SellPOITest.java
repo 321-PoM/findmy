@@ -27,13 +27,19 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.findmy.R;
+import com.example.findmy.model.POI;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
+
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -48,6 +54,19 @@ public class SellPOITest {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION",
                     "android.permission.ACCESS_COARSE_LOCATION");
+
+    private POI testMyPOI;
+    private final String testPrice = "100";
+
+    @Before
+    public void before() throws IOException {
+        testMyPOI = FindMyTest.createMyPOI();
+    }
+
+    @After
+    public void after() throws IOException {
+        FindMyTest.deleteMyPOI(testMyPOI.getId());
+    }
 
     @Test
     public void sellPOITest() {
@@ -90,10 +109,10 @@ public class SellPOITest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("250"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText(testPrice), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.inputListingPrice), withText("250"),
+                allOf(withId(R.id.inputListingPrice), withText(testPrice),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.createListingLayout),
@@ -102,11 +121,6 @@ public class SellPOITest {
                         isDisplayed()));
         appCompatEditText2.perform(pressImeActionButton());
 
-        ViewInteraction linearLayout = onView(
-                allOf(withParent(allOf(withId(com.google.android.material.R.id.design_bottom_sheet),
-                                withParent(withId(com.google.android.material.R.id.coordinator)))),
-                        isDisplayed()));
-        linearLayout.check(matches(isDisplayed()));
 
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.list_button), withText("Submit"),
@@ -117,6 +131,86 @@ public class SellPOITest {
                                 3),
                         isDisplayed()));
         materialButton2.perform(click());
+
+        // goto marketplace
+        ViewInteraction bottomNavigationItemView2 = onView(
+                allOf(withId(R.id.navigation_marketplace), withContentDescription("Marketplace"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_view),
+                                        0),
+                                1),
+                        isDisplayed()));
+        bottomNavigationItemView2.perform(click());
+
+        // view marketplace listing
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.viewDetailsButton), withText("Details"),
+                        childAtPosition(
+                                allOf(withId(R.id.myPOIRow),
+                                        childAtPosition(
+                                                withId(R.id.listingsRecylcer),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
+        // Assert listing exists
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.poi_name), withText(FindMyTest.testPOIDescription),
+                        withParent(withParent(withId(com.google.android.material.R.id.design_bottom_sheet))),
+                        isDisplayed()));
+        textView.check(matches(withText(FindMyTest.testPOIDescription)));
+
+        // Assert price is correct
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.existingListingPriceText), withText(testPrice),
+                        withParent(withParent(withId(R.id.listingPriceLayout))),
+                        isDisplayed()));
+        textView2.check(matches(withText(testPrice)));
+
+        ViewInteraction view = onView(
+                allOf(withId(com.google.android.material.R.id.touch_outside),
+                        childAtPosition(
+                                allOf(withId(com.google.android.material.R.id.coordinator),
+                                        childAtPosition(
+                                                withId(com.google.android.material.R.id.container),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        view.perform(click());
+
+        // go back to profile
+        ViewInteraction bottomNavigationItemView3 = onView(
+                allOf(withId(R.id.navigation_profile), withContentDescription("Profile"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_view),
+                                        0),
+                                3),
+                        isDisplayed()));
+        bottomNavigationItemView3.perform(click());
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.viewDetailsButton), withText("Details"),
+                        childAtPosition(
+                                allOf(withId(R.id.myPOIRow),
+                                        childAtPosition(
+                                                withId(R.id.myPOIRecycler),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        materialButton5.perform(click());
+
+        ViewInteraction materialButton6 = onView(
+                allOf(withId(R.id.unlist_button), withText("Unlist"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.unlistLayout),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton6.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
