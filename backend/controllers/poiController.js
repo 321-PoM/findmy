@@ -28,6 +28,7 @@ export const getPoi = async (req, res) => {
 };
 
 export const createPoi = async (req, res) => {
+    console.log("");
     try {
         let imageUrl = null;
         if (req.file) {

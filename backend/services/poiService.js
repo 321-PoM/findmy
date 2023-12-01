@@ -165,7 +165,7 @@ const returnToOriginal = async (original, position) => {
         where: { id: original.buyer.id },
         data: { mapBux: original.buyer.mapBux }
     });
-    if(position == 2) {
+    if(position === 2) {
         await prisma.poi.update({
             where: { id: original.poi.id },
             data: { ownerId: original.poi.ownerId }
@@ -330,7 +330,7 @@ export const calcPoiRating = async (poiId) => {
     const allReviews = await prisma.review.findMany({
         where: { poiId: Number(poiId) }
     });
-    if(allReviews.length == 1){
+    if(allReviews.length === 1){
         const poi = await prisma.poi.findUnique({
             where: { id: Number(poiId) },
             select: { rating: true }
