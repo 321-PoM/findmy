@@ -33,6 +33,7 @@ const filterFriendships = async (direction, userId) => {
 }
 
 export const getFriendship = async (friendshipId) => {
+    if(isNaN(friendshipId)) throw new Error("Error: friendshipId is not a number");
     return await prisma.friendship.findUnique({
         where: { friendshipId: Number(friendshipId) }
     });
