@@ -25,37 +25,37 @@ export const getUser = async (userId) => {
     });
 };
 
-export const getUserByEmail = async (email, shouldCreate) => {
-    const user = await prisma.User.findFirst({
-        where: { 
-            email: email,
-            isDeleted: false,
-            isActive: true,
-        },
-    });
-    if (user) return user;
+// export const getUserByEmail = async (email, shouldCreate) => {
+//     const user = await prisma.User.findFirst({
+//         where: { 
+//             email: email,
+//             isDeleted: false,
+//             isActive: true,
+//         },
+//     });
+//     if (user) return user;
 
-    if (shouldCreate != "true") {
-        throw new Error("Could not find user with email: " + email);
-    }
+//     if (shouldCreate != "true") {
+//         throw new Error("Could not find user with email: " + email);
+//     }
     
-    return await prisma.User.create({
-        data: { 
-            name: email,
-            email: email,
-            avatar: 'none',
-            biography: 'none',
-            reliabilityScore: 100,
-        }
-    });
-};
+//     return await prisma.User.create({
+//         data: { 
+//             name: email,
+//             email: email,
+//             avatar: 'none',
+//             biography: 'none',
+//             reliabilityScore: 100,
+//         }
+//     });
+// };
 
-export const updateUser = async (userId, updateData) => {
-    return await prisma.User.update({
-        where: { id: Number(userId) },
-        data: updateData,
-    });
-};
+// export const updateUser = async (userId, updateData) => {
+//     return await prisma.User.update({
+//         where: { id: Number(userId) },
+//         data: updateData,
+//     });
+// };
 
 export const updateUserBux = async (userId, polarity, amount) => {
     const SECONDS = 60;
@@ -81,12 +81,12 @@ export const updateUserBux = async (userId, polarity, amount) => {
     })
 }
 
-export const deleteUser = async (userId) => {
-    return await prisma.User.update({
-        where: { id: Number(userId) },
-        data: { isDeleted: true },  // Soft-delete user.
-    });
-};
+// export const deleteUser = async (userId) => {
+//     return await prisma.User.update({
+//         where: { id: Number(userId) },
+//         data: { isDeleted: true },  // Soft-delete user.
+//     });
+// };
 
 // TODO: deal with this deletion 
 // export const deleteAllRefs = async (userId) => {
@@ -153,14 +153,14 @@ export const deleteUser = async (userId) => {
 //     await Promise.all(delUsers);
 // }
 
-export const listUsers = async () => {
-    return await prisma.User.findMany({
-        where: {
-            isDeleted: false,
-            isActive: true
-        }
-    });
-};
+// export const listUsers = async () => {
+//     return await prisma.User.findMany({
+//         where: {
+//             isDeleted: false,
+//             isActive: true
+//         }
+//     });
+// };
 
 // export const getUserReliabilityScore = async (userId) => {
 //     // Query for Pois reviewed by the user
