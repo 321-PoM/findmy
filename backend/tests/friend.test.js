@@ -54,7 +54,7 @@ describe("List friends of user", () => {
     // input: valid user id, but not of a real user
     // expected status code: 500
     // expected behaviour: user doesn't exist, cannot find anything
-    // expected output: return error message
+    // expected output: empty
     test("user does not exist", async () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}`);
@@ -108,7 +108,7 @@ describe("List friend requests received by user", () => {
     // input: valid user id, but not of a real user
     // expected status code: 200
     // expected behaviour: query friendship db, cannot find anything 
-    // expected output: error message
+    // expected output: empty
     test("valid id, not real user", async () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}/received`);
@@ -149,7 +149,7 @@ describe("List friend requests sent by user", () => {
     // input: valid user id, but not of a real user
     // expected status code: 200
     // expected behaviour: query friendship db, cannot find anything 
-    // expected output: error message
+    // expected output: empty
     test("valid id, not real user", async () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}/sent`);
@@ -161,18 +161,40 @@ describe("List friend requests sent by user", () => {
 
 // interface GET host/friend/:friendshipId
 describe("get a specific friendship", () => {
-
     // input: valid friendship id
     // expected status code: 200
     // expected behaviour: query database to find corresponding friendship entry
     // expected output: one friendship object
     test("valid id", async () => {
-        const friendshipId = 10;
-        const res = await request(app).get(`/friend/${friendshipId}`);
+        const fs = await prisma.friendship.create({
+            data: {
+                userIdFrom: user1.id,
+                userIdTo: user2.id,
+                status: "accepted"
+            }
+        });
+        
+        const res = await request(app).get(`/friend/${fs.id}`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(200);
         expect(res.body).toHaveProperty("userIdFrom");
         expect(res.body).toHaveProperty("userIdTo");
+
+        await prisma.friendship.delete({
+            where: { id: fs.id }
+        });
+    });
+
+    // input: valid friendship id, but not of a real friendship
+    // expected status code: 200
+    // expected behaviour: query friendship db, cannot find anything 
+    // expected output: empty
+    test("valid id, not real friendship", async () => {
+        const wrong = -1;
+        const res = await request(app).get(`/friends/${wrong}/sent`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(200);
+        expect(res.body).toHaveLength(0);
     });
 
     // input: invalid friendship id
@@ -180,7 +202,7 @@ describe("get a specific friendship", () => {
     // expected behaviour: cannot find a friendship with such id
     // expected output: error message
     test("invalid id", async () => {
-        const wrong = -1;
+        const wrong = "deadbeef";
         const res = await request(app).get(`/friend/${wrong}`);
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
@@ -188,48 +210,81 @@ describe("get a specific friendship", () => {
     });
 });
 
-// // interface POST host/friend
-// describe("create friendship", () => {
+// interface POST host/friend
+describe("create friendship", () => {
 
-//     // input: two valid userids
-//     // expected status code: 200
-//     // expected behaviour: create new friendship object with user from and user to
-//     // expected output: return friendshipId
-//     test("valid from + valid to", async () => {
-//         const from = 89;
-//         const to = 90;
-//         const res = await request(app).post("/friend").send({userIdFrom: from, userIdTo: to});
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(200);
-//     });
+    // input: two valid userids
+    // expected status code: 200
+    // expected behaviour: create new friendship object with user from and user to
+    // expected output: return friendshipId
+    test("valid from + valid to", async () => {
+        const fs = await prisma.friendship.create({
+            data: {
+                userIdFrom: user1.id,
+                userIdTo: user2.id,
+                status: "accepted"
+            }
+        });
 
-//     // input: two valid userids
-//     // expected status code: 500
-//     // expected behaviour: find existing friendship for the two userIds, do not create duplicate
-//     // expected output: error message
-//     test("make duplicate friendship", async () => {
-//         const from = 1;
-//         const to = 2;
-//         await request(app).post("/friend").send({userIdFrom: from, userIdTo: to});
-//         const res = await request(app).post("/friend").send({userIdFrom: from, userIdTo: to});
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(500);
-//         expect(res.body).toHaveProperty("message");
-//     });
+        const res = await request(app).post("/friend").send({userIdFrom: fs.userIdTo, userIdTo: fs.userIdFrom});
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(200);
+        expect(res.body.isDeleted).toBeFalsy();
 
-//     // input: two invalid userids
-//     // expected status code: 500
-//     // expected behaviour: do not create friendship object since ids are invalid
-//     // expected output: error message
-//     test("invalid userIds", async () => {
-//         const badfrom = 0;
-//         const badto = -1;
-//         const res = (await request(app).post("/friend")).send({userIdFrom: badfrom, userIdTo: badto});
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(500);
-//         expect(res.body).toHaveProperty("message");
-//     });
-// });
+        await prisma.friendship.delete({
+            where: { id: res.body.id }
+        });
+        await prisma.friendship.delete({
+            where: { id: fs.id }
+        });
+    });
+
+    // input: two valid userids
+    // expected status code: 500
+    // expected behaviour: find existing friendship for the two userIds, do not create duplicate
+    // expected output: error message
+    test("make duplicate friendship", async () => {
+        const fs = await prisma.friendship.create({
+            data: {
+                userIdFrom: user1.id,
+                userIdTo: user2.id,
+                status: "accepted"
+            }
+        });
+        
+        const res = await request(app).post("/friend").send({userIdFrom: fs.userIdFrom, userIdTo: fs.userIdTo});
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(500);
+        expect(res.body).toHaveProperty("message");
+
+        await prisma.friendship.delete({
+            where: { id: fs.id }
+        });
+    });
+
+    // input: two invalid userids
+    // expected status code: 500
+    // expected behaviour: do not create friendship object since ids are invalid
+    // expected output: error message
+    test("invalid userIds", async () => {
+        const fs = await prisma.friendship.create({
+            data: {
+                userIdFrom: user1.id,
+                userIdTo: user2.id,
+                status: "accepted"
+            }
+        });
+
+        const res = (await request(app).post("/friend")).send({userIdFrom: "deadbeef", userIdTo: -1});
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(500);
+        expect(res.body).toHaveProperty("message");
+
+        await prisma.friendship.delete({
+            where: { id: fs.id }
+        });
+    });
+});
 
 // // interface PUT host/friend/:friendshipId/:acceptRequest
 // describe("accept request", () => {

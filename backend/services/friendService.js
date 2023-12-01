@@ -40,6 +40,7 @@ export const getFriendship = async (friendshipId) => {
 };
 
 export const createFriendship = async (userIdFrom, userIdTo) => {
+    if(isNaN(userIdFrom) || isNaN(userIdTo)) throw new Error("Error: one or two invalid userId(s) - not a number");
     const from = await prisma.User.findUnique({
         where: { id: userIdFrom }
     });
