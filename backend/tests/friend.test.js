@@ -181,7 +181,7 @@ describe("get a specific friendship", () => {
         expect(res.body).toHaveProperty("userIdTo");
 
         await prisma.friendship.delete({
-            where: { id: fs.id }
+            where: { friendshipId: fs.friendshipId }
         });
     });
 
@@ -232,10 +232,10 @@ describe("create friendship", () => {
         expect(res.body.isDeleted).toBeFalsy();
 
         await prisma.friendship.delete({
-            where: { id: res.body.id }
+            where: { friendshipId: res.body.id }
         });
         await prisma.friendship.delete({
-            where: { id: fs.id }
+            where: { friendshipId: fs.friendshipId }
         });
     });
 
@@ -258,7 +258,7 @@ describe("create friendship", () => {
         expect(res.body).toHaveProperty("message");
 
         await prisma.friendship.delete({
-            where: { id: fs.id }
+            where: { friendshipId: fs.friendshipId }
         });
     });
 
@@ -275,13 +275,13 @@ describe("create friendship", () => {
             }
         });
 
-        const res = (await request(app).post("/friend")).send({userIdFrom: "deadbeef", userIdTo: -1});
+        const res = await request(app).post("/friend").send({userIdFrom: "deadbeef", userIdTo: -1});
         expect(res).not.toBeNull();
         expect(res.status).toStrictEqual(500);
         expect(res.body).toHaveProperty("message");
 
         await prisma.friendship.delete({
-            where: { id: fs.id }
+            where: { friendshipId: fs.friendshipId }
         });
     });
 });
