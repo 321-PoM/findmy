@@ -30,16 +30,16 @@ export const getReview = async (id) => {
 export const createReview = async (poiId, userId, rating, description) => {
     await doesReviewAlreadyExist(poiId, userId);
     await adjustPastReviewerRScores(poiId, rating);
-    let userRscore = await prisma.User.findUnique({
+    let author = await prisma.User.findUnique({
             where: {
                 id: Number(userId),
             },
             select: {
                 reliabilityScore: true,
             }
-        }).reliabilityScore;
+        });
     
-    if (userRscore == null) userRscore = 0;
+    const userRscore = author ? author.reliabilityScore : 0;
 
     const newReview = await prisma.Review.create({
         data: {

@@ -27,8 +27,8 @@ export const createReview = async (req, res) => {
     console.log("");
     try {
         const review = await reviewService.createReview(req.body.poiId, req.body.userId, req.body.rating, req.body.description);
-        const newRating = await calcPoiRating(req.body.poiId);
-        const updated = await updatePoi(req.body.poiId, {rating: newRating});
+        // const newRating = await calcPoiRating(req.body.poiId);
+        // const updated = await updatePoi(req.body.poiId, {rating: newRating});
         res.status(200).json(review);
     } catch (error) {
         controllerErrorHandler(error, req, res);
