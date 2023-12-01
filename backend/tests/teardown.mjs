@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import { httpServer, httpsServer } from "../server.js"
 
-const tableNames = [
-    "Friendship",
-    "Image",
-    "Review",
-    "Transaction",
-    "User",
-    "marketListing",
-    "poi"
-]
+// const tableNames = [
+//     "Friendship",
+//     "Image",
+//     "Review",
+//     "Transaction",
+//     "User",
+//     "marketListing",
+//     "poi"
+// ]
 
 const teardown = async (globalConfig, projectConfig) => {
     // const prisma = new PrismaClient();
