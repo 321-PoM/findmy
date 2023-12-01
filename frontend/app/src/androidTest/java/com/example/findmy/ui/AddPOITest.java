@@ -104,38 +104,7 @@ public class AddPOITest {
         // stub out camera
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result);
 
-
-        ViewInteraction fx = onView(
-                allOf(withText("Sign in"),
-                        childAtPosition(
-                                allOf(withId(R.id.sign_in_button),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        fx.perform(click());
-
-        // Check and click Add Button
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.newPOIButton), withContentDescription("Add POI"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.nav_host_fragment_activity_home),
-                                        0),
-                                1),
-                        isDisplayed()));
-        floatingActionButton.check(matches(isDisplayed()));
-        floatingActionButton.perform(click());
-
-        ViewInteraction bottomSheet = onView(
-                allOf(
-                        withId(R.id.add_poi_bottom_sheet),
-                        isDisplayed()
-                )
-        );
-
-//        bottomSheet.check(matches(isDisplayed()));
+        reachAddPOISheet();
 
         // Check POI name editText exists and replace text
         ViewInteraction nameText = onView(
@@ -175,6 +144,52 @@ public class AddPOITest {
         );
 
         poiId = Integer.parseInt(idText);
+    }
+
+    @Test
+    public void testNoImageFail() {
+        reachAddPOISheet();
+        // check submit button exists and click
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.submit_button),
+                        isDisplayed()));
+        materialButton2.check(matches(isDisplayed()));
+        materialButton2.perform(click());
+
+        // Test toast message is displayed
+        onView(withText(R.string.err_missing_img)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
+
+    private void reachAddPOISheet() {
+        ViewInteraction fx = onView(
+                allOf(withText("Sign in"),
+                        childAtPosition(
+                                allOf(withId(R.id.sign_in_button),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        fx.perform(click());
+
+        // Check and click Add Button
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.newPOIButton), withContentDescription("Add POI"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_host_fragment_activity_home),
+                                        0),
+                                1),
+                        isDisplayed()));
+        floatingActionButton.check(matches(isDisplayed()));
+        floatingActionButton.perform(click());
+
+        ViewInteraction bottomSheet = onView(
+                allOf(
+                        withId(R.id.add_poi_bottom_sheet),
+                        isDisplayed()
+                )
+        );
     }
 
     private static Matcher<View> childAtPosition(
