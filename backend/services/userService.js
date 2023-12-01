@@ -3,12 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const createUser = async (userData) => {
-    // ref: https://stackoverflow.com/questions/5129624/convert-js-date-time-to-mysql-datetime
-    const cooldown = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    userData["mapBuxUpdate"] = cooldown;
+    // Use toISOString() directly for compatibility with Prisma DateTime
+    userData["mapBuxUpdate"] = new Date().toISOString();
     console.log(userData);
     return await prisma.User.create({
-        data: userData
+        data: userData,
     });
 };
 

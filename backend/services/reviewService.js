@@ -87,11 +87,12 @@ const adjustPastReviewerRScores = async (poiId, rating) => {
         const timeBias = Math.exp(-2 * dTime);  // Should be exponential decay.
 
         const adjustment = (-1 * Math.abs(rating - review.rating)) + 2;
-        const incrementBy = Math.round(adjustment * timeBias); // Must be integer.
+        const incrementBy = Math.round(adjustment * timeBias) * 10; // Must be integer.
         const userPromise = prisma.User.update({
             where: { id: review.userId }, 
             data: { reliabilityScore: { increment: incrementBy }}
         });
+        // todo: max min check of user rscore and review rscore. (0~100)
         const reviewPromise = prisma.Review.update({
             where: { reviewId: Number(review.reviewId) },
             data: { reliabilityScore: { increment: incrementBy }}

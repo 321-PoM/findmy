@@ -67,7 +67,7 @@ describe('User API tests', () => {
         const response = await request(app)
             .get(`/user/${invalidUserID}`);
 
-        expect(response).toBeNull();
+        expect(response.text).toBeNull();
     });
 
     // TODO: Add more tests here.
