@@ -15,7 +15,7 @@ export const listRequestsReceived = async (userId) => {
 };
 
 const filterFriendships = async (direction, userId) => {
-    if(Number(userId).isNan()) throw new Error("Error: userId is not a number");
+    if(Number.isNan(userId)) throw new Error("Error: userId is not a number");
     const friendshipsFromMe = await prisma.friendship.findMany({ where: { userIdFrom: Number(userId) }});
     const userIdOfRecipients = new Set(friendshipsFromMe.map((friendship) => friendship.userIdTo));
 
