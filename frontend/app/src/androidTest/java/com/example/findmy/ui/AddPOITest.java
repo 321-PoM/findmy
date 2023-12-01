@@ -40,7 +40,6 @@ import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 
 import com.example.findmy.R;
-import com.example.findmy.model.User;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -74,14 +73,13 @@ public class AddPOITest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule;
-    private User testUser;
     private int poiId;
 
     @Before
     public void before() throws IOException {
         Intents.init();
 
-        testUser = FindMyTest.createTestUser(FindMyTest.testEmail);
+        FindMyTest.createTestUser(FindMyTest.testEmail);
     }
 
     @After
@@ -184,12 +182,12 @@ public class AddPOITest {
         floatingActionButton.check(matches(isDisplayed()));
         floatingActionButton.perform(click());
 
-        ViewInteraction bottomSheet = onView(
-                allOf(
-                        withId(R.id.add_poi_bottom_sheet),
-                        isDisplayed()
-                )
-        );
+//        ViewInteraction bottomSheet = onView(
+//                allOf(
+//                        withId(R.id.add_poi_bottom_sheet),
+//                        isDisplayed()
+//                )
+//        );
     }
 
     private static Matcher<View> childAtPosition(

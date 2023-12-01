@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -46,7 +47,8 @@ public class FindMyTest {
             poiImageFile = File.createTempFile("poi", ".jpeg");
             poiImageStream = new FileOutputStream(poiImageFile);
         } catch (IOException | SecurityException e) {
-            throw new RuntimeException(e);
+            Log.d("TEST", e.toString());
+            return null;
         }
 
 

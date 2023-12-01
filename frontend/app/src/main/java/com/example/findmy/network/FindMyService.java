@@ -1,6 +1,7 @@
 package com.example.findmy.network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.findmy.model.Friendship;
@@ -13,7 +14,6 @@ import com.example.findmy.model.POI;
 import com.example.findmy.model.POIRequest;
 import com.example.findmy.model.Review;
 import com.example.findmy.model.ReviewRequest;
-import com.example.findmy.model.Transaction;
 import com.example.findmy.model.User;
 import com.example.findmy.model.UserRequest;
 
@@ -157,7 +157,8 @@ public class FindMyService implements Serializable {
             errObj = new JSONObject(errBody.string());
             msg = errObj.getString("message");
         } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
+            Log.d("TEST", e.toString());
+            return e.toString();
         }
         return msg;
     }
