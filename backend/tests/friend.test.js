@@ -232,7 +232,7 @@ describe("create friendship", () => {
         expect(res.body.isDeleted).toBeFalsy();
 
         await prisma.friendship.delete({
-            where: { friendshipId: res.body.id }
+            where: { friendshipId: res.body.friendshipId }
         });
         await prisma.friendship.delete({
             where: { friendshipId: fs.friendshipId }
