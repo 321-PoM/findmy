@@ -26,8 +26,6 @@ beforeEach(async () => {
             reliabilityScore: 0,
         }
     });
-    console.log(user1);
-    console.log(user2);
 });
 
 afterEach(async () => {
