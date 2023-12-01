@@ -31,6 +31,7 @@ export const createReview = async (poiId, userId, rating, description) => {
     const uid = Number(userId);
 
     /* Logger */
+    console.log("Given userId (type:", typeof userId, "):", userId);
     console.log("userId (type:", typeof uid, "):", userId);
     console.log("poiId (type:", typeof poiId, "):", poiId);
     await doesReviewAlreadyExist(poiId, userId);
