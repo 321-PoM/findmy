@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export const createUser = async (userData) => {
     // Use toISOString() directly for compatibility with Prisma DateTime
     userData["mapBuxUpdate"] = new Date().toISOString();
-    console.log(userData);
+
     return await prisma.User.create({
         data: userData,
     });
