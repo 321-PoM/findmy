@@ -39,7 +39,7 @@ export const createReview = async (poiId, userId, rating, description) => {
             }
         });
     
-    const userRscore = author ? author.reliabilityScore : 0;
+    const userRscore = author ? Number(author.reliabilityScore) : 0;
 
     const newReview = await prisma.Review.create({
         data: {

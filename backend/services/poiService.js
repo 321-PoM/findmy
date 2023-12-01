@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 
 export const createPoi = async (poiData) => {
     if(poiData.category == "myPOI") checkIfMyPoiIsValid(poiData);
+
     const newPoi = await prisma.poi.create({
         data: {
             latitude: parseFloat(poiData.latitude),
@@ -20,13 +21,16 @@ export const createPoi = async (poiData) => {
             imageUrl: poiData.imageUrl,
         }
     });
+
     if(poiData.category == "myPOI") return newPoi;
+
     await prisma.Review.create({
         userId: poiData.ownerId,
         poiId: newPoi.id,
         rating: poiData.rating,
         description: poiData.description
     })
+
     return newPoi;
 };
 
