@@ -159,34 +159,34 @@ describe("List friend requests sent by user", () => {
     });
 });
 
-// // interface GET host/friend/:friendshipId
-// describe("get a specific friendship", () => {
+// interface GET host/friend/:friendshipId
+describe("get a specific friendship", () => {
 
-//     // input: valid friendship id
-//     // expected status code: 200
-//     // expected behaviour: query database to find corresponding friendship entry
-//     // expected output: one friendship object
-//     test("valid id", async () => {
-//         const friendshipId = 10;
-//         const res = await request(app).get(`/friend/${friendshipId}`);
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(200);
-//         expect(res.body).toHaveProperty("userIdFrom");
-//         expect(res.body).toHaveProperty("userIdTo");
-//     });
+    // input: valid friendship id
+    // expected status code: 200
+    // expected behaviour: query database to find corresponding friendship entry
+    // expected output: one friendship object
+    test("valid id", async () => {
+        const friendshipId = 10;
+        const res = await request(app).get(`/friend/${friendshipId}`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(200);
+        expect(res.body).toHaveProperty("userIdFrom");
+        expect(res.body).toHaveProperty("userIdTo");
+    });
 
-//     // input: invalid friendship id
-//     // expected status code: 500
-//     // expected behaviour: cannot find a friendship with such id
-//     // expected output: error message
-//     test("invalid id", async () => {
-//         const wrong = -1;
-//         const res = await request(app).get(`/friend/${wrong}`);
-//         expect(res).not.toBeNull();
-//         expect(res.status).toStrictEqual(500);
-//         expect(res.body).toHaveProperty("message");
-//     });
-// });
+    // input: invalid friendship id
+    // expected status code: 500
+    // expected behaviour: cannot find a friendship with such id
+    // expected output: error message
+    test("invalid id", async () => {
+        const wrong = -1;
+        const res = await request(app).get(`/friend/${wrong}`);
+        expect(res).not.toBeNull();
+        expect(res.status).toStrictEqual(500);
+        expect(res.body).toHaveProperty("message");
+    });
+});
 
 // // interface POST host/friend
 // describe("create friendship", () => {
