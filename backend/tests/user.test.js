@@ -61,15 +61,13 @@ describe('User API tests', () => {
     // input: invalid user ID
     // expected status code: 500
     // expected behavior: Fails to retrieves a specific user based on ID
-    // expected output: 500 response
+    // expected output: Null response
     test('Get user with invalid user ID', async () => {
         const invalidUserID = -1;
         const response = await request(app)
             .get(`/user/${invalidUserID}`);
 
-        console.log("Response body of get user with invalid user ID\n")
-        console.log(response.body);
-        expect(response.statusCode).toBe(500);
+        expect(response).toBeNull();
     });
 
     // TODO: Add more tests here.
