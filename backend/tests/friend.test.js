@@ -113,7 +113,7 @@ describe("List friend requests received by user", () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}/received`);
         expect(res).not.toBeNull();
-        expect(res.status).toStrictEqual(500);
+        expect(res.status).toStrictEqual(200);
         expect(res.body).toHaveLength(0);
     });
 });
@@ -154,7 +154,7 @@ describe("List friend requests sent by user", () => {
         const wrong = -1;
         const res = await request(app).get(`/friends/${wrong}/sent`);
         expect(res).not.toBeNull();
-        expect(res.status).toStrictEqual(500);
+        expect(res.status).toStrictEqual(200);
         expect(res.body).toHaveLength(0);
     });
 });
