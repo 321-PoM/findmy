@@ -153,6 +153,18 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
 
     private void setupImageButton(PoiBottomSheetBinding binding) {
         Button viewImageButton = binding.viewImageButton;
+
+        View.OnClickListener disabledViewImageListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        requireContext(),
+                        "Image is blocked! myPOI owner is not your friend",
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        };
+
         View.OnClickListener viewImageListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +200,12 @@ public class MapPOIBottomSheet extends BottomSheetDialogFragment {
                 });
             }
         };
+
+        if (poi.getDescription().equals("locked")) {
+            viewImageButton.setOnClickListener(disabledViewImageListener);
+            return;
+        }
+
         viewImageButton.setOnClickListener(viewImageListener);
     }
 
